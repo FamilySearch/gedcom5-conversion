@@ -16,10 +16,9 @@
 package org.gedcomx.tools;
 
 import org.folg.gedcom.model.Gedcom;
-import org.folg.gedcom.model.GedcomTag;
-import org.folg.gedcom.parser.JsonParser;
 import org.folg.gedcom.parser.ModelParser;
-import org.folg.gedcom.parser.TreeParser;
+import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -27,8 +26,6 @@ import org.xml.sax.SAXParseException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 
 /**
@@ -40,18 +37,16 @@ public class Gedcom2Gedcomx {
   private File gedcomIn;
 
   @Option(name="-o", required=false, usage="GEDCOM X output file")
-  private File jsonOut;
+  private File gedxOut;
 
   private void doMain() throws SAXParseException, IOException {
     ModelParser modelParser = new ModelParser();
     Gedcom gedcom = modelParser.parseGedcom(gedcomIn);
 
-    if (jsonOut != null) {
-      JsonParser jsonParser = new JsonParser();
-      String json = jsonParser.toJson(gedcom);
-      PrintWriter writer = new PrintWriter(jsonOut);
-      writer.println(json);
-      writer.close();
+    if (gedxOut != null) {
+      GedcomMapper mapper = new GedcomMapper();
+      GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom);
+      gedxResult.write(gedxOut);
     }
   }
 
