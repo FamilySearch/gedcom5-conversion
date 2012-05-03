@@ -42,24 +42,13 @@ public class Gedcom2Gedcomx {
   @Option(name="-o", required=false, usage="GEDCOM X output file")
   private File jsonOut;
 
-  @Option(name="-t", required=false, usage="use tree parser (uses model parser by default)")
-  private boolean useTreeParser = false;
-
   private void doMain() throws SAXParseException, IOException {
-    String json;
-    JsonParser jsonParser = new JsonParser();
-    if (useTreeParser) {
-      TreeParser treeParser = new TreeParser();
-      List<GedcomTag> gedcomTags = treeParser.parseGedcom(gedcomIn);
-      json = jsonParser.toJson(gedcomTags);
-    }
-    else {
-      ModelParser modelParser = new ModelParser();
-      Gedcom gedcom = modelParser.parseGedcom(gedcomIn);
-      json = jsonParser.toJson(gedcom);
-    }
+    ModelParser modelParser = new ModelParser();
+    Gedcom gedcom = modelParser.parseGedcom(gedcomIn);
 
     if (jsonOut != null) {
+      JsonParser jsonParser = new JsonParser();
+      String json = jsonParser.toJson(gedcom);
       PrintWriter writer = new PrintWriter(jsonOut);
       writer.println(json);
       writer.close();
