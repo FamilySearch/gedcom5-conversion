@@ -20,10 +20,10 @@ import org.gedcomx.conclusion.Person;
 import org.gedcomx.fileformat.impl.GedcomxOutputStream;
 import org.gedcomx.metadata.rdf.Description;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+
 
 public class GedcomxConversionResult {
   private List<Person> persons;
@@ -45,8 +45,8 @@ public class GedcomxConversionResult {
     this.descriptions = descriptions;
   }
 
-  public void write(File gedxFile) throws IOException {
-    GedcomxOutputStream gedxOutputStream = new GedcomxOutputStream(new FileOutputStream(gedxFile));
+  public void write(OutputStream outputStream) throws IOException {
+    GedcomxOutputStream gedxOutputStream = new GedcomxOutputStream(outputStream);
     try {
       // Persons
       for (Person person : getPersons()) {

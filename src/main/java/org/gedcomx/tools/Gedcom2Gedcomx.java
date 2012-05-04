@@ -25,7 +25,9 @@ import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXParseException;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 
 /**
@@ -46,7 +48,8 @@ public class Gedcom2Gedcomx {
     if (gedxOut != null) {
       GedcomMapper mapper = new GedcomMapper();
       GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom);
-      gedxResult.write(gedxOut);
+      OutputStream outputStream = new FileOutputStream(gedxOut);
+      gedxResult.write(outputStream);
     }
   }
 
