@@ -24,10 +24,11 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXParseException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.LogManager;
 
 
 /**
@@ -41,15 +42,33 @@ public class Gedcom2Gedcomx {
   @Option(name="-o", required=false, usage="GEDCOM X output file")
   private File gedxOut;
 
-  private void doMain() throws SAXParseException, IOException {
-    ModelParser modelParser = new ModelParser();
-    Gedcom gedcom = modelParser.parseGedcom(gedcomIn);
+  @Option(name="-a", required=false, usage="GEDCOM 5.5 input files")
+  private File gedxFilesDir;
 
-    if (gedxOut != null) {
-      GedcomMapper mapper = new GedcomMapper();
-      GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom);
-      OutputStream outputStream = new FileOutputStream(gedxOut);
-      gedxResult.write(outputStream);
+  private void doMain() throws SAXParseException, IOException {
+    List<File> fileList = new ArrayList<File>();
+    if ((gedxFilesDir != null) && (gedxFilesDir.isDirectory()) && (gedxFilesDir.canRead()) && (gedxFilesDir.canWrite()) && (gedxFilesDir.canExecute())) {
+      fileList.addAll(Arrays.asList(gedxFilesDir.listFiles(new FileFilter() {
+        @Override
+        public boolean accept(File pathname) {
+          return pathname.getAbsolutePath().matches(".*\\.ged$");
+        }
+      })));
+    }
+    if (gedcomIn != null) {
+      fileList.add(gedcomIn);
+    }
+
+    for (File gedcom55File : fileList) {
+      ModelParser modelParser = new ModelParser();
+      Gedcom gedcom = modelParser.parseGedcom(gedcom55File);
+
+      if (gedxOut != null) {
+        GedcomMapper mapper = new GedcomMapper();
+        GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom);
+//        OutputStream outputStream = new FileOutputStream(gedxOut);
+//        gedxResult.write(outputStream);
+      }
     }
   }
 
