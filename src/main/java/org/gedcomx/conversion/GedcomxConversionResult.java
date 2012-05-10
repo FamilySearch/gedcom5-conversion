@@ -17,7 +17,7 @@ package org.gedcomx.conversion;
 
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
-import org.gedcomx.fileformat.impl.GedcomxOutputStream;
+import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
