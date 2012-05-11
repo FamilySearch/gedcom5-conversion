@@ -15,30 +15,36 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.Gedcom;
-import org.folg.gedcom.model.Repository;
-import org.folg.gedcom.model.Source;
+import org.folg.gedcom.model.*;
 import org.gedcomx.conversion.GedcomxConversionResult;
 
 import java.util.List;
 
 public class GedcomMapper {
   private final PersonMapper personMapper = new PersonMapper();
+  private final FamilyMapper familyMapper = new FamilyMapper();
   private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
 
   public GedcomxConversionResult toGedcomx(Gedcom dqGedcom) {
-    GedcomxConversionResult resources = new GedcomxConversionResult();
+    GedcomxConversionResult result = new GedcomxConversionResult();
 
-    toPersons(dqGedcom.getPeople(), resources);
-    toSourceDescriptions(dqGedcom.getSources(), resources);
-    toOrganizations(dqGedcom.getRepositories(), resources);
+    toPersons(dqGedcom.getPeople(), result);
+    toRelationships(dqGedcom.getFamilies(), result);
+    toSourceDescriptions(dqGedcom.getSources(), result);
+    toOrganizations(dqGedcom.getRepositories(), result);
 
-    return resources;
+    return result;
   }
 
-  private void toPersons(List<org.folg.gedcom.model.Person> dqPersons, GedcomxConversionResult result) {
-    for (org.folg.gedcom.model.Person person : dqPersons) {
+  private void toPersons(List<Person> dqPersons, GedcomxConversionResult result) {
+    for (Person person : dqPersons) {
       personMapper.toPerson(person, result);
+    }
+  }
+
+  private void toRelationships(List<Family> dqFamilies, GedcomxConversionResult result) {
+    for (Family family : dqFamilies) {
+      familyMapper.toRelationship(family, result);
     }
   }
 
