@@ -18,31 +18,54 @@ package org.gedcomx.conversion;
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.fileformat.GedcomxOutputStream;
+import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GedcomxConversionResult {
-  private List<Person> persons;
-  private List<Description> descriptions;
+  private List<Person> persons = new ArrayList<Person>();
+  private List<Description> descriptions = new ArrayList<Description>();
+  private List<Organization> organizations = new ArrayList<Organization>();
 
   public List<Person> getPersons() {
     return persons;
   }
 
-  public void setPersons(List<Person> persons) {
-    this.persons = persons;
+  public void addPerson(Person person) {
+    this.persons.add(person);
+  }
+
+  public void addPersons(List<Person> persons) {
+    this.persons.addAll(persons);
   }
 
   public List<Description> getDescriptions() {
     return descriptions;
   }
 
-  public void setDescriptions(List<Description> descriptions) {
-    this.descriptions = descriptions;
+  public void addDescription(Description description) {
+    this.descriptions.add(description);
+  }
+
+  public void addDescriptions(List<Description> descriptions) {
+    this.descriptions.addAll(descriptions);
+  }
+
+  public List<Organization> getOrganizations() {
+    return organizations;
+  }
+
+  public void addOrganization(Organization organization) {
+    this.organizations.add(organization);
+  }
+
+  public void addOrganizations(List<Organization> organizations) {
+    this.organizations.addAll(organizations);
   }
 
   public void write(OutputStream outputStream) throws IOException {

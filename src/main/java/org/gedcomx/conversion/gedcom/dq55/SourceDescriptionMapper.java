@@ -15,16 +15,70 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.model.Source;
+import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.metadata.dc.ObjectFactory;
+import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.metadata.rdf.RDFLiteral;
+import org.gedcomx.metadata.rdf.RDFValue;
+
 
 public class SourceDescriptionMapper {
-  public SourceDescriptionMapper() {
-  }
+  private ObjectFactory objectFactory = new ObjectFactory();
 
-  Description toSourceDescription(Source dqSource) {
+  public void toSourceDescription(Source dqSource, GedcomxConversionResult result) {
     Description gedxSourceDescription = new Description();
 
-    return gedxSourceDescription;
+    dqSource.getAbbreviation();
+    dqSource.getAuthor();
+    dqSource.getCallNumber();
+    dqSource.getChange();
+    dqSource.getDate();
+    dqSource.getExtensions();
+    dqSource.getId();
+    dqSource.getItalic();
+    dqSource.getMedia();
+    dqSource.getMediaType();
+    dqSource.getMediaRefs();
+    dqSource.getNoteRefs();
+    dqSource.getNotes();
+    dqSource.getParen();
+    dqSource.getPublicationFacts();
+    dqSource.getReferenceNumber();
+    //dqSource.getRepository();
+    dqSource.getRepositoryRef();
+    dqSource.getRin();
+    dqSource.getText();
+    dqSource.getTitle();
+    dqSource.getType();
+    dqSource.getUid();
+  }
+
+  void toOrganization(Repository dqRepository, GedcomxConversionResult result) {
+    Organization gedxOrganization = new Organization();
+
+    if ((dqRepository.getChange() != null) && (dqRepository.getChange().getDateTime() != null) && (dqRepository.getChange().getDateTime().getValue() != null)) {
+      RDFLiteral lastModified = new RDFLiteral(dqRepository.getChange().getDateTime().getValue());
+
+      // TODO: create a description
+      Description gedxRepositoryRecordDescription = new Description();
+      gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
+
+      result.addDescription(gedxRepositoryRecordDescription);
+    }
+
+    dqRepository.getAddress();
+    dqRepository.getEmail();
+    dqRepository.getExtensions();
+    dqRepository.getId();
+    dqRepository.getName();
+    dqRepository.getNoteRefs();
+    dqRepository.getNotes();
+    dqRepository.getPhone();
+    dqRepository.getRin();
+    dqRepository.getValue();
+    dqRepository.getWww();
   }
 }

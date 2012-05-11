@@ -16,12 +16,10 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.Gedcom;
+import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.model.Source;
-import org.gedcomx.conclusion.Person;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.rdf.Description;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GedcomMapper {
@@ -31,29 +29,28 @@ public class GedcomMapper {
   public GedcomxConversionResult toGedcomx(Gedcom dqGedcom) {
     GedcomxConversionResult resources = new GedcomxConversionResult();
 
-    resources.setPersons(toPersons(dqGedcom.getPeople()));
-    resources.setDescriptions(toSourceDescriptions(dqGedcom.getSources()));
+    toPersons(dqGedcom.getPeople(), resources);
+    toSourceDescriptions(dqGedcom.getSources(), resources);
+    toOrganizations(dqGedcom.getRepositories(), resources);
 
     return resources;
   }
 
-  private List<Person> toPersons(List<org.folg.gedcom.model.Person> dqPersons) {
-    List<Person> gedxPersons = new ArrayList<Person>(dqPersons.size());
-
+  private void toPersons(List<org.folg.gedcom.model.Person> dqPersons, GedcomxConversionResult result) {
     for (org.folg.gedcom.model.Person person : dqPersons) {
-      gedxPersons.add(personMapper.toPerson(person));
+      personMapper.toPerson(person, result);
     }
-
-    return gedxPersons;
   }
 
-  private List<Description> toSourceDescriptions(List<Source> dqSources) {
-    List<Description> gedxDescriptions = new ArrayList<Description>(dqSources.size());
-
+  private void toSourceDescriptions(List<Source> dqSources, GedcomxConversionResult result) {
     for (Source dqSource : dqSources) {
-      gedxDescriptions.add(sourceDescriptionMapper.toSourceDescription(dqSource));
+      sourceDescriptionMapper.toSourceDescription(dqSource, result);
     }
+  }
 
-    return gedxDescriptions;
+  private void toOrganizations(List<Repository> dqRepositories, GedcomxConversionResult result) {
+    for (Repository dqRepository : dqRepositories) {
+      sourceDescriptionMapper.toOrganization(dqRepository, result);
+    }
   }
 }
