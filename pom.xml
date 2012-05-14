@@ -12,7 +12,7 @@
 
   <properties>
     <gedcomx.fileformat.version>0.9.0.BUILD-SNAPSHOT</gedcomx.fileformat.version>
-    <gedcom.version>1.0</gedcom.version>
+    <gedcom.version>1.1-SNAPSHOT</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
