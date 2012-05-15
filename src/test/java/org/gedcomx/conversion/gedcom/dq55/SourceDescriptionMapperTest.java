@@ -7,9 +7,12 @@ import org.gedcomx.common.ResourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
+import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.net.URL;
 
@@ -31,11 +34,11 @@ public class SourceDescriptionMapperTest {
     gedcom = modelParser.parseGedcom(gedcomFile);
     assertNotNull(gedcom);
     assertNotNull(gedcom.getRepositories());
-    assertEquals(gedcom.getRepositories().size(), 1);
+    assertEquals(gedcom.getRepositories().size(), 5);
   }
 
   @Test
-  public void testToOrganization() throws Exception {
+  public void testToOrganization1() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(0);
     GedcomxConversionResult result = new GedcomxConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
@@ -114,5 +117,280 @@ public class SourceDescriptionMapperTest {
     assertNull(gedxOrganization.getHomepage().getLang());
     assertNull(gedxOrganization.getHomepage().getExtensionAttributes());
     assertEquals(gedxOrganization.getHomepage().getValue(), "https://www.mycorporation.com/");
+  }
+
+  @Test
+  public void testToOrganization2() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(1);
+    GedcomxConversionResult result = new GedcomxConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO4");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "York County Archive");
+
+    // null in this repository
+    assertNull(gedxOrganization.getAddresses());
+    assertNull(gedxOrganization.getEmails());
+    assertNull(gedxOrganization.getPhones());
+    assertNull(gedxOrganization.getHomepage());
+  }
+
+  @Test
+  public void testToOrganization3() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(2);
+    GedcomxConversionResult result = new GedcomxConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO5");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "Henry County Archive");
+
+    // ADDR
+    assertNotNull(gedxOrganization.getAddresses());
+    assertEquals(gedxOrganization.getAddresses().size(), 1);
+    for (Address address : gedxOrganization.getAddresses()) {
+      assertNull(address.getId());
+      assertEquals(address.getValue()
+        , "55 Jones Bend Rd Ext\n" +
+          "Paris, TN  38242\n" +
+          "United States");
+      assertNull(address.getStreet());
+      assertNull(address.getStreet2());
+      assertNull(address.getStreet3());
+      assertNull(address.getCity());
+      assertNull(address.getStateOrProvince());
+      assertNull(address.getPostalCode());
+      assertNull(address.getCountry());
+    }
+
+    // EMAIL
+    assertNotNull(gedxOrganization.getEmails());
+    assertEquals(gedxOrganization.getEmails().size(), 1);
+    ResourceReference email = gedxOrganization.getEmails().get(0);
+    assertNull(email.getExtensionAttributes());
+    assertNull(email.getExtensionElements());
+    assertNotNull(email.getResource());
+    assertEquals(email.getResource().toString(), "mailto:henrycountyarchive.at.gmail.com");
+
+    // PHON and FAX
+    assertNotNull(gedxOrganization.getPhones());
+    assertEquals(gedxOrganization.getPhones().size(), 1);
+    for (ResourceReference phone : gedxOrganization.getPhones()) {
+      assertNull(phone.getExtensionAttributes());
+      assertNull(phone.getExtensionElements());
+      assertNotNull(phone.getResource());
+
+      String s = phone.getResource().toString();
+      if (s.startsWith("tel:")) {
+        assertEquals(s, "tel:(731) 642-8655, Extension #109");
+      } else {
+        fail("Unexpected phone: " + s);
+      }
+    }
+
+    // WWW
+    assertNotNull(gedxOrganization.getHomepage());
+    assertNull(gedxOrganization.getHomepage().getDatatype());
+    assertNull(gedxOrganization.getHomepage().getLang());
+    assertNull(gedxOrganization.getHomepage().getExtensionAttributes());
+    assertEquals(gedxOrganization.getHomepage().getValue(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
+
+    // Description that is the result of the CHAN tag
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 1);
+    Description gedxDescription = result.getDescriptions().get(0);
+    assertNotNull(gedxDescription);
+    assertNull(gedxDescription.getExtensionAttributes());
+    assertNull(gedxDescription.getId());
+    assertNull(gedxDescription.getType());
+    assertNotNull(gedxDescription.getAbout());
+    assertEquals(gedxDescription.getAbout().toString(), "organizations/REPO5");
+    assertNotNull(gedxDescription.getExtensionElements());
+    assertEquals(gedxDescription.getExtensionElements().size(), 1);
+    JAXBElement<RDFLiteral> modifiedContainer = (JAXBElement<RDFLiteral>)gedxDescription.getExtensionElements().get(0);
+    assertEquals(modifiedContainer.getName().getNamespaceURI(), "http://purl.org/dc/terms/");
+    assertEquals(modifiedContainer.getName().getLocalPart(), "modified");
+    assertEquals(modifiedContainer.getDeclaredType(), RDFLiteral.class);
+    RDFLiteral value = modifiedContainer.getValue();
+    assertNotNull(value);
+    assertNull(value.getLang());
+    assertNull(value.getExtensionAttributes());
+    assertEquals(value.getDatatype().toString(), "http://www.w3.org/2001/XMLSchema#dateTime");
+    assertEquals(value.getValue(), "2011-11-11T11:11:11.111-07:00");
+  }
+
+  @Test
+  public void testToOrganization4() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(3);
+    GedcomxConversionResult result = new GedcomxConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO6");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "Washington County Archives");
+
+    // ADDR
+    assertNotNull(gedxOrganization.getAddresses());
+    assertEquals(gedxOrganization.getAddresses().size(), 1);
+    for (Address address : gedxOrganization.getAddresses()) {
+      assertNull(address.getId());
+      assertEquals(address.getValue()
+        , "208 N College Ave\n" +
+          "Fayetteville, AR  72701-4202");
+      assertNull(address.getStreet());
+      assertNull(address.getStreet2());
+      assertNull(address.getStreet3());
+      assertNull(address.getCity());
+      assertNull(address.getStateOrProvince());
+      assertNull(address.getPostalCode());
+      assertNull(address.getCountry());
+    }
+
+    // EMAIL
+    assertNull(gedxOrganization.getEmails());
+
+    // PHON and FAX
+    assertNotNull(gedxOrganization.getPhones());
+    assertEquals(gedxOrganization.getPhones().size(), 1);
+    for (ResourceReference phone : gedxOrganization.getPhones()) {
+      assertNull(phone.getExtensionAttributes());
+      assertNull(phone.getExtensionElements());
+      assertNotNull(phone.getResource());
+
+      String s = phone.getResource().toString();
+      if (s.startsWith("fax:")) {
+        assertEquals(s, "fax:479-444-1777");
+      } else {
+        fail("Unexpected phone: " + s);
+      }
+    }
+
+    // WWW
+    assertNull(gedxOrganization.getHomepage());
+
+    // Description that is the result of the CHAN tag
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 1);
+    Description gedxDescription = result.getDescriptions().get(0);
+    assertNotNull(gedxDescription);
+    assertNull(gedxDescription.getExtensionAttributes());
+    assertNull(gedxDescription.getId());
+    assertNull(gedxDescription.getType());
+    assertNotNull(gedxDescription.getAbout());
+    assertEquals(gedxDescription.getAbout().toString(), "organizations/REPO6");
+    assertNotNull(gedxDescription.getExtensionElements());
+    assertEquals(gedxDescription.getExtensionElements().size(), 1);
+    JAXBElement<RDFLiteral> modifiedContainer = (JAXBElement<RDFLiteral>)gedxDescription.getExtensionElements().get(0);
+    assertEquals(modifiedContainer.getName().getNamespaceURI(), "http://purl.org/dc/terms/");
+    assertEquals(modifiedContainer.getName().getLocalPart(), "modified");
+    assertEquals(modifiedContainer.getDeclaredType(), RDFLiteral.class);
+    RDFLiteral value = modifiedContainer.getValue();
+    assertNotNull(value);
+    assertNull(value.getLang());
+    assertNull(value.getExtensionAttributes());
+    assertEquals(value.getDatatype().toString(), "http://www.w3.org/2001/XMLSchema#dateTime");
+    assertEquals(value.getValue(), "2011-11-11T00:00:00.000-07:00");
+  }
+
+  @Test
+  public void testToOrganization5() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(4);
+    GedcomxConversionResult result = new GedcomxConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO7");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "Greene County Archives & Records Center");
+
+    // null in this repository
+    assertNull(gedxOrganization.getAddresses());
+    assertNull(gedxOrganization.getEmails());
+    assertNull(gedxOrganization.getPhones());
+    assertNull(gedxOrganization.getHomepage());
+
+    // Description that is the result of the CHAN tag with a bogus value
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 0);
   }
 }

@@ -15,6 +15,7 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.model.Source;
 import org.gedcomx.common.ResourceReference;
@@ -26,8 +27,11 @@ import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class SourceDescriptionMapper {
@@ -113,18 +117,34 @@ public class SourceDescriptionMapper {
 //    dqRepository.getNoteRefs();
 //    dqRepository.getNotes();
 //    dqRepository.getRin();
-    if (dqRepository.getValue() != null) {
-      assert false;
-    }
+//    dqRepository.getValue(); // expected to always be null
 
-    if ((dqRepository.getChange() != null) && (dqRepository.getChange().getDateTime() != null) && (dqRepository.getChange().getDateTime().getValue() != null)) {
-      RDFLiteral lastModified = new RDFLiteral(dqRepository.getChange().getDateTime().getValue());
+    if (dqRepository.getChange() != null) {
+      try {
+        DateTime dateTime = dqRepository.getChange().getDateTime();
+        String parsePattern = "d MMM yyyy";
+        if (dateTime.getTime() != null) {
+          parsePattern += " HH:mm:ss.SSS";
+        }
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        ((SimpleDateFormat)dateFormat).applyPattern(parsePattern);
 
-      Description gedxRepositoryRecordDescription = new Description();
-      gedxRepositoryRecordDescription.setAbout(URI.create("organizations/" + gedxOrganization.getId()));
-      gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
+        String dateTimeString = dateTime.getValue();
+        if (dateTime.getTime() != null) {
+          dateTimeString += ' ' + dateTime.getTime();
+        }
+        Date date = dateFormat.parse(dateTimeString);
 
-      result.addDescription(gedxRepositoryRecordDescription);
+        RDFLiteral lastModified = new RDFLiteral(date);
+
+        Description gedxRepositoryRecordDescription = new Description();
+        gedxRepositoryRecordDescription.setAbout(URI.create("organizations/" + gedxOrganization.getId()));
+        gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
+
+        result.addDescription(gedxRepositoryRecordDescription);
+      } catch (Throwable ex) {
+        // something went wrong, so probably not standard; we will skip it
+      }
     }
 
     result.addOrganization(gedxOrganization);
