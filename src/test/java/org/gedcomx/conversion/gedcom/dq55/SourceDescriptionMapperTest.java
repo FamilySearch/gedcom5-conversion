@@ -102,10 +102,10 @@ public class SourceDescriptionMapperTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("tel:")) {
-        assertEquals(s, "tel:866-000-0000");
-      } else if (s.startsWith("fax:")) {
-        assertEquals(s, "fax:866-111-1111");
+      if (s.startsWith("data:,Phone: ")) {
+        assertEquals(s, "data:,Phone: 866-000-0000");
+      } else if (s.startsWith("data:,Fax: ")) {
+        assertEquals(s, "data:,Fax: 866-111-1111");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -211,7 +211,7 @@ public class SourceDescriptionMapperTest {
     assertNull(email.getExtensionAttributes());
     assertNull(email.getExtensionElements());
     assertNotNull(email.getResource());
-    assertEquals(email.getResource().toString(), "mailto:henrycountyarchive.at.gmail.com");
+    assertEquals(email.getResource().toString(), "mailto:henrycountyarchive@gmail.com");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());
@@ -222,8 +222,8 @@ public class SourceDescriptionMapperTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("tel:")) {
-        assertEquals(s, "tel:(731) 642-8655, Extension #109");
+      if (s.startsWith("data:,Phone: ")) {
+        assertEquals(s, "data:,Phone: (731) 642-8655, Extension #109");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -319,8 +319,8 @@ public class SourceDescriptionMapperTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("fax:")) {
-        assertEquals(s, "fax:479-444-1777");
+      if (s.startsWith("data:,Fax: ")) {
+        assertEquals(s, "data:,Fax: 479-444-1777");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -381,12 +381,29 @@ public class SourceDescriptionMapperTest {
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
     assertNull(gedxOrganization.getName().getExtensionAttributes());
-    assertEquals(gedxOrganization.getName().getValue(), "Greene County Archives & Records Center");
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
+
+    // PHON and FAX
+    assertNotNull(gedxOrganization.getPhones());
+    assertEquals(gedxOrganization.getPhones().size(), 2);
+    for (ResourceReference phone : gedxOrganization.getPhones()) {
+      assertNull(phone.getExtensionAttributes());
+      assertNull(phone.getExtensionElements());
+      assertNotNull(phone.getResource());
+
+      String s = phone.getResource().toString();
+      if (s.startsWith("tel:")) {
+        assertEquals(s, "tel:+1 573-204-2331");
+      } else if (s.startsWith("fax:")) {
+        assertEquals(s, "fax:+1 (573)204/2334");
+      } else {
+        fail("Unexpected phone: " + s);
+      }
+    }
 
     // null in this repository
     assertNull(gedxOrganization.getAddresses());
     assertNull(gedxOrganization.getEmails());
-    assertNull(gedxOrganization.getPhones());
     assertNull(gedxOrganization.getHomepage());
 
     // Description that is the result of the CHAN tag with a bogus value

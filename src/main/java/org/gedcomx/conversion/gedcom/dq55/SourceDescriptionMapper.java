@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 
 public class SourceDescriptionMapper {
@@ -56,7 +57,6 @@ public class SourceDescriptionMapper {
     dqSource.getParen();
     dqSource.getPublicationFacts();
     dqSource.getReferenceNumber();
-    //dqSource.getRepository();
     dqSource.getRepositoryRef();
     dqSource.getRin();
     dqSource.getText();
@@ -91,19 +91,23 @@ public class SourceDescriptionMapper {
       gedxOrganization.setPhones(new ArrayList<ResourceReference>());
       if (dqRepository.getPhone() != null) {
         ResourceReference phone = new ResourceReference();
-        phone.setResource(URI.create("tel:" + dqRepository.getPhone()));
+        boolean inGlobalFormat = inCanonicalGlobalFormat(dqRepository.getPhone());
+        String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
+        phone.setResource(URI.create(scheme + dqRepository.getPhone()));
         gedxOrganization.getPhones().add(phone);
       }
       if (dqRepository.getFax() != null) {
         ResourceReference fax = new ResourceReference();
-        fax.setResource(URI.create("fax:" + dqRepository.getFax()));
+        boolean inGlobalFormat = inCanonicalGlobalFormat(dqRepository.getFax());
+        String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
+        fax.setResource(URI.create(scheme + dqRepository.getFax()));
         gedxOrganization.getPhones().add(fax);
       }
     }
 
     if (dqRepository.getEmail() != null) {
-      gedxOrganization.setEmails(new ArrayList<ResourceReference>());
       ResourceReference email = new ResourceReference();
+      gedxOrganization.setEmails(new ArrayList<ResourceReference>());
       email.setResource(URI.create("mailto:" + dqRepository.getEmail()));
       gedxOrganization.getEmails().add(email);
     }
@@ -148,5 +152,10 @@ public class SourceDescriptionMapper {
     }
 
     result.addOrganization(gedxOrganization);
+  }
+
+  private boolean inCanonicalGlobalFormat(String telephoneNumber) {
+    final Pattern pattern = Pattern.compile("^\\+[\\d \\.\\(\\)\\-/]+");
+    return pattern.matcher(telephoneNumber).matches();
   }
 }
