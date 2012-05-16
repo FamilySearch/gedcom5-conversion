@@ -393,7 +393,7 @@ public class SourceDescriptionMapperTest {
 
       String s = phone.getResource().toString();
       if (s.startsWith("tel:")) {
-        assertEquals(s, "tel:+1 573-204-2331");
+        assertEquals(s, "tel:+1 573.204-2331");
       } else if (s.startsWith("fax:")) {
         assertEquals(s, "fax:+1 (573)204/2334");
       } else {
