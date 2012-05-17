@@ -55,8 +55,8 @@
 1 REPO
 2 CALN __callno__
 1 CALN __callno__specdeviation__
-1 MEDI __mediatype__specdeviation__
-1 DATE __date__specdeviation__
+1 MEDI electronic
+1 DATE 1 Jan 2012
 0 @REPO1@ REPO
 1 NAME Family History Library
 1 ADDR 35 N West Temple St

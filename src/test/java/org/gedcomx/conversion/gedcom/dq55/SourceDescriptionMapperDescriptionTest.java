@@ -141,6 +141,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertNotNull(gedxSourceDescription);
     assertEquals(gedxSourceDescription.getId(), "SOUR2");
     assertNull(gedxSourceDescription.getAbout());
+    assertEquals(dqSource.getMediaType(), "electronic");
     assertNull(gedxSourceDescription.getType());
     assertNull(gedxSourceDescription.getExtensionAttributes());
     assertNotNull(gedxSourceDescription.getExtensionElements());
