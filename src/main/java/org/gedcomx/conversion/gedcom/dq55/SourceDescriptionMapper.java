@@ -19,6 +19,7 @@ import org.folg.gedcom.model.*;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
@@ -41,22 +42,23 @@ public class SourceDescriptionMapper {
 
   public void toSourceDescription(Source dqSource, GedcomxConversionResult result) {
     Description gedxSourceDescription = new Description();
+    DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
     gedxSourceDescription.setId(dqSource.getId());
 
     if (dqSource.getAuthor() != null) {
-      gedxSourceDescription.addExtensionElement(objectFactory.createCreatorElement(new RDFValue(dqSource.getAuthor())));
+      gedxDecoratedSourceDescription.creator(new RDFValue(dqSource.getAuthor()));
     }
 
     if (dqSource.getTitle() != null) {
-      gedxSourceDescription.addExtensionElement(objectFactory.createTitleElement(new RDFLiteral(dqSource.getTitle())));
+      gedxDecoratedSourceDescription.title(new RDFLiteral(dqSource.getTitle()));
     }
 
     if (dqSource.getAbbreviation() != null) {
-      gedxSourceDescription.addExtensionElement(objectFactory.createAlternativeElement(new RDFLiteral(dqSource.getAbbreviation())));
+      gedxDecoratedSourceDescription.alternative(new RDFLiteral(dqSource.getAbbreviation()));
     }
 
     if (dqSource.getPublicationFacts() != null) {
-      gedxSourceDescription.addExtensionElement(objectFactory.createDescriptionElement(new RDFValue(dqSource.getPublicationFacts())));
+      gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPublicationFacts()));
     }
 
     if (dqSource.getText() != null) {
@@ -65,10 +67,18 @@ public class SourceDescriptionMapper {
 
     if (dqSource.getRepositoryRef() != null) {
       RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
-      gedxSourceDescription.addExtensionElement(objectFactory.createIsPartOfElement(new RDFValue("organizations/" + dqRepositoryRef.getRef())));
+      if (dqRepositoryRef.getRef() != null) {
+        gedxDecoratedSourceDescription.partOf(new RDFValue("organizations/" + dqRepositoryRef.getRef()));
+      } else {
+        String inlineRepoId = dqSource.getId() + ".REPO";
+        Organization gedxOrganization = new Organization();
+        gedxOrganization.setId(inlineRepoId);
+        result.addOrganization(gedxOrganization);
+        gedxDecoratedSourceDescription.partOf(new RDFValue("organizations/" + inlineRepoId));
+      }
 
       if (dqRepositoryRef.getCallNumber() != null) {
-        gedxSourceDescription.addExtensionElement(objectFactory.createIdentifierElement(new RDFLiteral(dqRepositoryRef.getCallNumber())));
+        gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqRepositoryRef.getCallNumber()));
       }
 
       if (dqRepositoryRef.getMediaType() != null) {
@@ -80,7 +90,7 @@ public class SourceDescriptionMapper {
     }
 
     if (dqSource.getCallNumber() != null) {
-      gedxSourceDescription.addExtensionElement(objectFactory.createIdentifierElement(new RDFLiteral(dqSource.getCallNumber())));
+      gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqSource.getCallNumber()));
     }
 
     if (dqSource.getMediaType() != null) {
