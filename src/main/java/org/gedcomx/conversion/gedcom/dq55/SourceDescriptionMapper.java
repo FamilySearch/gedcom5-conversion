@@ -15,9 +15,7 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.DateTime;
-import org.folg.gedcom.model.Repository;
-import org.folg.gedcom.model.Source;
+import org.folg.gedcom.model.*;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -26,6 +24,9 @@ import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
+import org.gedcomx.metadata.rdf.RDFValue;
+import org.gedcomx.types.ResourceType;
+import org.gedcomx.types.TypeReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,29 +41,76 @@ public class SourceDescriptionMapper {
 
   public void toSourceDescription(Source dqSource, GedcomxConversionResult result) {
     Description gedxSourceDescription = new Description();
+    gedxSourceDescription.setId(dqSource.getId());
 
-    dqSource.getAbbreviation();
-    dqSource.getAuthor();
-    dqSource.getCallNumber();
-    dqSource.getChange();
-    dqSource.getDate();
-    dqSource.getExtensions();
-    dqSource.getId();
-    dqSource.getItalic();
-    dqSource.getMedia();
-    dqSource.getMediaType();
-    dqSource.getMediaRefs();
-    dqSource.getNoteRefs();
-    dqSource.getNotes();
-    dqSource.getParen();
-    dqSource.getPublicationFacts();
-    dqSource.getReferenceNumber();
-    dqSource.getRepositoryRef();
-    dqSource.getRin();
-    dqSource.getText();
-    dqSource.getTitle();
-    dqSource.getType();
-    dqSource.getUid();
+    if (dqSource.getAuthor() != null) {
+      gedxSourceDescription.addExtensionElement(objectFactory.createCreatorElement(new RDFValue(dqSource.getAuthor())));
+    }
+
+    if (dqSource.getTitle() != null) {
+      gedxSourceDescription.addExtensionElement(objectFactory.createTitleElement(new RDFLiteral(dqSource.getTitle())));
+    }
+
+    if (dqSource.getAbbreviation() != null) {
+      gedxSourceDescription.addExtensionElement(objectFactory.createAlternativeElement(new RDFLiteral(dqSource.getAbbreviation())));
+    }
+
+    if (dqSource.getPublicationFacts() != null) {
+      gedxSourceDescription.addExtensionElement(objectFactory.createDescriptionElement(new RDFValue(dqSource.getPublicationFacts())));
+    }
+
+    if (dqSource.getText() != null) {
+      // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+    }
+
+    if (dqSource.getRepositoryRef() != null) {
+      RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
+      gedxSourceDescription.addExtensionElement(objectFactory.createIsPartOfElement(new RDFValue("organizations/" + dqRepositoryRef.getRef())));
+
+      if (dqRepositoryRef.getCallNumber() != null) {
+        gedxSourceDescription.addExtensionElement(objectFactory.createIdentifierElement(new RDFLiteral(dqRepositoryRef.getCallNumber())));
+      }
+
+      if (dqRepositoryRef.getMediaType() != null) {
+        TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqRepositoryRef.getMediaType());
+        if (mediaTypeRef != null) {
+          gedxSourceDescription.setType(mediaTypeRef);
+        }
+      }
+    }
+
+    if (dqSource.getCallNumber() != null) {
+      gedxSourceDescription.addExtensionElement(objectFactory.createIdentifierElement(new RDFLiteral(dqSource.getCallNumber())));
+    }
+
+    if (dqSource.getMediaType() != null) {
+      TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqSource.getMediaType());
+      if (mediaTypeRef != null) {
+        gedxSourceDescription.setType(mediaTypeRef);
+      }
+    }
+
+    // TODO: add logging for fields we are not processing right now
+    // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for, parsed by DallanQ code
+//    dqSource.getDate(); // Anyone know what sort of date this is? It is a deviation from the GEDCOM 5.5 spec.
+//    dqSource.getNoteRefs();
+//    dqSource.getNotes();
+//    dqSource.getMediaRefs();
+//    dqSource.getMedia();
+//    dqSource.getUid();
+//    dqSource.getRin();
+//    dqSource.getExtensions();
+//    dqSource.getReferenceNumber();
+//    dqSource.getType();
+
+    //dqSource.getItalic(); // PAF extension elements; will not process
+    //dqSource.getParen();  // PAF extension elements; will not process
+
+    if (dqSource.getChange() != null) {
+      toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
+    }
+
+    result.addDescription(gedxSourceDescription);
   }
 
   public void toOrganization(Repository dqRepository, GedcomxConversionResult result) {
@@ -116,7 +164,7 @@ public class SourceDescriptionMapper {
       gedxOrganization.setHomepage(new RDFLiteral(dqRepository.getWww()));
     }
 
-    // TODO: what to do with these?
+    // TODO: add logging for fields we are not processing right now
 //    dqRepository.getExtensions();
 //    dqRepository.getNoteRefs();
 //    dqRepository.getNotes();
@@ -124,8 +172,52 @@ public class SourceDescriptionMapper {
 //    dqRepository.getValue(); // expected to always be null
 
     if (dqRepository.getChange() != null) {
+      toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
+    }
+
+    result.addOrganization(gedxOrganization);
+  }
+
+  private TypeReference<ResourceType> mapToKnownResourceType(String mediaType) {
+    TypeReference<ResourceType> resourceTypeRef;
+
+    if ("audio".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.Sound);
+    } else if ("book".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("card".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("electronic".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = null;
+    } else if ("fiche".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("film".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("magazine".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("manuscript".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("map".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("newspaper".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("photo".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.StillImage);
+    } else if ("tombstone".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
+    } else if ("video".equalsIgnoreCase(mediaType)) {
+      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.MovingImage);
+    } else {
+      resourceTypeRef = null;
+    }
+
+    return resourceTypeRef;
+  }
+
+  private void toChangeDescription(Change dqRepositoryChange, String aboutObjId, GedcomxConversionResult result) {
+    if (dqRepositoryChange != null) {
       try {
-        DateTime dateTime = dqRepository.getChange().getDateTime();
+        DateTime dateTime = dqRepositoryChange.getDateTime();
         String parsePattern = "d MMM yyyy";
         if (dateTime.getTime() != null) {
           parsePattern += " HH:mm:ss.SSS";
@@ -142,16 +234,14 @@ public class SourceDescriptionMapper {
         RDFLiteral lastModified = new RDFLiteral(date);
 
         Description gedxRepositoryRecordDescription = new Description();
-        gedxRepositoryRecordDescription.setAbout(URI.create("organizations/" + gedxOrganization.getId()));
+        gedxRepositoryRecordDescription.setAbout(URI.create(aboutObjId));
         gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
 
         result.addDescription(gedxRepositoryRecordDescription);
       } catch (Throwable ex) {
-        // something went wrong, so probably not standard; we will skip it
+        // something went wrong, so probably does not conform to the standard; we will skip it
       }
     }
-
-    result.addOrganization(gedxOrganization);
   }
 
   private boolean inCanonicalGlobalFormat(String telephoneNumber) {
