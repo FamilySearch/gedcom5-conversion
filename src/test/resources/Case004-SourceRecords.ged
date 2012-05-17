@@ -1,0 +1,66 @@
+0 HEAD
+1 SOUR GEDCOM_X_TEST
+1 GEDC
+2 VERS 5.5
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 SUBM @SUB1@
+0 @SUB1@ SUBM
+1 NAME Henri Herkimer Hofmeir
+1 ADDR 1 Genealogist Way
+2 CONT Hometown, ZZ  99999
+2 CONT United States
+0 @INDI1@ INDI
+1 NAME Joanna Maria /Louwaert/
+1 BIRT
+2 DATE 30 Jan 1820
+2 PLAC Brugge, West Vlaanderen, Belgium
+2 SOUR @SOUR1@
+3 PAGE FHL INTL Film 1226427, 1820, No. 143
+3 EVEN BIRT
+4 ROLE CHIL
+3 DATA
+4 DATE 31 Jan 1820
+4 TEXT Ten jaere achttien honderd twintig den een en dertigsten Januarius, om
+5 CONT vier ueren naer middag is voor ons Franciscus Julius schepen, gelast ons den
+5 CONT ...
+3 QUAY 3
+0 @SOUR1@ SOUR
+1 DATA
+2 EVEN BIRT, MARR, DEAT
+3 DATE FROM 1796 TO 1900
+3 PLAC Belgium, West Vlaanderen, Brugge
+2 AGNC Burgerlijke Stand
+1 AUTH Brugge (West Vlaanderen). Burgerlijke Stand
+1 TITL Registers van de Burgerlijke Stand, 1796-1900
+1 ABBR Civil Registration
+1 PUBL Microfilm genomen van de originele in het Gerechtshof te Brugge.
+2 CONT
+2 CONT Tekst in het Frans voor 1815.
+2 CONT
+2 CONT Met index.
+2 CONT
+2 CONT Tienjarige tafels op geboorten, huwelijken en overlijdens 1803-1813 zie Film 1226168 item 2. 1803-1813 1226169 item 1-2 1813-1823 1226173 item 2
+2 CONC 1823-1832 1226175 item 4. 1823-1832 1226176 item 1 1833-1842 1226179 item 1-2 1843-1850 1226182 item 3-4. 1850-1860 1226185 item 3.
+2 CONC 1850-1860 1226236 item 1 1860-1870 1226239 item 3. 1860-1870 1226240 item 1-2 1871-1880 1358895 item 2 1881-1890 1383016 item 3.
+2 CONC Geboorten, huwelijken 1881-1890 1383017 item 1 Overlijdens 1891-1900 1383021 item 2
+2 CONT
+2 CONT Civil registration of births, marriages and deaths of Brugge, West Flanders, Belgium. Includes marriage proclamations, indexes, and supplements. Text in French before 1815.
+1 TEXT __TEXT_FROM_SOURCE_LINE_1__
+2 CONT __TEXT_FROM_SOURCE_LINE_2__
+1 REPO @REPO1@
+2 CALN https://www.familysearch.org/search/catalog/show?uri=http%3A%2F%2Fcatalog-search-api%3A8080%2Fwww-catalogapi-webservice%2Fitem%2F21034
+3 MEDI film
+0 @SOUR2@ SOUR
+1 REPO
+2 CALN __callno__
+1 CALN __callno__specdeviation__
+1 MEDI __mediatype__specdeviation__
+1 DATE __date__specdeviation__
+0 @REPO1@ REPO
+1 NAME Family History Library
+1 ADDR 35 N West Temple St
+2 CONT Salt Lake City, UT  84150
+2 CONT United States
+1 PHON +1-866-406-1830
+1 WWW https://www.familysearch.org/locations/saltlakecity-library
