@@ -1,0 +1,59 @@
+0 @I000001@ INDI
+1 NAME John /Johnson/
+  2 GIVN John
+  2 SURN Johnson
+0 @I000002@ INDI
+1 NAME John /Johnson
+  2 GIVN John
+  2 SURN Johnson
+0 @I000003@ INDI
+1 NAME John/Johnson
+  2 GIVN John
+  2 SURN Johnson
+0 @I000004@ INDI
+1 NAME John/Johnson/
+  2 GIVN John
+  2 SURN Johnson
+0 @I000005@ INDI
+1 NAME John Johnson
+  2 GIVN John
+  2 SURN Johnson
+0 @I000006@ INDI
+1 NAME /Johnson/
+  2 SURN Johnson
+0 @I000007@ INDI
+1 NAME John /Johnson /
+  2 GIVN John
+  2 SURN Johnson
+0 @I000008@ INDI
+1 NAME John /Johnson/ Jr.
+  2 GIVN John
+  2 SURN Johnson
+  2 NSFX Jr.
+0 @I000009@ INDI
+1 NAME /Johnson/John
+  2 GIVN John
+  2 SURN Johnson
+0 @I000010@ INDI
+1 NAME John/Johnson/
+0 @I000011@ INDI
+1 NAME John
+  2 GIVN John
+0 @I000012@ INDI
+1 NAME
+  2 NPFX npfx
+  2 GIVN John
+  2 SPFX spfx
+  2 SURN Johnson
+  2 NSFX nsfx
+0 @I000013@ INDI
+1 NAME //John
+  2 GIVN John
+0 @I000014@ INDI
+1 NAME John//Jr.
+0 @I000015@ INDI
+1 NAME John//
+  2 GIVN John
+0 @I000016@ INDI
+1 NAME
+  2 GIVN A, B, C
