@@ -375,14 +375,35 @@ public class PersonsNameTest {
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
     NameForm nameForm = person.getNames().get(0).getPrimaryForm();
-    //TODO Full text comes in as 'A, B, C'
-//    assertNull(nameForm.getFullText());
+    assertNull(nameForm.getFullText());
     checkNamePartEquals(nameForm, "A", NamePartType.Given);
     checkNamePartEquals(nameForm, "B", NamePartType.Given);
     checkNamePartEquals(nameForm, "C", NamePartType.Given);
     checkNamePartDoesNotExist(nameForm, NamePartType.Surname);
     checkNamePartDoesNotExist(nameForm, NamePartType.Prefix);
     checkNamePartDoesNotExist(nameForm, NamePartType.Suffix);
+  }
+
+  @Test
+  public void testToPerson17() throws Exception {
+    // Case insensitive tags
+    Person dqPerson = gedcom.getPeople().get(16);
+    GedcomxConversionResult result = new GedcomxConversionResult();
+    PersonMapper mapper = new PersonMapper();
+
+    mapper.toPerson(dqPerson, result);
+    assertNotNull(result.getPersons());
+    assertEquals(result.getPersons().size(), 1);
+
+    org.gedcomx.conclusion.Person person = result.getPersons().get(0);
+    assertNotNull(person.getNames());
+    assertEquals(person.getNames().size(), 1);
+    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    assertEquals(nameForm.getFullText(), "npfx John spfx Johnson nsfx");
+    checkNamePartEquals(nameForm, "npfx", NamePartType.Prefix);
+    checkNamePartEquals(nameForm, "John", NamePartType.Given);
+    checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
+    checkNamePartEquals(nameForm, "nsfx", NamePartType.Suffix);
   }
 
   private void checkNamePartEquals(NameForm nameForm, String expected, NamePartType type) {

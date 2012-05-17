@@ -34,49 +34,81 @@ public class PersonMapper {
   static final HashMap<String, FactType> factMap = new HashMap<String, FactType>();
 
   static {
-    // Facts
-    factMap.put("CAST", FactType.CasteName);
-    factMap.put("DSCR", FactType.PhysicalDescription);
-    factMap.put("EDUC", FactType.ScholasticAchievement);
-    factMap.put("IDNO", FactType.NationalId);
-    factMap.put("NATI", FactType.NationalOrigin);
-    factMap.put("NCHI", FactType.CountOfChildren);
-    factMap.put("NMR", FactType.CountOfMarriages);
-    factMap.put("OCCU", FactType.Occupation);
-    factMap.put("PROP", FactType.Possessions);
-    factMap.put("RELI", FactType.ReligiousAffiliation);
-    factMap.put("RESI", FactType.Dwelling);
-    factMap.put("SSN", FactType.SocialSecurityNumber);
-    factMap.put("TITL", FactType.TitleOfNobility);
+    // Facts (Short and long tag names, from the standard)
+    factMap.put("CAST", FactType.CasteName);  factMap.put("CASTE", FactType.CasteName);
+    factMap.put("DSCR", FactType.PhysicalDescription);  factMap.put("PHY_DESCRIPTION", FactType.PhysicalDescription);
+    factMap.put("EDUC", FactType.ScholasticAchievement);  factMap.put("EDUCATION", FactType.ScholasticAchievement);
+    factMap.put("IDNO", FactType.NationalId);  factMap.put("IDENT_NUMBER", FactType.NationalId);
+    factMap.put("NATI", FactType.NationalOrigin);  factMap.put("NATIONALITY", FactType.NationalOrigin);
+    factMap.put("NCHI", FactType.CountOfChildren);  factMap.put("CHILDREN_COUNT", FactType.CountOfChildren);
+    factMap.put("NMR", FactType.CountOfMarriages);  factMap.put("MARRIAGE_COUNT", FactType.CountOfMarriages);
+    factMap.put("OCCU", FactType.Occupation);  factMap.put("OCCUPATION", FactType.Occupation);
+    factMap.put("PROP", FactType.Possessions);  factMap.put("PROPERTY", FactType.Possessions);
+    factMap.put("RELI", FactType.ReligiousAffiliation);  factMap.put("RELIGION", FactType.ReligiousAffiliation);
+    factMap.put("RESI", FactType.Dwelling);  factMap.put("RESIDENCE", FactType.Dwelling);
+    factMap.put("SSN", FactType.SocialSecurityNumber);  factMap.put("SOC_SEC_NUMBER", FactType.SocialSecurityNumber);
+    factMap.put("TITL", FactType.TitleOfNobility);  factMap.put("TITLE", FactType.TitleOfNobility);
     //TODO Handle custom
 //    factMap.put("FACT", FactType.);
 
-    // Events
-    factMap.put("BIRT", FactType.Birth);
-    factMap.put("CHR", FactType.Christening);
-    factMap.put("DEAT", FactType.Death);
-    factMap.put("BURI", FactType.Burial);
-    factMap.put("CREM", FactType.Cremation);
-    factMap.put("ADOP", FactType.Adopted);
-    factMap.put("BAPM", FactType.Baptism);
-    factMap.put("BARM", FactType.BarMitzvah);
-    factMap.put("BASM", FactType.BatMitzvah);
-    factMap.put("BLES", FactType.Blessing);
-    factMap.put("CHRA", FactType.Christening);
-    factMap.put("CONF", FactType.Confirmation);
-    factMap.put("FCOM", FactType.FirstCommunion);
-    factMap.put("ORDN", FactType.Ordination);
-    factMap.put("NATU", FactType.Naturalization);
-    factMap.put("EMIG", FactType.Emigration);
-    factMap.put("IMMI", FactType.Immigration);
-    factMap.put("CENS", FactType.Census);
-    factMap.put("PROB", FactType.Probate);
-    factMap.put("WILL", FactType.Will);
-    factMap.put("GRAD", FactType.Graduation);
-    factMap.put("RETI", FactType.Retirement);
+    // Events (Short and long tag names, from the standard)
+    factMap.put("ADOP", FactType.Adopted);  factMap.put("ADOPTION", FactType.Adopted);
+    factMap.put("BAPM", FactType.Baptism);  factMap.put("BAPTISM", FactType.Baptism);
+    factMap.put("BARM", FactType.BarMitzvah);  factMap.put("BAR_MITZVAH", FactType.BarMitzvah);
+    factMap.put("BASM", FactType.BatMitzvah);  factMap.put("BAS_MITZVAH", FactType.BatMitzvah);
+    factMap.put("BLES", FactType.Blessing);  factMap.put("BLESSING", FactType.Blessing);
+    factMap.put("BIRT", FactType.Birth);  factMap.put("BIRTH", FactType.Birth);
+    factMap.put("BURI", FactType.Burial);  factMap.put("BURIAL", FactType.Burial);
+    factMap.put("CENS", FactType.Census);  factMap.put("CENSUS", FactType.Census);
+    factMap.put("CHR", FactType.Christening);  factMap.put("CHRISTENING", FactType.Christening);
+    factMap.put("CHRA", FactType.AdultChristening);  factMap.put("ADULT_CHRISTNG", FactType.AdultChristening);
+    factMap.put("CONF", FactType.Confirmation);  factMap.put("CONFIRMATION", FactType.Confirmation);
+    factMap.put("CREM", FactType.Cremation);  factMap.put("CREMATION", FactType.Cremation);
+    factMap.put("DEAT", FactType.Death);  factMap.put("DEATH", FactType.Death);
+    factMap.put("EMIG", FactType.Emigration);  factMap.put("EMIGRATION", FactType.Emigration);
+    factMap.put("FCOM", FactType.FirstCommunion);  factMap.put("FIRST_COMMUNION", FactType.FirstCommunion);
+    factMap.put("GRAD", FactType.Graduation);  factMap.put("GRADUATION", FactType.Graduation);
+    factMap.put("IMMI", FactType.Immigration);  factMap.put("IMMIGRATION", FactType.Immigration);
+    factMap.put("ORDN", FactType.Ordination);  factMap.put("ORDINATION", FactType.Ordination);
+    factMap.put("NATU", FactType.Naturalization);  factMap.put("NATURALIZATION", FactType.Naturalization);
+    factMap.put("PROB", FactType.Probate);  factMap.put("PROBATE", FactType.Probate);
+    factMap.put("RETI", FactType.Retirement);  factMap.put("RETIREMENT", FactType.Retirement);
+    factMap.put("WILL", FactType.Will);  /* long name is the same */
     //TODO Handle custom
 //    factMap.put("EVEN", FactType.Christening);
 
+    // Non-standard tags
+    factMap.put("CIRC", FactType.Circumcision);
+    factMap.put("CITN", FactType.Citizenship);
+    factMap.put("BLESS", FactType.Blessing);
+    factMap.put("BLSL", FactType.Blessing); // Blessing - LDS
+    factMap.put("DWEL", FactType.Dwelling);
+
+    factMap.put("_EXCM", FactType.Excommunication);
+    factMap.put("EXCO", FactType.Excommunication);
+    factMap.put("_FNRL", FactType.Funeral);
+    factMap.put("ILLN", FactType.Illness);
+    factMap.put("_INTE", FactType.Interment);
+    factMap.put("LVG", FactType.Living);
+    factMap.put("LVNG", FactType.Living);
+    factMap.put("MILA", FactType.MilitaryAward);
+    factMap.put("_MILT", FactType.MilitaryService);
+    factMap.put("MILT", FactType.MilitaryService);
+    factMap.put("MILI", FactType.MilitaryService);
+    factMap.put("MILF", FactType.MilitaryService);
+    factMap.put("MILD", FactType.MilitaryDischarge);
+    factMap.put("_MISN ", FactType.Mission);
+    factMap.put("MISN", FactType.Mission);
+    factMap.put("MOVE", FactType.Move);
+    factMap.put("ORDI", FactType.Ordinance); // In 5.5 standard
+    factMap.put("ORDL", FactType.Ordination); // Ordination - LDS
+    factMap.put("DPRT", FactType.PortOfDeparture);
+    factMap.put("RESIR", FactType.Residence);
+    factMap.put("RACE", FactType.Race);
+    factMap.put("_FREL", FactType.RelationshipToHead);
+    factMap.put("_MREL", FactType.RelationshipToHead);
+    factMap.put("STLB", FactType.Stillborn);
+    factMap.put("STIL", FactType.Stillborn);
   }
 
   public PersonMapper() {

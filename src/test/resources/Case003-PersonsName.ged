@@ -57,3 +57,10 @@
 0 @I000016@ INDI
 1 NAME
   2 GIVN A, B, C
+0 @I000017@ Indi
+1 name npfx John spfx Johnson nsfx
+  2 npfx npfx
+  2 Givn John
+  2 spfx spfx
+  2 surn Johnson
+  2 nsfx nsfx
