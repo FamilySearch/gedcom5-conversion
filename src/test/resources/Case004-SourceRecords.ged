@@ -57,6 +57,78 @@
 1 CALN __callno__specdeviation__
 1 MEDI electronic
 1 DATE 1 Jan 2012
+0 @SOUR3@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI audio
+0 @SOUR4@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI book
+0 @SOUR5@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI card
+0 @SOUR6@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI electronic
+0 @SOUR7@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI fiche
+0 @SOUR8@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI magazine
+0 @SOUR9@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI manuscript
+0 @SOUR10@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI map
+0 @SOUR11@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI newspaper
+0 @SOUR12@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI photo
+0 @SOUR13@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI tombstone
+0 @SOUR14@ SOUR
+1 REPO
+2 CALN __callno__
+3 MEDI video
+0 @SOUR15@ SOUR
+1 REPO
+2 CALN __callno__
+1 MEDI electronic
+0 @SOUR16@ SOUR
+1 REPO
+2 CALN __callno__
+1 MEDI junk
+0 @SOUR17@ SOUR
+1 REPO
+2 CALN __callno__
+1 MEDI photo
+0 @SOUR18@ SOUR
+1 TITL __sour18_titl__
+1 REPO @REPO1@
+0 @SOUR19@ SOUR
+1 TITL __sour19_titl__
+1 CHAN
+2 DATE 11 Nov 2011
+3 TIME 11:11:11.111
+0 @SOUR20@ SOUR
+1 TITL __sour20_titl__
+1 CHAN
+2 DATE 11 Nov 2011
 0 @REPO1@ REPO
 1 NAME Family History Library
 1 ADDR 35 N West Temple St
