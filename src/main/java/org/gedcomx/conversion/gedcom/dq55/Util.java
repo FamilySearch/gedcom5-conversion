@@ -18,6 +18,11 @@ import java.util.List;
  */
 public class Util {
 
+  /**
+   * Create a list of GedcomX Notes based on the ged5 notes.
+   * @param dqNotes Gedcom 5 notes
+   * @return GedcomX Notes
+   */
   public static List<Note> createNotes(List<org.folg.gedcom.model.Note> dqNotes) {
     List<Note> notes = new ArrayList<Note>(dqNotes.size());
     for (org.folg.gedcom.model.Note dqNote : dqNotes) {
@@ -28,6 +33,11 @@ public class Util {
     return notes;
   }
 
+  /**
+   * Create a list of GedcomX SourceReference based on the ged5 SourceCitations.
+   * @param dqSources Gedcom 5 source citations
+   * @return GedcomX SourceReferences
+   */
   public static List<SourceReference> createSources(List<SourceCitation> dqSources) {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
@@ -38,6 +48,13 @@ public class Util {
     return sourceReferences;
   }
 
+  /**
+   * Create a GedcomX fact
+   * @param knownType fact type
+   * @param dateStr date (can be null)
+   * @param placeStr place (can be null)
+   * @return GedcomX fact
+   */
   public static Fact createFact(FactType knownType, String dateStr, String placeStr) {
     Fact fact = new Fact();
     fact.setKnownType(knownType);

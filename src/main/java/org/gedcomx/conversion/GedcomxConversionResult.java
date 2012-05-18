@@ -112,20 +112,42 @@ public class GedcomxConversionResult {
     }
   }
 
+  /**
+   * @param description resource to be saved in zip file
+   * @return entry name in the zip file for the given resource
+   */
   public String getEntryName(Description description) {
     return "descriptions/" + description.getId();
   }
 
+  /**
+   * @param personresource to be saved in zip file
+   * @return entry name in the zip file for the given resource
+   */
   public String getEntryName(Person person) {
     return "persons/" + person.getId();
   }
 
+  /**
+   * Creates and adds a GedcomX relationship from gedcom 5 objects to results.
+   * @param person1
+   * @param person2
+   * @param relationshipType
+   * @return relationship that was added
+   */
   public Relationship addRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
     Relationship relationship = createRelationship(person1, person2, relationshipType);
     addRelationship(relationship);
     return relationship;
   }
 
+  /**
+   * Creates a GedcomX relationship from gedcom 5 objects.
+   * @param person1
+   * @param person2
+   * @param relationshipType
+   * @return relationship that was added
+   */
   public Relationship createRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
     Relationship relationship = new Relationship();
     relationship.setKnownType(relationshipType);
@@ -134,9 +156,14 @@ public class GedcomxConversionResult {
     return relationship;
   }
 
-  public ResourceReference createReference(org.folg.gedcom.model.Person person) {
+  /**
+   * Finds the gedcomx person corresponding to the ged5 person and creates a GedcomX reference to it.
+   * @param dqPerson gedcom 5 person
+   * @return
+   */
+  public ResourceReference createReference(org.folg.gedcom.model.Person dqPerson) {
     ResourceReference reference = new ResourceReference();
-    Person gedxPerson = lookupPerson(person.getId());
+    Person gedxPerson = lookupPerson(dqPerson.getId());
     reference.setResource( new URI(getEntryName(gedxPerson)));
     return reference;
   }
