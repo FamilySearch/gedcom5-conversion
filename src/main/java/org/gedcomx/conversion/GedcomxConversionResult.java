@@ -15,12 +15,15 @@
  */
 package org.gedcomx.conversion;
 
+import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.types.RelationshipType;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -115,5 +118,26 @@ public class GedcomxConversionResult {
 
   public String getEntryName(Person person) {
     return "persons/" + person.getId();
+  }
+
+  public Relationship addRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
+    Relationship relationship = createRelationship(person1, person2, relationshipType);
+    addRelationship(relationship);
+    return relationship;
+  }
+
+  public Relationship createRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
+    Relationship relationship = new Relationship();
+    relationship.setKnownType(relationshipType);
+    relationship.setPerson1( createReference(person1) );
+    relationship.setPerson2(createReference(person2));
+    return relationship;
+  }
+
+  public ResourceReference createReference(org.folg.gedcom.model.Person person) {
+    ResourceReference reference = new ResourceReference();
+    Person gedxPerson = lookupPerson(person.getId());
+    reference.setResource( new URI(getEntryName(gedxPerson)));
+    return reference;
   }
 }
