@@ -1,12 +1,96 @@
-0 @I000001@ INDI
-1 NAME John/Johnson/
+0 @I1@ INDI
+1 NAME Petrus Marinus /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Petrus Marinus
 1 SEX M
-0 @I000002@ INDI
-1 NAME Jane/Johnson/
-1 SEX F
-0 @I000003@ INDI
-1 NAME J/Johnson/
-1 SEX U
-0 @I000004@ INDI
-1 NAME J/Johnson/
-1 SEX INVALID
+1 BIRT
+  2 DATE 3 May 1875
+  2 PLAC Gent, Oost-Vlaanderen, Belgium
+1 DEAT
+  2 DATE 18 Apr 1947
+  2 PLAC San Francisco, California, United States
+1 RESI
+  2 DATE 1898
+  2 PLAC San Francisco, California, United States
+1 RESI
+  2 DATE 9 Apr 1930
+  2 PLAC San Francisco, San Francisco, California, United States
+1 RESI
+  2 DATE 3 Jan 1920
+  2 PLAC San Francisco, San Francisco, California, United States
+1 RESI
+  2 DATE 20 Apr 1910
+  2 PLAC San Francisco, San Francisco, California, United States
+1 RESI
+  2 DATE 5 Jun 1900
+  2 PLAC San Francisco, San Francisco, California, United States
+1 RESI
+  2 DATE 1  2 Sep 1918
+  2 PLAC San Francisco, San Francisco, California, United States
+1 NATU
+  2 DATE 1887
+1 EVEN 
+  2 TYPE Arrival 
+  2 DATE 1877
+1 NOTE Record of birth as registered with civil authority -- Petrus Marinus Louwaert
+  2 CONT http://trees.ancestry.com/rd?f=image&guid=ff877b87-424a-4d85-9570-3d9f1541aec3&tid=14578697&p
+  2 CONC id=2160
+  2 CONT 
+  2 CONT Marriage announcement for Peter Louwaert and Lizzie Zupar
+  2 CONT http://trees.ancestry.com/rd?f=image&guid=875bf461-84cb-4b2e-9888-b0b8ef0ae104&tid=14578697&p
+  2 CONC id=2160
+1 CHAN
+  2 DATE 10 May 2012
+    3 TIME 01:00:00
+0 @I2@ INDI
+1 NAME William Joseph /Louwaert/
+  2 SURN Louwaert
+  2 GIVN William Joseph
+1 SEX M
+1 BIRT
+  2 DATE 8 Nov 1908
+  2 PLAC San Francisco, California, United States
+1 DEAT
+  2 DATE 24 May 1977
+  2 PLAC Alameda, California, United States
+1 _UID 7F427879DF772A4C974E02B5DC32CCEBDF5C
+1 RESI
+  2 DATE 3 Jan 1920
+  2 PLAC San Francisco, San Francisco, California, United States
+  2 SOUR @S5@
+1 RESI
+  2 DATE 20 Apr 1910
+  2 PLAC San Francisco, San Francisco, California, United States
+1 CHAN
+  2 DATE 10 May 2012
+    3 TIME 01:00:00
+0 @I3@ INDI
+1 NAME Peter Anthony /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Peter Anthony
+1 SEX M
+1 BIRT
+  2 DATE 21 Nov 1921
+  2 PLAC San Francisco, California, United States
+1 DEAT
+  2 DATE 11 May 1999
+  2 PLAC Madison Heights, Oakland, Michigan, United States
+1 _UID 466580012C3A3446B8F1034C1DD0E4764B6B
+1 RESI
+  2 DATE 1993
+  2 PLAC Madison Heights, Oakland, Michigan, United States
+1 RESI
+  2 DATE 1993
+  2 PLAC Royal Oak, Oakland, Michigan, United States
+1 RESI
+  2 DATE 1999
+  2 PLAC Madison Heights, Oakland, Michigan, United States
+1 RESI
+  2 DATE 1995
+  2 PLAC Madison Heights, Oakland, Michigan, United States
+1 RESI
+  2 DATE 9 Apr 1930
+  2 PLAC San Francisco, San Francisco, California, United States
+1 CHAN
+  2 DATE 10 May 2012
+  3 TIME 01:00:00
