@@ -192,6 +192,7 @@ public class SourceDescriptionMapperDescriptionTest {
         fail("Unexpected identifier value: " + identifier.getValue());
       }
     }
+    assertTrue(foundCallno && foundCallnoSpecdeviation);
     assertEquals(gedxDecoratedSourceDescription.getInstructionalMethod().size(), 0);
     assertEquals(gedxDecoratedSourceDescription.getIsFormatOf().size(), 0);
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 1);
