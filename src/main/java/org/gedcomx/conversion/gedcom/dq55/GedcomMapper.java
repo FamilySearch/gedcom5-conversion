@@ -36,7 +36,7 @@ public class GedcomMapper {
     return result;
   }
 
-  private void toPersons(List<Person> dqPersons, GedcomxConversionResult result) {
+  void toPersons(List<Person> dqPersons, GedcomxConversionResult result) {
     for (Person person : dqPersons) {
       personMapper.toPerson(person, result);
     }
