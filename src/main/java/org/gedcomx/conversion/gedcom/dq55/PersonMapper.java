@@ -56,6 +56,7 @@ public class PersonMapper {
     factMap.put("BAPM", FactType.Baptism);  factMap.put("BAPTISM", FactType.Baptism);
     factMap.put("BARM", FactType.BarMitzvah);  factMap.put("BAR_MITZVAH", FactType.BarMitzvah);
     factMap.put("BASM", FactType.BatMitzvah);  factMap.put("BAS_MITZVAH", FactType.BatMitzvah);
+    factMap.put("BATM", FactType.BatMitzvah);  factMap.put("BAT_MITZVAH", FactType.BatMitzvah);
     factMap.put("BLES", FactType.Blessing);  factMap.put("BLESSING", FactType.Blessing);
     factMap.put("BIRT", FactType.Birth);  factMap.put("BIRTH", FactType.Birth);
     factMap.put("BURI", FactType.Burial);  factMap.put("BURIAL", FactType.Burial);
@@ -83,19 +84,26 @@ public class PersonMapper {
     factMap.put("BLESS", FactType.Blessing);
     factMap.put("BLSL", FactType.Blessing); // Blessing - LDS
     factMap.put("DWEL", FactType.Dwelling);
-
     factMap.put("_EXCM", FactType.Excommunication);
     factMap.put("EXCO", FactType.Excommunication);
     factMap.put("_FNRL", FactType.Funeral);
+    factMap.put("_FUN", FactType.Funeral);
     factMap.put("ILLN", FactType.Illness);
+    factMap.put("ILL", FactType.Illness);
     factMap.put("_INTE", FactType.Interment);
     factMap.put("LVG", FactType.Living);
     factMap.put("LVNG", FactType.Living);
-    factMap.put("MILA", FactType.MilitaryAward);
-    factMap.put("_MILT", FactType.MilitaryService);
-    factMap.put("MILT", FactType.MilitaryService);
+    factMap.put("MIL", FactType.MilitaryService);
+    factMap.put("_MIL", FactType.MilitaryService);
     factMap.put("MILI", FactType.MilitaryService);
-    factMap.put("MILF", FactType.MilitaryService);
+    factMap.put("_MILI", FactType.MilitaryService);
+    factMap.put("MILT", FactType.MilitaryService);
+    factMap.put("_MILT", FactType.MilitaryService);
+    factMap.put("_MILITARY_SERVICE", FactType.MilitaryService);
+    factMap.put("MISE", FactType.MilitaryService);
+    factMap.put("_MISE", FactType.MilitaryService);
+    factMap.put("_MILTID", FactType.MilitaryService);
+    factMap.put("MILA", FactType.MilitaryAward);
     factMap.put("MILD", FactType.MilitaryDischarge);
     factMap.put("_MISN ", FactType.Mission);
     factMap.put("MISN", FactType.Mission);
@@ -103,12 +111,15 @@ public class PersonMapper {
     factMap.put("ORDI", FactType.Ordinance); // In 5.5 standard
     factMap.put("ORDL", FactType.Ordination); // Ordination - LDS
     factMap.put("DPRT", FactType.PortOfDeparture);
-    factMap.put("RESIR", FactType.Residence);
+    factMap.put("DEPA", FactType.PortOfDeparture);
+    factMap.put("RESIR", FactType.Dwelling);
     factMap.put("RACE", FactType.Race);
-    factMap.put("_FREL", FactType.RelationshipToHead);
-    factMap.put("_MREL", FactType.RelationshipToHead);
     factMap.put("STLB", FactType.Stillborn);
     factMap.put("STIL", FactType.Stillborn);
+    factMap.put("BAP", FactType.Baptism);
+    factMap.put("BAPT", FactType.Baptism);
+    factMap.put("_NAMS", FactType.Namesake);
+    factMap.put("SOC_", FactType.SocialSecurityNumber);
   }
 
   public PersonMapper() {
