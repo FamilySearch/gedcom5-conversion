@@ -143,7 +143,7 @@ public class PersonMapper {
     //////////////////////////////////////////////////////////////////////
     // Add the person to the conversion results
 
-    result.addPerson(gedxPerson);
+    result.addPerson(gedxPerson, dqPerson.getId());
   }
 
   private void processFacts(Person gedxPerson, List<EventFact> facts) {

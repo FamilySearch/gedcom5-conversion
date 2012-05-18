@@ -17,6 +17,7 @@ package org.gedcomx.conversion;
 
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
+import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
@@ -24,24 +25,41 @@ import org.gedcomx.metadata.rdf.Description;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class GedcomxConversionResult {
   private List<Person> persons = new ArrayList<Person>();
   private List<Description> descriptions = new ArrayList<Description>();
   private List<Organization> organizations = new ArrayList<Organization>();
+  private List<Relationship> relationships = new ArrayList<Relationship>();
+  private Map<String,Person> personMap = new HashMap<String, Person>();
 
   public List<Person> getPersons() {
     return persons;
   }
 
-  public void addPerson(Person person) {
+  public void addPerson(Person person, String ged5Ref ) {
     this.persons.add(person);
+    personMap.put( ged5Ref, person );
   }
 
-  public void addPersons(List<Person> persons) {
-    this.persons.addAll(persons);
+  public Person lookupPerson( String ged5Ref ) {
+    return personMap.get(ged5Ref);
+  }
+
+  public List<Relationship> getRelationships() {
+    return relationships;
+  }
+
+  public void addRelationship(Relationship relationship) {
+    this.relationships.add(relationship);
+  }
+
+  public void addRelationships(List<Relationship> relationships) {
+    this.relationships.addAll(relationships);
   }
 
   public List<Description> getDescriptions() {
@@ -73,7 +91,7 @@ public class GedcomxConversionResult {
     try {
       // Persons
       for (Person person : getPersons()) {
-        String entryName = "persons/" + person.getId();
+        String entryName = getEntryName(person);
         gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
           , entryName
           , person);
@@ -81,7 +99,7 @@ public class GedcomxConversionResult {
 
       // Source Descriptions
       for (Description description : getDescriptions()) {
-        String entryName = "descriptions/" + description.getId();
+        String entryName = getEntryName(description);
         gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
           , entryName
           , description);
@@ -89,5 +107,13 @@ public class GedcomxConversionResult {
     } finally {
       gedxOutputStream.close();
     }
+  }
+
+  public String getEntryName(Description description) {
+    return "descriptions/" + description.getId();
+  }
+
+  public String getEntryName(Person person) {
+    return "persons/" + person.getId();
   }
 }
