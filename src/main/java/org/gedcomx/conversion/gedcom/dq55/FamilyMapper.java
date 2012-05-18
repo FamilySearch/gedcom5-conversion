@@ -29,13 +29,6 @@ import java.util.List;
 
 public class FamilyMapper {
 
-  private ResourceReference createRef( Person person, GedcomxConversionResult result ) {
-    ResourceReference reference = new ResourceReference();
-    org.gedcomx.conclusion.Person gedxPerson = result.lookupPerson(person.getId());
-    reference.setResource( new URI(result.getEntryName(gedxPerson)));
-    return reference;
-  }
-
   public void toRelationship(Family dqFamily, GedcomxConversionResult result, Gedcom dqGedcom) {
     List<Person> husbands = dqFamily.getHusbands(dqGedcom);
     Person husband = husbands.size() > 0 ? husbands.get(0) : null;
@@ -61,6 +54,13 @@ public class FamilyMapper {
 
       }
     }
+  }
+
+  private ResourceReference createRef( Person person, GedcomxConversionResult result ) {
+    ResourceReference reference = new ResourceReference();
+    org.gedcomx.conclusion.Person gedxPerson = result.lookupPerson(person.getId());
+    reference.setResource( new URI(result.getEntryName(gedxPerson)));
+    return reference;
   }
 
   private void addRelationship(GedcomxConversionResult result, Person husband, Person wife, RelationshipType relationshipType) {
