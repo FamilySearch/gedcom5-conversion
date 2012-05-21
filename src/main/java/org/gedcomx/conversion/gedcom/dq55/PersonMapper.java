@@ -24,6 +24,7 @@ import org.gedcomx.types.GenderType;
 import org.gedcomx.types.NamePartType;
 import org.gedcomx.types.NameType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class PersonMapper {
   public PersonMapper() {
   }
 
-  public void toPerson(org.folg.gedcom.model.Person dqPerson, GedcomxConversionResult result) {
+  public void toPerson(org.folg.gedcom.model.Person dqPerson, GedcomxConversionResult result) throws IOException {
     if (dqPerson == null) {
       return;
     }

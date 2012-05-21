@@ -65,8 +65,9 @@ public class Gedcom2Gedcomx {
 
       if (gedxOut != null) {
         GedcomMapper mapper = new GedcomMapper();
-        GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom);
-//        OutputStream outputStream = new FileOutputStream(gedxOut);
+        OutputStream outputStream = new FileOutputStream(gedxOut);
+        GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom,outputStream);
+        gedxResult.finish(true);
 //        gedxResult.write(outputStream);
       }
     }

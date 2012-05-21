@@ -29,6 +29,7 @@ import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ResourceType;
 import org.gedcomx.types.TypeReference;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
 public class SourceDescriptionMapper {
   private ObjectFactory objectFactory = new ObjectFactory();
 
-  public void toSourceDescription(Source dqSource, GedcomxConversionResult result) {
+  public void toSourceDescription(Source dqSource, GedcomxConversionResult result) throws IOException {
     Description gedxSourceDescription = new Description();
     DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
     gedxSourceDescription.setId(dqSource.getId());
@@ -123,7 +124,7 @@ public class SourceDescriptionMapper {
     result.addDescription(gedxSourceDescription);
   }
 
-  public void toOrganization(Repository dqRepository, GedcomxConversionResult result) {
+  public void toOrganization(Repository dqRepository, GedcomxConversionResult result) throws IOException {
     Organization gedxOrganization = new Organization();
     gedxOrganization.setId(dqRepository.getId());
 

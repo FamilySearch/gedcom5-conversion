@@ -18,6 +18,8 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.*;
 import org.gedcomx.conversion.GedcomxConversionResult;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class GedcomMapper {
@@ -25,8 +27,8 @@ public class GedcomMapper {
   private final FamilyMapper familyMapper = new FamilyMapper();
   private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
 
-  public GedcomxConversionResult toGedcomx(Gedcom dqGedcom) {
-    GedcomxConversionResult result = new GedcomxConversionResult();
+  public GedcomxConversionResult toGedcomx(Gedcom dqGedcom, OutputStream outputStream) throws IOException {
+    GedcomxConversionResult result = new GedcomxConversionResult(outputStream);
 
     toPersons(dqGedcom.getPeople(), result);
     toRelationships(dqGedcom.getFamilies(), result);
@@ -36,25 +38,25 @@ public class GedcomMapper {
     return result;
   }
 
-  void toPersons(List<Person> dqPersons, GedcomxConversionResult result) {
+  void toPersons(List<Person> dqPersons, GedcomxConversionResult result) throws IOException {
     for (Person person : dqPersons) {
       personMapper.toPerson(person, result);
     }
   }
 
-  private void toRelationships(List<Family> dqFamilies, GedcomxConversionResult result) {
+  private void toRelationships(List<Family> dqFamilies, GedcomxConversionResult result) throws IOException {
     for (Family family : dqFamilies) {
       familyMapper.toRelationship(family, result);
     }
   }
 
-  private void toSourceDescriptions(List<Source> dqSources, GedcomxConversionResult result) {
+  private void toSourceDescriptions(List<Source> dqSources, GedcomxConversionResult result) throws IOException {
     for (Source dqSource : dqSources) {
       sourceDescriptionMapper.toSourceDescription(dqSource, result);
     }
   }
 
-  private void toOrganizations(List<Repository> dqRepositories, GedcomxConversionResult result) {
+  private void toOrganizations(List<Repository> dqRepositories, GedcomxConversionResult result) throws IOException {
     for (Repository dqRepository : dqRepositories) {
       sourceDescriptionMapper.toOrganization(dqRepository, result);
     }

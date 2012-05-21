@@ -14,7 +14,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class PersonsGenderTest {
+public class PersonsGenderTest extends BaseTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -33,7 +33,7 @@ public class PersonsGenderTest {
   public void testToPerson1() throws Exception {
     // Sex M
     Person dqPerson = gedcom.getPeople().get(0);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -49,7 +49,7 @@ public class PersonsGenderTest {
   public void testToPerson2() throws Exception {
     // Sex F
     Person dqPerson = gedcom.getPeople().get(1);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -65,7 +65,7 @@ public class PersonsGenderTest {
   public void testToPerson3() throws Exception {
     // Sex U
     Person dqPerson = gedcom.getPeople().get(2);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -81,7 +81,7 @@ public class PersonsGenderTest {
   public void testToPerson4() throws Exception {
     // Sex INVALID
     Person dqPerson = gedcom.getPeople().get(3);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);

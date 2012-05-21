@@ -22,11 +22,12 @@ import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FamilyMapper {
 
-  public void toRelationship(Family ged5Family, GedcomxConversionResult result) {
+  public void toRelationship(Family ged5Family, GedcomxConversionResult result) throws IOException {
     List<SpouseRef> husbands = ged5Family.getHusbandRefs();
     SpouseRef husband = husbands.size() > 0 ? husbands.get(0) : null;
     List<SpouseRef> wives = ged5Family.getWifeRefs();

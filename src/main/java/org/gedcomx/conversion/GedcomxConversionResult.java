@@ -27,60 +27,61 @@ import org.gedcomx.types.RelationshipType;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GedcomxConversionResult {
-  private List<Person> persons = new ArrayList<Person>();
-  private List<Description> descriptions = new ArrayList<Description>();
-  private List<Organization> organizations = new ArrayList<Organization>();
-  private List<Relationship> relationships = new ArrayList<Relationship>();
+  private GedcomxOutputStream gedxOutputStream;
 
-  public List<Person> getPersons() {
-    return persons;
+  public GedcomxConversionResult(OutputStream outputStream) throws IOException {
+    gedxOutputStream = new GedcomxOutputStream(outputStream);
   }
 
-  public void addPerson(Person person) {
-    this.persons.add(person);
+  public void finish(boolean closeStream) throws IOException {
+    if (closeStream)
+      close();
   }
 
-  public List<Relationship> getRelationships() {
-    return relationships;
+  public void close() throws IOException {
+    gedxOutputStream.close();
   }
 
-  public void addRelationship(Relationship relationship) {
-    this.relationships.add(relationship);
+  public void addPerson(Person person) throws IOException {
+    String entryName = Util.getPersonEntryName(person.getId());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person);
   }
 
-  public void addRelationships(List<Relationship> relationships) {
-    this.relationships.addAll(relationships);
+  public void addRelationship(Relationship relationship) throws IOException {
+    String entryName = Util.getRelationshipEntryName(relationship.getId());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, relationship);
   }
 
-  public List<Description> getDescriptions() {
-    return descriptions;
+  /**
+   * Creates and adds a GedcomX relationship from gedcom 5 objects to results.
+   * @param person1
+   * @param person2
+   * @param relationshipType
+   * @return relationship that was added
+   */
+  public Relationship addRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) throws IOException {
+    Relationship relationship = Util.toRelationship(person1, person2, relationshipType);
+    addRelationship(relationship);
+    return relationship;
   }
 
-  public void addDescription(Description description) {
-    this.descriptions.add(description);
+  public void addDescription(Description description) throws IOException {
+    String entryName = Util.getDescriptionEntryName(description.getId());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description);
   }
 
-  public void addDescriptions(List<Description> descriptions) {
-    this.descriptions.addAll(descriptions);
+  public void addOrganization(Organization organization) throws IOException {
+    String entryName = Util.getDescriptionEntryName(organization.getId());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization);
   }
 
-  public List<Organization> getOrganizations() {
-    return organizations;
-  }
-
-  public void addOrganization(Organization organization) {
-    this.organizations.add(organization);
-  }
-
-  public void addOrganizations(List<Organization> organizations) {
-    this.organizations.addAll(organizations);
-  }
-
+/*
   public void write(OutputStream outputStream) throws IOException {
     GedcomxOutputStream gedxOutputStream = new GedcomxOutputStream(outputStream);
     try {
@@ -94,27 +95,11 @@ public class GedcomxConversionResult {
 
       // Source Descriptions
       for (Description description : getDescriptions()) {
-        String entryName = Util.getDescriptionEntryName(description.getId());
-        gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
-          , entryName
-          , description);
       }
     } finally {
       gedxOutputStream.close();
     }
   }
-
-  /**
-   * Creates and adds a GedcomX relationship from gedcom 5 objects to results.
-   * @param person1
-   * @param person2
-   * @param relationshipType
-   * @return relationship that was added
-   */
-  public Relationship addRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) {
-    Relationship relationship = Util.toRelationship(person1, person2, relationshipType);
-    addRelationship(relationship);
-    return relationship;
-  }
+*/
 
 }

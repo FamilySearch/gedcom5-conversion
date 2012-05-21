@@ -14,7 +14,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 
-public class PersonsFactsTest {
+public class PersonsFactsTest extends BaseTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -33,7 +33,7 @@ public class PersonsFactsTest {
   public void testToPerson1() throws Exception {
     // Birth and Death - Dates and places
     Person dqPerson = gedcom.getPeople().get(0);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);

@@ -5,7 +5,6 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -15,7 +14,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class FamilyMapperTest {
+public class FamilyMapperTest extends BaseTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -34,7 +33,7 @@ public class FamilyMapperTest {
   @Test
   public void testToFamily1() throws Exception {
     Family dqFamily = gedcom.getFamilies().get(0);
-    GedcomxConversionResult result = new GedcomxConversionResult();
+    TestConversionResult result = new TestConversionResult(getTestOutputStream());
     GedcomMapper gedcomMapper = new GedcomMapper();
     gedcomMapper.toPersons(gedcom.getPeople(), result);
 

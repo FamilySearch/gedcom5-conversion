@@ -141,6 +141,10 @@ public class Util {
     return "persons/" + gedxPersonId;
   }
 
+  public static String getRelationshipEntryName(String id) {
+    return "relationships/" + id;
+  }
+
   /**
    * Creates a GedcomX relationship from gedcom 5 objects.
    * @param person1
@@ -153,6 +157,7 @@ public class Util {
     relationship.setKnownType(relationshipType);
     relationship.setPerson1( toReference(person1) );
     relationship.setPerson2( toReference(person2) );
+    relationship.setId( person1.getRef() + "-" + person2.getRef() );
     return relationship;
   }
 
