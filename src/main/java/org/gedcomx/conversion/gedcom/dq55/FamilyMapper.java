@@ -52,7 +52,7 @@ public class FamilyMapper {
         }
       }
       coupleRelationship.setNotes(Util.toNotes(ged5Family.getNotes()));
-      coupleRelationship.setSources( Util.toSources(ged5Family.getSourceCitations()));
+      coupleRelationship.setSources(Util.toSourcesAndSourceReferences(ged5Family.getSourceCitations(), result));
     }
   }
 

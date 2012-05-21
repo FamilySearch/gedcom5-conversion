@@ -117,7 +117,7 @@ public class SourceDescriptionMapper {
     //dqSource.getParen();  // PAF extension elements; will not process
 
     if (dqSource.getChange() != null) {
-      toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
+      Util.toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
     }
 
     result.addDescription(gedxSourceDescription);
@@ -182,7 +182,7 @@ public class SourceDescriptionMapper {
 //    dqRepository.getValue(); // expected to always be null
 
     if (dqRepository.getChange() != null) {
-      toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
+      Util.toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
     }
 
     result.addOrganization(gedxOrganization);
@@ -222,36 +222,6 @@ public class SourceDescriptionMapper {
     }
 
     return resourceTypeRef;
-  }
-
-  private void toChangeDescription(Change dqRepositoryChange, String aboutObjId, GedcomxConversionResult result) {
-    if (dqRepositoryChange != null) {
-      try {
-        DateTime dateTime = dqRepositoryChange.getDateTime();
-        String parsePattern = "d MMM yyyy";
-        if (dateTime.getTime() != null) {
-          parsePattern += " HH:mm:ss.SSS";
-        }
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        ((SimpleDateFormat)dateFormat).applyPattern(parsePattern);
-
-        String dateTimeString = dateTime.getValue();
-        if (dateTime.getTime() != null) {
-          dateTimeString += ' ' + dateTime.getTime();
-        }
-        Date date = dateFormat.parse(dateTimeString);
-
-        RDFLiteral lastModified = new RDFLiteral(date);
-
-        Description gedxRepositoryRecordDescription = new Description();
-        gedxRepositoryRecordDescription.setAbout(URI.create(aboutObjId));
-        gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
-
-        result.addDescription(gedxRepositoryRecordDescription);
-      } catch (Throwable ex) {
-        // something went wrong, so probably does not conform to the standard; we will skip it
-      }
-    }
   }
 
   private boolean inCanonicalGlobalFormat(String telephoneNumber) {

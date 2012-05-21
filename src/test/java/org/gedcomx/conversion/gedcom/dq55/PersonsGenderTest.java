@@ -3,11 +3,8 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.conclusion.NameForm;
-import org.gedcomx.conclusion.NamePart;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.GenderType;
-import org.gedcomx.types.NamePartType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
