@@ -40,7 +40,7 @@ public class FamilyMapperTest {
 
     FamilyMapper mapper = new FamilyMapper();
 
-    mapper.toRelationship(dqFamily, result, gedcom);
+    mapper.toRelationship(dqFamily, result);
     assertNotNull(result.getRelationships());
 //    assertEquals(result.getRelationships().size(), 3);
 

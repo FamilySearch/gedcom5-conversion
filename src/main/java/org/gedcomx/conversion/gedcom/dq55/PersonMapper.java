@@ -131,6 +131,7 @@ public class PersonMapper {
     }
 
     Person gedxPerson = new Person();
+    gedxPerson.setId(dqPerson.getId());
 
     //////////////////////////////////////////////////////////////////////
     // Process NAMES
@@ -154,7 +155,7 @@ public class PersonMapper {
     //////////////////////////////////////////////////////////////////////
     // Add the person to the conversion results
 
-    result.addPerson(gedxPerson, dqPerson.getId());
+    result.addPerson(gedxPerson);
   }
 
   private void processFacts(Person gedxPerson, List<EventFact> facts) {

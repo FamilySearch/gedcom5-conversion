@@ -15,10 +15,7 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.EventFact;
-import org.folg.gedcom.model.Family;
-import org.folg.gedcom.model.Gedcom;
-import org.folg.gedcom.model.Person;
+import org.folg.gedcom.model.*;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -29,17 +26,17 @@ import java.util.List;
 
 public class FamilyMapper {
 
-  public void toRelationship(Family dqFamily, GedcomxConversionResult result, Gedcom dqGedcom) {
-    List<Person> husbands = dqFamily.getHusbands(dqGedcom);
-    Person husband = husbands.size() > 0 ? husbands.get(0) : null;
-    List<Person> wives = dqFamily.getWives(dqGedcom);
-    Person wife = wives.size() > 0 ? wives.get(0) : null;
+  public void toRelationship(Family ged5Family, GedcomxConversionResult result) {
+    List<SpouseRef> husbands = ged5Family.getHusbandRefs();
+    SpouseRef husband = husbands.size() > 0 ? husbands.get(0) : null;
+    List<SpouseRef> wives = ged5Family.getWifeRefs();
+    SpouseRef wife = wives.size() > 0 ? wives.get(0) : null;
     Relationship coupleRelationship = null;
     if ( husband != null && wife != null) {
       coupleRelationship = result.addRelationship(husband, wife, RelationshipType.Couple);
     }
 
-    for (Person child : dqFamily.getChildren(dqGedcom)) {
+    for (ChildRef child : ged5Family.getChildRefs()) {
       if (husband != null)
         result.addRelationship(husband, child, RelationshipType.ParentChild);
       if (wife != null)
@@ -47,15 +44,15 @@ public class FamilyMapper {
     }
 
     if (coupleRelationship != null) {
-      for (EventFact eventFact : dqFamily.getEventsFacts()) {
+      for (EventFact eventFact : ged5Family.getEventsFacts()) {
         System.out.println("eventFact " + eventFact.getTag() + ": " + eventFact.getDate() + " at " + eventFact.getPlace());
         if ("MARR".equalsIgnoreCase(eventFact.getTag())) {
-          Fact fact = Util.createFact(FactType.Marriage, eventFact.getDate(), eventFact.getPlace());
+          Fact fact = Util.toFact(FactType.Marriage, eventFact.getDate(), eventFact.getPlace());
           coupleRelationship.addFact(fact);
         }
       }
-      coupleRelationship.setNotes( Util.createNotes(dqFamily.getNotes()));
-      coupleRelationship.setSources( Util.createSources(dqFamily.getSourceCitations()));
+      coupleRelationship.setNotes(Util.toNotes(ged5Family.getNotes()));
+      coupleRelationship.setSources( Util.toSources(ged5Family.getSourceCitations()));
     }
   }
 

@@ -15,11 +15,11 @@
  */
 package org.gedcomx.conversion;
 
-import org.gedcomx.common.ResourceReference;
-import org.gedcomx.common.URI;
+import org.folg.gedcom.model.SpouseRef;
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
+import org.gedcomx.conversion.gedcom.dq55.Util;
 import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
@@ -28,9 +28,7 @@ import org.gedcomx.types.RelationshipType;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class GedcomxConversionResult {
@@ -38,19 +36,13 @@ public class GedcomxConversionResult {
   private List<Description> descriptions = new ArrayList<Description>();
   private List<Organization> organizations = new ArrayList<Organization>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
-  private Map<String,Person> personMap = new HashMap<String, Person>();
 
   public List<Person> getPersons() {
     return persons;
   }
 
-  public void addPerson(Person person, String ged5Ref ) {
+  public void addPerson(Person person) {
     this.persons.add(person);
-    personMap.put( ged5Ref, person );
-  }
-
-  public Person lookupPerson( String ged5Ref ) {
-    return personMap.get(ged5Ref);
   }
 
   public List<Relationship> getRelationships() {
@@ -94,7 +86,7 @@ public class GedcomxConversionResult {
     try {
       // Persons
       for (Person person : getPersons()) {
-        String entryName = getEntryName(person);
+        String entryName = Util.getPersonEntryName(person.getId());
         gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
           , entryName
           , person);
@@ -102,7 +94,7 @@ public class GedcomxConversionResult {
 
       // Source Descriptions
       for (Description description : getDescriptions()) {
-        String entryName = getEntryName(description);
+        String entryName = Util.getDescriptionEntryName(description.getId());
         gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
           , entryName
           , description);
@@ -113,58 +105,16 @@ public class GedcomxConversionResult {
   }
 
   /**
-   * @param description resource to be saved in zip file
-   * @return entry name in the zip file for the given resource
-   */
-  public String getEntryName(Description description) {
-    return "descriptions/" + description.getId();
-  }
-
-  /**
-   * @param personresource to be saved in zip file
-   * @return entry name in the zip file for the given resource
-   */
-  public String getEntryName(Person person) {
-    return "persons/" + person.getId();
-  }
-
-  /**
    * Creates and adds a GedcomX relationship from gedcom 5 objects to results.
    * @param person1
    * @param person2
    * @param relationshipType
    * @return relationship that was added
    */
-  public Relationship addRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
-    Relationship relationship = createRelationship(person1, person2, relationshipType);
+  public Relationship addRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) {
+    Relationship relationship = Util.toRelationship(person1, person2, relationshipType);
     addRelationship(relationship);
     return relationship;
   }
 
-  /**
-   * Creates a GedcomX relationship from gedcom 5 objects.
-   * @param person1
-   * @param person2
-   * @param relationshipType
-   * @return relationship that was added
-   */
-  public Relationship createRelationship(org.folg.gedcom.model.Person person1, org.folg.gedcom.model.Person person2, RelationshipType relationshipType) {
-    Relationship relationship = new Relationship();
-    relationship.setKnownType(relationshipType);
-    relationship.setPerson1( createReference(person1) );
-    relationship.setPerson2(createReference(person2));
-    return relationship;
-  }
-
-  /**
-   * Finds the gedcomx person corresponding to the ged5 person and creates a GedcomX reference to it.
-   * @param dqPerson gedcom 5 person
-   * @return
-   */
-  public ResourceReference createReference(org.folg.gedcom.model.Person dqPerson) {
-    ResourceReference reference = new ResourceReference();
-    Person gedxPerson = lookupPerson(dqPerson.getId());
-    reference.setResource( new URI(getEntryName(gedxPerson)));
-    return reference;
-  }
 }

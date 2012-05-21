@@ -4,12 +4,13 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.SourceCitation;
+import org.folg.gedcom.model.SpouseRef;
 import org.gedcomx.common.Note;
-import org.gedcomx.conclusion.Date;
-import org.gedcomx.conclusion.Fact;
-import org.gedcomx.conclusion.Place;
-import org.gedcomx.conclusion.SourceReference;
+import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.URI;
+import org.gedcomx.conclusion.*;
 import org.gedcomx.types.FactType;
+import org.gedcomx.types.RelationshipType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Util {
    * @param dqNotes Gedcom 5 notes
    * @return GedcomX Notes
    */
-  public static List<Note> createNotes(List<org.folg.gedcom.model.Note> dqNotes) {
+  public static List<Note> toNotes(List<org.folg.gedcom.model.Note> dqNotes) {
     List<Note> notes = new ArrayList<Note>(dqNotes.size());
     for (org.folg.gedcom.model.Note dqNote : dqNotes) {
       Note note = new Note();
@@ -38,7 +39,7 @@ public class Util {
    * @param dqSources Gedcom 5 source citations
    * @return GedcomX SourceReferences
    */
-  public static List<SourceReference> createSources(List<SourceCitation> dqSources) {
+  public static List<SourceReference> toSources(List<SourceCitation> dqSources) {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
       SourceReference sourceReference = new SourceReference();
@@ -55,7 +56,7 @@ public class Util {
    * @param placeStr place (can be null)
    * @return GedcomX fact
    */
-  public static Fact createFact(FactType knownType, String dateStr, String placeStr) {
+  public static Fact toFact(FactType knownType, String dateStr, String placeStr) {
     Fact fact = new Fact();
     fact.setKnownType(knownType);
 
@@ -71,5 +72,48 @@ public class Util {
       fact.setPlace(place);
     }
     return fact;
+  }
+
+  /**
+   * @param description resource to be saved in zip file
+   * @return entry name in the zip file for the given resource
+   */
+  public static String getDescriptionEntryName(String gedxDescriptionId) {
+    return "descriptions/" + gedxDescriptionId;
+  }
+
+  /**
+   * @param personresource to be saved in zip file
+   * @return entry name in the zip file for the given resource
+   */
+  public static String getPersonEntryName(String gedxPersonId) {
+    return "persons/" + gedxPersonId;
+  }
+
+  /**
+   * Creates a GedcomX relationship from gedcom 5 objects.
+   * @param person1
+   * @param person2
+   * @param relationshipType
+   * @return relationship that was added
+   */
+  public static Relationship toRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) {
+    Relationship relationship = new Relationship();
+    relationship.setKnownType(relationshipType);
+    relationship.setPerson1( toReference(person1) );
+    relationship.setPerson2( toReference(person2) );
+    return relationship;
+  }
+
+  /**
+   * Finds the gedcomx person corresponding to the ged5 person and creates a GedcomX reference to it.
+   * @param ged5PersonRef gedcom 5 person
+   * @return
+   */
+  public static ResourceReference toReference(SpouseRef ged5PersonRef) {
+    ResourceReference reference = new ResourceReference();
+    String gedxPersonId = ged5PersonRef.getRef(); // gedx id is same as ged5 id
+    reference.setResource( new URI(getPersonEntryName(gedxPersonId)));
+    return reference;
   }
 }
