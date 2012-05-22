@@ -63,6 +63,24 @@ public class Util {
   public static List<SourceReference> toSourcesAndSourceReferences(List<SourceCitation> dqSources, GedcomxConversionResult result) {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
+
+      if (dqSource.getRef() != null) {
+        dqSource.getPage();
+        dqSource.getDate();
+        dqSource.getText();
+        dqSource.getQuality();
+      } else {
+        dqSource.getValue();
+        dqSource.getText();
+        dqSource.getQuality();
+      }
+
+      // TODO: log?
+      //dqSource.getNotes();
+      //dqSource.getNoteRefs();
+      //dqSource.getMedia();
+      //dqSource.getMediaRefs();
+
       SourceReference sourceReference = new SourceReference();
       //TODO
       sourceReferences.add(sourceReference);

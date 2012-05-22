@@ -50,6 +50,7 @@ public class FamilyMapper {
         System.out.println("eventFact " + eventFact.getTag() + ": " + eventFact.getDate() + " at " + eventFact.getPlace());
         if ("MARR".equalsIgnoreCase(eventFact.getTag())) {
           Fact fact = Util.toFact(FactType.Marriage, eventFact.getDate(), eventFact.getPlace());
+          fact.setSources(Util.toSourcesAndSourceReferences(eventFact.getSourceCitations(), result));
           coupleRelationship.addFact(fact);
         }
       }
