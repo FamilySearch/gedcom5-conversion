@@ -206,7 +206,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour19_titl__");
     // Description that is the result of the CHAN tag
-    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "sources/" + gedxSourceDescription.getId(), "2011-11-11T11:11:11.111-07:00");
+    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "descriptions/" + gedxSourceDescription.getId(), "2011-11-11T11:11:11.111-07:00");
   }
 
   @Test
@@ -237,7 +237,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour20_titl__");
     // Description that is the result of the CHAN tag
-    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "sources/" + gedxSourceDescription.getId(), "2011-11-11T00:00:00.000-07:00");
+    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "descriptions/" + gedxSourceDescription.getId(), "2011-11-11T00:00:00.000-07:00");
   }
 
   private void assertDescriptionResultingFromChanTag(Description gedxDescription, String aboutId, String dateTimeValue) {

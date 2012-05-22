@@ -20,7 +20,6 @@ import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
-import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
@@ -36,8 +35,6 @@ import java.util.regex.Pattern;
 
 
 public class SourceDescriptionMapper {
-  private ObjectFactory objectFactory = new ObjectFactory();
-
   public void toSourceDescription(Source dqSource, GedcomxConversionResult result) throws IOException {
     Description gedxSourceDescription = new Description();
     DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
@@ -66,13 +63,13 @@ public class SourceDescriptionMapper {
     if (dqSource.getRepositoryRef() != null) {
       RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
       if (dqRepositoryRef.getRef() != null) {
-        gedxDecoratedSourceDescription.partOf(new RDFValue("organizations/" + dqRepositoryRef.getRef()));
+        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(dqRepositoryRef.getRef())));
       } else {
         String inlineRepoId = dqSource.getId() + ".REPO";
         Organization gedxOrganization = new Organization();
         gedxOrganization.setId(inlineRepoId);
         result.addOrganization(gedxOrganization);
-        gedxDecoratedSourceDescription.partOf(new RDFValue("organizations/" + inlineRepoId));
+        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(inlineRepoId)));
       }
 
       if (dqRepositoryRef.getCallNumber() != null) {
@@ -115,7 +112,7 @@ public class SourceDescriptionMapper {
     //dqSource.getParen();  // PAF extension elements; will not process
 
     if (dqSource.getChange() != null) {
-      CommonMapper.toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
+      CommonMapper.toChangeDescription(dqSource.getChange(), CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId()), result);
     }
 
     result.addDescription(gedxSourceDescription);
@@ -180,7 +177,7 @@ public class SourceDescriptionMapper {
 //    dqRepository.getValue(); // expected to always be null
 
     if (dqRepository.getChange() != null) {
-      CommonMapper.toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
+      CommonMapper.toChangeDescription(dqRepository.getChange(), CommonMapper.getOrganizationEntryName(gedxOrganization.getId()), result);
     }
 
     result.addOrganization(gedxOrganization);

@@ -23,17 +23,20 @@ import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.*;
+import org.gedcomx.conclusion.Date;
 import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
+import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  */
@@ -65,9 +68,32 @@ public class CommonMapper {
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
 
       if (dqSource.getRef() != null) {
-        dqSource.getPage();
-        dqSource.getDate();
-        dqSource.getText();
+        Description gedxSourceDescription = new Description();
+        DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
+        gedxSourceDescription.setId(""); // TODO: need a real identifier here
+
+        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+
+        if (dqSource.getPage() != null) {
+          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
+        }
+
+        if (dqSource.getDate() != null) {
+          final String parsePattern = "d MMM yyyy";
+          try {
+            java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
+            gedxDecoratedSourceDescription.created(date);
+          }
+          catch (Throwable ex) {
+            // something went wrong, so probably does not conform to the standard; we will skip it
+            // TODO: log?
+          }
+        }
+
+        if (dqSource.getText() != null) {
+          // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+        }
+
         dqSource.getQuality();
       } else {
         dqSource.getValue();
@@ -121,14 +147,12 @@ public class CommonMapper {
         if (dateTime.getTime() != null) {
           parsePattern += " HH:mm:ss.SSS";
         }
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
-        ((SimpleDateFormat)dateFormat).applyPattern(parsePattern);
 
         String dateTimeString = dateTime.getValue();
         if (dateTime.getTime() != null) {
           dateTimeString += ' ' + dateTime.getTime();
         }
-        java.util.Date date = dateFormat.parse(dateTimeString);
+        java.util.Date date = parseDateString(parsePattern, dateTimeString);
 
         RDFLiteral lastModified = new RDFLiteral(date);
 
@@ -139,8 +163,15 @@ public class CommonMapper {
         result.addDescription(gedxRepositoryRecordDescription);
       } catch (Throwable ex) {
         // something went wrong, so probably does not conform to the standard; we will skip it
+        // TODO: log?
       }
     }
+  }
+
+  public static java.util.Date parseDateString (String parsePattern, String value) throws ParseException {
+    DateFormat dateFormat = DateFormat.getDateTimeInstance();
+    ((SimpleDateFormat)dateFormat).applyPattern(parsePattern);
+    return dateFormat.parse(value);
   }
 
   /**
@@ -163,6 +194,10 @@ public class CommonMapper {
     return "relationships/" + id;
   }
 
+  public static String getOrganizationEntryName(String id) {
+    return "organizations/" + id;
+  }
+
   /**
    * Creates a GedcomX relationship from gedcom 5 objects.
    * @param person1
@@ -173,9 +208,9 @@ public class CommonMapper {
   public static Relationship toRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) {
     Relationship relationship = new Relationship();
     relationship.setKnownType(relationshipType);
-    relationship.setPerson1( toReference(person1) );
-    relationship.setPerson2( toReference(person2) );
-    relationship.setId( person1.getRef() + "-" + person2.getRef() );
+    relationship.setPerson1(toReference(person1));
+    relationship.setPerson2(toReference(person2));
+    relationship.setId(person1.getRef() + "-" + person2.getRef());
     return relationship;
   }
 

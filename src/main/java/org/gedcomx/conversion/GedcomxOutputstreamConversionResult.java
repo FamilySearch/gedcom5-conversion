@@ -63,7 +63,7 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
 
   @Override
   public void addOrganization(Organization organization) throws IOException {
-    String entryName = CommonMapper.getDescriptionEntryName(organization.getId());
+    String entryName = CommonMapper.getOrganizationEntryName(organization.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization);
   }
 
