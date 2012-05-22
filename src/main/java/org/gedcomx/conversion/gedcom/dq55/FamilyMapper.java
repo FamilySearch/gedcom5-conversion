@@ -34,28 +34,28 @@ public class FamilyMapper {
     SpouseRef wife = wives.size() > 0 ? wives.get(0) : null;
     Relationship coupleRelationship = null;
     if ( husband != null && wife != null) {
-      coupleRelationship = Util.toRelationship(husband, wife, RelationshipType.Couple);
+      coupleRelationship = CommonMapper.toRelationship(husband, wife, RelationshipType.Couple);
       result.addRelationship(coupleRelationship);
     }
 
     for (ChildRef child : ged5Family.getChildRefs()) {
       if (husband != null)
-        result.addRelationship(Util.toRelationship(husband, child, RelationshipType.ParentChild));
+        result.addRelationship(CommonMapper.toRelationship(husband, child, RelationshipType.ParentChild));
       if (wife != null)
-        result.addRelationship(Util.toRelationship(wife, child, RelationshipType.ParentChild));
+        result.addRelationship(CommonMapper.toRelationship(wife, child, RelationshipType.ParentChild));
     }
 
     if (coupleRelationship != null) {
       for (EventFact eventFact : ged5Family.getEventsFacts()) {
         System.out.println("eventFact " + eventFact.getTag() + ": " + eventFact.getDate() + " at " + eventFact.getPlace());
         if ("MARR".equalsIgnoreCase(eventFact.getTag())) {
-          Fact fact = Util.toFact(FactType.Marriage, eventFact.getDate(), eventFact.getPlace());
-          fact.setSources(Util.toSourcesAndSourceReferences(eventFact.getSourceCitations(), result));
+          Fact fact = CommonMapper.toFact(FactType.Marriage, eventFact.getDate(), eventFact.getPlace());
+          fact.setSources(CommonMapper.toSourcesAndSourceReferences(eventFact.getSourceCitations(), result));
           coupleRelationship.addFact(fact);
         }
       }
-      coupleRelationship.setNotes(Util.toNotes(ged5Family.getNotes()));
-      coupleRelationship.setSources(Util.toSourcesAndSourceReferences(ged5Family.getSourceCitations(), result));
+      coupleRelationship.setNotes(CommonMapper.toNotes(ged5Family.getNotes()));
+      coupleRelationship.setSources(CommonMapper.toSourcesAndSourceReferences(ged5Family.getSourceCitations(), result));
     }
   }
 }

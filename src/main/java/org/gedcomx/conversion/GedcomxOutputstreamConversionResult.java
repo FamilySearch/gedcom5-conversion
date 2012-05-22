@@ -18,7 +18,7 @@ package org.gedcomx.conversion;
 import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.conversion.gedcom.dq55.Util;
+import org.gedcomx.conversion.gedcom.dq55.CommonMapper;
 import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
@@ -45,25 +45,25 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
 
   @Override
   public void addPerson(Person person) throws IOException {
-    String entryName = Util.getPersonEntryName(person.getId());
+    String entryName = CommonMapper.getPersonEntryName(person.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person);
   }
 
   @Override
   public void addRelationship(Relationship relationship) throws IOException {
-    String entryName = Util.getRelationshipEntryName(relationship.getId());
+    String entryName = CommonMapper.getRelationshipEntryName(relationship.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, relationship);
   }
 
   @Override
   public void addDescription(Description description) throws IOException {
-    String entryName = Util.getDescriptionEntryName(description.getId());
+    String entryName = CommonMapper.getDescriptionEntryName(description.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description);
   }
 
   @Override
   public void addOrganization(Organization organization) throws IOException {
-    String entryName = Util.getDescriptionEntryName(organization.getId());
+    String entryName = CommonMapper.getDescriptionEntryName(organization.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization);
   }
 
@@ -73,7 +73,7 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
     try {
       // Persons
       for (Person person : getPersons()) {
-        String entryName = Util.getPersonEntryName(person.getId());
+        String entryName = CommonMapper.getPersonEntryName(person.getId());
         gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
           , entryName
           , person);

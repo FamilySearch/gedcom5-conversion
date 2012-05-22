@@ -30,11 +30,8 @@ import org.gedcomx.types.ResourceType;
 import org.gedcomx.types.TypeReference;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 
@@ -118,7 +115,7 @@ public class SourceDescriptionMapper {
     //dqSource.getParen();  // PAF extension elements; will not process
 
     if (dqSource.getChange() != null) {
-      Util.toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
+      CommonMapper.toChangeDescription(dqSource.getChange(), "sources/" + gedxSourceDescription.getId(), result);
     }
 
     result.addDescription(gedxSourceDescription);
@@ -183,7 +180,7 @@ public class SourceDescriptionMapper {
 //    dqRepository.getValue(); // expected to always be null
 
     if (dqRepository.getChange() != null) {
-      Util.toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
+      CommonMapper.toChangeDescription(dqRepository.getChange(), "organizations/" + gedxOrganization.getId(), result);
     }
 
     result.addOrganization(gedxOrganization);

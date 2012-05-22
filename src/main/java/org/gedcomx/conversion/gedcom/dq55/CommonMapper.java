@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  */
-public class Util {
+public class CommonMapper {
   private static ObjectFactory objectFactory = new ObjectFactory();
 
   /**
