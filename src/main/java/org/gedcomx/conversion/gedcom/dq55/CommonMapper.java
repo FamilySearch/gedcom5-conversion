@@ -19,6 +19,7 @@ import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
 import org.folg.gedcom.model.SpouseRef;
+import org.gedcomx.common.Attribution;
 import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
@@ -30,9 +31,12 @@ import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
+import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
+import org.gedcomx.types.TypeReference;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,55 +67,67 @@ public class CommonMapper {
    * @param dqSources Gedcom 5 source citations
    * @return GedcomX SourceReferences
    */
-  public static List<SourceReference> toSourcesAndSourceReferences(List<SourceCitation> dqSources, GedcomxConversionResult result) {
+  public static List<SourceReference> toSourcesAndSourceReferences(List<SourceCitation> dqSources, GedcomxConversionResult result) throws IOException {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
-    for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
 
-      if (dqSource.getRef() != null) {
+    for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
+      if ((dqSource.getRef() != null) || ((dqSource.getValue() != null) || (dqSource.getText() != null) || (dqSource.getQuality() != null))) { // TODO: may need to update the condition to include notes or media
         Description gedxSourceDescription = new Description();
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(""); // TODO: need a real identifier here
+        gedxSourceDescription.setId(UUID.randomUUID().toString()); // TODO: need a real identifier here?
 
-        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+        result.addDescription(gedxSourceDescription);
 
-        if (dqSource.getPage() != null) {
-          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
-        }
+        String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
+        SourceReference gedxSourceReference = new SourceReference();
+        gedxSourceReference.setDescription(new ResourceReference());
+        gedxSourceReference.getDescription().setResource(URI.create(entryName));
 
-        if (dqSource.getDate() != null) {
-          final String parsePattern = "d MMM yyyy";
-          try {
-            java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
-            gedxDecoratedSourceDescription.created(date);
+        if (dqSource.getRef() != null) {
+          gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+
+          if (dqSource.getPage() != null) {
+            gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
           }
-          catch (Throwable ex) {
-            // something went wrong, so probably does not conform to the standard; we will skip it
-            // TODO: log?
+
+          if (dqSource.getDate() != null) {
+            final String parsePattern = "d MMM yyyy";
+            try {
+              java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
+              gedxDecoratedSourceDescription.created(date);
+            }
+            catch (Throwable ex) {
+              // something went wrong, so probably does not conform to the standard; we will skip it
+              // TODO: log?
+            }
           }
+        } else if (dqSource.getValue() != null) {
+          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
         }
 
         if (dqSource.getText() != null) {
           // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
         }
 
-        dqSource.getQuality();
+        if (dqSource.getQuality() != null) {
+          Attribution attribution = new Attribution();
+          attribution.setConfidence(new TypeReference<ConfidenceLevel>(toConfidenceLevel(dqSource.getQuality())));
+          gedxSourceReference.setAttribution(attribution);
+        }
+
+        // TODO: log?
+        //dqSource.getNotes();
+        //dqSource.getNoteRefs();
+        //dqSource.getMedia();
+        //dqSource.getMediaRefs();
+
+        sourceReferences.add(gedxSourceReference);
       } else {
-        dqSource.getValue();
-        dqSource.getText();
-        dqSource.getQuality();
+        // TODO: DallanQ produced a source without any data to convert; log?
       }
-
-      // TODO: log?
-      //dqSource.getNotes();
-      //dqSource.getNoteRefs();
-      //dqSource.getMedia();
-      //dqSource.getMediaRefs();
-
-      SourceReference sourceReference = new SourceReference();
-      //TODO
-      sourceReferences.add(sourceReference);
     }
-    return sourceReferences;
+
+    return sourceReferences.size() > 0 ? sourceReferences : null;
   }
 
   /**
@@ -166,6 +182,20 @@ public class CommonMapper {
         // TODO: log?
       }
     }
+  }
+
+  public static ConfidenceLevel toConfidenceLevel(String dqQuality) {
+    ConfidenceLevel confidenceLevel = null;
+    if ("3".equals(dqQuality)) {
+      confidenceLevel = ConfidenceLevel.Certainly;
+    } else if ("2".equals(dqQuality)) {
+      confidenceLevel = ConfidenceLevel.Possibly;
+    } else if ("1".equals(dqQuality)) {
+      confidenceLevel = ConfidenceLevel.Apparently;
+    } else if ("0".equals(dqQuality)) {
+      confidenceLevel = ConfidenceLevel.Perhaps;
+    }
+    return confidenceLevel;
   }
 
   public static java.util.Date parseDateString (String parsePattern, String value) throws ParseException {
