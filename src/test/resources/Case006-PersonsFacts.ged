@@ -18,15 +18,6 @@
 1 RESI
   2 DATE 3 Jan 1920
   2 PLAC San Francisco, San Francisco, California, United States
-1 RESI
-  2 DATE 20 Apr 1910
-  2 PLAC San Francisco, San Francisco, California, United States
-1 RESI
-  2 DATE 5 Jun 1900
-  2 PLAC San Francisco, San Francisco, California, United States
-1 RESI
-  2 DATE 1  2 Sep 1918
-  2 PLAC San Francisco, San Francisco, California, United States
 1 NATU
   2 DATE 1887
 1 EVEN 
@@ -93,4 +84,4 @@
   2 PLAC San Francisco, San Francisco, California, United States
 1 CHAN
   2 DATE 10 May 2012
-  3 TIME 01:00:00
+    3 TIME 01:00:00
