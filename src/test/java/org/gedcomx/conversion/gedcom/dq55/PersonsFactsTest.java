@@ -3,7 +3,6 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -14,7 +13,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 
-public class PersonsFactsTest extends BaseTest {
+public class PersonsFactsTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -33,7 +32,7 @@ public class PersonsFactsTest extends BaseTest {
   public void testToPerson1() throws Exception {
     // Birth and Death - Dates and places
     Person dqPerson = gedcom.getPeople().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);

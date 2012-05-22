@@ -14,7 +14,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class FamilyMapperTest extends BaseTest {
+public class FamilyMapperTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -33,7 +33,7 @@ public class FamilyMapperTest extends BaseTest {
   @Test
   public void testToFamily1() throws Exception {
     Family dqFamily = gedcom.getFamilies().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     GedcomMapper gedcomMapper = new GedcomMapper();
     gedcomMapper.toPersons(gedcom.getPeople(), result);
 

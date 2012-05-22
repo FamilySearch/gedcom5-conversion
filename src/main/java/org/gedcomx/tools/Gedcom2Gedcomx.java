@@ -17,7 +17,7 @@ package org.gedcomx.tools;
 
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -66,7 +66,7 @@ public class Gedcom2Gedcomx {
       if (gedxOut != null) {
         GedcomMapper mapper = new GedcomMapper();
         OutputStream outputStream = new FileOutputStream(gedxOut);
-        GedcomxConversionResult gedxResult = mapper.toGedcomx(gedcom,outputStream);
+        GedcomxOutputstreamConversionResult gedxResult = mapper.toGedcomx(gedcom,outputStream);
         gedxResult.finish(true);
 //        gedxResult.write(outputStream);
       }

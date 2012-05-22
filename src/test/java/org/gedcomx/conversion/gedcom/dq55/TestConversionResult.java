@@ -10,28 +10,23 @@ import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  */
-public class TestConversionResult extends GedcomxConversionResult {
+public class TestConversionResult implements GedcomxConversionResult {
   private List<Person> persons = new ArrayList<Person>();
   private List<Description> descriptions = new ArrayList<Description>();
   private List<Organization> organizations = new ArrayList<Organization>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
 
-  public TestConversionResult(OutputStream outputStream) throws IOException {
-    super(outputStream);
-  }
-
   public List<Person> getPersons() {
     return persons;
   }
 
+  @Override
   public void addPerson(Person person) throws IOException {
-    super.addPerson(person);
     this.persons.add(person);
   }
 
@@ -39,8 +34,8 @@ public class TestConversionResult extends GedcomxConversionResult {
     return relationships;
   }
 
+  @Override
   public void addRelationship(Relationship relationship) throws IOException {
-    super.addRelationship(relationship);
     this.relationships.add(relationship);
   }
 
@@ -48,8 +43,8 @@ public class TestConversionResult extends GedcomxConversionResult {
     return descriptions;
   }
 
+  @Override
   public void addDescription(Description description) throws IOException {
-    super.addDescription(description);
     this.descriptions.add(description);
   }
 
@@ -57,8 +52,8 @@ public class TestConversionResult extends GedcomxConversionResult {
     return organizations;
   }
 
+  @Override
   public void addOrganization(Organization organization) throws IOException {
-    super.addOrganization(organization);
     this.organizations.add(organization);
   }
 }

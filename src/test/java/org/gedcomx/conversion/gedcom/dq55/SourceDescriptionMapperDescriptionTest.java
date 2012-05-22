@@ -3,7 +3,6 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Source;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
@@ -18,7 +17,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class SourceDescriptionMapperDescriptionTest extends BaseTest {
+public class SourceDescriptionMapperDescriptionTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -38,7 +37,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
   @Test
   public void testToSourceDescription1() throws Exception {
     Source dqSource = gedcom.getSources().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);
@@ -81,10 +80,10 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "Registers van de Burgerlijke Stand, 1796-1900");
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToSourceDescription2() throws Exception {
     Source dqSource = gedcom.getSources().get(1);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);
@@ -130,7 +129,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 0);
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToSourceDescription3() throws Exception {
     assertMediaTypeToResourceTypeMappingUsingInlineRepo(2, "SOUR3", ResourceType.Sound);
     assertMediaTypeToResourceTypeMappingUsingInlineRepo(3, "SOUR4", ResourceType.PhysicalObject);
@@ -152,7 +151,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
   @Test
   public void testToSourceDescription4() throws Exception {
     Source dqSource = gedcom.getSources().get(17);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);
@@ -182,7 +181,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
   @Test
   public void testToSourceDescription5() throws Exception {
     Source dqSource = gedcom.getSources().get(18);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);
@@ -213,7 +212,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
   @Test
   public void testToSourceDescription6() throws Exception {
     Source dqSource = gedcom.getSources().get(19);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);
@@ -264,7 +263,7 @@ public class SourceDescriptionMapperDescriptionTest extends BaseTest {
 
   private void assertMediaTypeToResourceTypeMappingUsingInlineRepo(int sourceIndex, String sourceId, ResourceType expectedResourceType) throws Exception {
     Source dqSource = gedcom.getSources().get(sourceIndex);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toSourceDescription(dqSource, result);

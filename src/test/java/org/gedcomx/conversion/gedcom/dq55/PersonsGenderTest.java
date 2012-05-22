@@ -3,7 +3,6 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.GenderType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,7 +13,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class PersonsGenderTest extends BaseTest {
+public class PersonsGenderTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -33,7 +32,7 @@ public class PersonsGenderTest extends BaseTest {
   public void testToPerson1() throws Exception {
     // Sex M
     Person dqPerson = gedcom.getPeople().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -49,7 +48,7 @@ public class PersonsGenderTest extends BaseTest {
   public void testToPerson2() throws Exception {
     // Sex F
     Person dqPerson = gedcom.getPeople().get(1);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -65,7 +64,7 @@ public class PersonsGenderTest extends BaseTest {
   public void testToPerson3() throws Exception {
     // Sex U
     Person dqPerson = gedcom.getPeople().get(2);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -81,7 +80,7 @@ public class PersonsGenderTest extends BaseTest {
   public void testToPerson4() throws Exception {
     // Sex INVALID
     Person dqPerson = gedcom.getPeople().get(3);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);

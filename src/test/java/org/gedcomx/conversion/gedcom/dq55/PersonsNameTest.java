@@ -5,7 +5,6 @@ import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conclusion.NameForm;
 import org.gedcomx.conclusion.NamePart;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.NamePartType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,7 +15,7 @@ import java.net.URL;
 import static org.testng.Assert.*;
 
 
-public class PersonsNameTest extends BaseTest {
+public class PersonsNameTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -34,7 +33,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson1() throws Exception {
     // Simple name
     Person dqPerson = gedcom.getPeople().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -56,7 +55,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson2() throws Exception {
     // No trailing slash on surname
     Person dqPerson = gedcom.getPeople().get(1);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -78,7 +77,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson3() throws Exception {
     // No space before or after surname slash
     Person dqPerson = gedcom.getPeople().get(2);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -100,7 +99,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson4() throws Exception {
     // No space before or after surname slashes
     Person dqPerson = gedcom.getPeople().get(3);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -122,7 +121,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson5() throws Exception {
     // No slashes
     Person dqPerson = gedcom.getPeople().get(4);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -144,7 +143,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson6() throws Exception {
     // Surname only
     Person dqPerson = gedcom.getPeople().get(5);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -166,7 +165,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson7() throws Exception {
     // Surname contains trailing space
     Person dqPerson = gedcom.getPeople().get(6);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -188,7 +187,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson8() throws Exception {
     // Surname with suffix
     Person dqPerson = gedcom.getPeople().get(7);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -210,7 +209,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson9() throws Exception {
     // Surname first
     Person dqPerson = gedcom.getPeople().get(8);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -232,7 +231,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson10() throws Exception {
     // Surname not specified, but extracted from name text
     Person dqPerson = gedcom.getPeople().get(9);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -254,7 +253,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson11() throws Exception {
     // Given name only
     Person dqPerson = gedcom.getPeople().get(10);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -276,7 +275,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson12() throws Exception {
     // Empty full text
     Person dqPerson = gedcom.getPeople().get(11);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -298,7 +297,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson13() throws Exception {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(12);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -320,7 +319,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson14() throws Exception {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(13);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -341,7 +340,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson15() throws Exception {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(14);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -363,7 +362,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson16() throws Exception {
     // Comma separated name part
     Person dqPerson = gedcom.getPeople().get(15);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);
@@ -387,7 +386,7 @@ public class PersonsNameTest extends BaseTest {
   public void testToPerson17() throws Exception {
     // Case insensitive tags
     Person dqPerson = gedcom.getPeople().get(16);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     PersonMapper mapper = new PersonMapper();
 
     mapper.toPerson(dqPerson, result);

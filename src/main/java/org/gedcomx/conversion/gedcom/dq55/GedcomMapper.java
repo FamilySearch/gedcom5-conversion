@@ -17,6 +17,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.*;
 import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,8 +28,8 @@ public class GedcomMapper {
   private final FamilyMapper familyMapper = new FamilyMapper();
   private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
 
-  public GedcomxConversionResult toGedcomx(Gedcom dqGedcom, OutputStream outputStream) throws IOException {
-    GedcomxConversionResult result = new GedcomxConversionResult(outputStream);
+  public GedcomxOutputstreamConversionResult toGedcomx(Gedcom dqGedcom, OutputStream outputStream) throws IOException {
+    GedcomxOutputstreamConversionResult result = new GedcomxOutputstreamConversionResult(outputStream);
 
     toPersons(dqGedcom.getPeople(), result);
     toRelationships(dqGedcom.getFamilies(), result);

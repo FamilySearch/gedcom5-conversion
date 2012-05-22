@@ -4,7 +4,6 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.ResourceReference;
-import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
@@ -22,7 +21,7 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.fail;
 
 
-public class SourceDescriptionMapperOrganizationTest extends BaseTest {
+public class SourceDescriptionMapperOrganizationTest {
   Gedcom gedcom;
 
   @BeforeClass
@@ -37,10 +36,10 @@ public class SourceDescriptionMapperOrganizationTest extends BaseTest {
     assertEquals(gedcom.getRepositories().size(), 5);
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToOrganization1() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(0);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toOrganization(dqRepository, result);
@@ -119,10 +118,10 @@ public class SourceDescriptionMapperOrganizationTest extends BaseTest {
     assertEquals(gedxOrganization.getHomepage().getValue(), "https://www.mycorporation.com/");
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToOrganization2() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(1);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toOrganization(dqRepository, result);
@@ -156,10 +155,10 @@ public class SourceDescriptionMapperOrganizationTest extends BaseTest {
     assertNull(gedxOrganization.getHomepage());
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToOrganization3() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(2);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toOrganization(dqRepository, result);
@@ -260,10 +259,10 @@ public class SourceDescriptionMapperOrganizationTest extends BaseTest {
     assertEquals(value.getValue(), "2011-11-11T11:11:11.111-07:00");
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToOrganization4() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(3);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toOrganization(dqRepository, result);
@@ -353,10 +352,10 @@ public class SourceDescriptionMapperOrganizationTest extends BaseTest {
     assertEquals(value.getValue(), "2011-11-11T00:00:00.000-07:00");
   }
 
-  @Test (enabled = false) // unable to marshal type "org.gedcomx.metadata.foaf.Organization" as an element because it is not known to this context
+  @Test
   public void testToOrganization5() throws Exception {
     Repository dqRepository = gedcom.getRepositories().get(4);
-    TestConversionResult result = new TestConversionResult(getTestOutputStream());
+    TestConversionResult result = new TestConversionResult();
     SourceDescriptionMapper mapper = new SourceDescriptionMapper();
 
     mapper.toOrganization(dqRepository, result);

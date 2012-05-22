@@ -34,14 +34,15 @@ public class FamilyMapper {
     SpouseRef wife = wives.size() > 0 ? wives.get(0) : null;
     Relationship coupleRelationship = null;
     if ( husband != null && wife != null) {
-      coupleRelationship = result.addRelationship(husband, wife, RelationshipType.Couple);
+      coupleRelationship = Util.toRelationship(husband, wife, RelationshipType.Couple);
+      result.addRelationship(coupleRelationship);
     }
 
     for (ChildRef child : ged5Family.getChildRefs()) {
       if (husband != null)
-        result.addRelationship(husband, child, RelationshipType.ParentChild);
+        result.addRelationship(Util.toRelationship(husband, child, RelationshipType.ParentChild));
       if (wife != null)
-        result.addRelationship(wife, child, RelationshipType.ParentChild);
+        result.addRelationship(Util.toRelationship(wife, child, RelationshipType.ParentChild));
     }
 
     if (coupleRelationship != null) {
@@ -56,5 +57,4 @@ public class FamilyMapper {
       coupleRelationship.setSources(Util.toSourcesAndSourceReferences(ged5Family.getSourceCitations(), result));
     }
   }
-
 }
