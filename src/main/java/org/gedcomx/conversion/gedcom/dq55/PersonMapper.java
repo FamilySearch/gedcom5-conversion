@@ -79,6 +79,10 @@ public class PersonMapper {
           processSex(gedxPerson, fact);
         }
       }
+
+      if(gedxFact != null) {
+        gedxPerson.addFact(gedxFact);
+      }
     }
   }
 
