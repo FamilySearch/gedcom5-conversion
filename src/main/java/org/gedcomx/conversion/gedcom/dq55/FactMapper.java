@@ -17,7 +17,6 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
-import org.gedcomx.common.FormalValue;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Place;
@@ -188,26 +187,17 @@ public class FactMapper {
           if(factDate != null) {
             Date date = new Date();
             date.setOriginal(factDate);
-            FormalValue formalValue = new FormalValue();
-            formalValue.setText(factDate);
-            date.setFormal(formalValue);
             gedxFact.setDate(date);
           }
 
           if(factPlace != null) {
             Place place = new Place();
             place.setOriginal(factPlace);
-            FormalValue formalValue = new FormalValue();
-            formalValue.setText(factPlace);
-            place.setFormal(formalValue);
             gedxFact.setPlace(place);
           }
 
           if(factValue != null) {
             gedxFact.setOriginal(factValue);
-            FormalValue formalValue = new FormalValue();
-            formalValue.setText(factValue);
-            gedxFact.setFormal(formalValue);
           }
           return gedxFact;
         }
