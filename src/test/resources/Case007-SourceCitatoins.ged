@@ -10,13 +10,13 @@
 1 ADDR 1 Genealogist Way
 2 CONT Hometown, ZZ  99999
 2 CONT United States
-0 @INDI1@
+0 @INDI1@ INDI
 1 NAME Joannes Baptista /Louwaert/
-0 @INDI2@
+0 @INDI2@ INDI
 1 NAME Franciscus /Louwaert/
-0 @INDI3@
+0 @INDI3@ INDI
 1 NAME Barbara /Verbeke/
-0 @INDI4@
+0 @INDI4@ INDI
 1 NAME Joanna /Verstraete/
 0 @INDI5@ INDI
 1 NAME Joanna Maria /Louwaert/
@@ -39,7 +39,7 @@
 1 CHIL @INDI5@
 1 MARR
 2 PLAC Brugge, West Vlaanderen, Belgium
-2 SOUR @SOUR2@
+2 SOUR @SOUR1@
 3 PAGE FHL INTL Film 1226427, Geboorten, 1820, No. 143
 3 DATA
 4 DATE 31 Jan 1820
