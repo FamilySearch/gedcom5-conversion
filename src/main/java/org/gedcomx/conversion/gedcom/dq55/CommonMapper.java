@@ -74,9 +74,9 @@ public class CommonMapper {
       if ((dqSource.getRef() != null) || ((dqSource.getValue() != null) || (dqSource.getText() != null) || (dqSource.getQuality() != null))) { // TODO: may need to update the condition to include notes or media
         Description gedxSourceDescription = new Description();
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(UUID.randomUUID().toString()); // TODO: need a real identifier here?
+        gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
-        result.addDescription(gedxSourceDescription);
+        result.addDescription(gedxSourceDescription, null);
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
@@ -130,33 +130,45 @@ public class CommonMapper {
     return sourceReferences.size() > 0 ? sourceReferences : null;
   }
 
-  public static void toChangeDescription(Change dqRepositoryChange, String aboutObjId, GedcomxConversionResult result) {
-    if (dqRepositoryChange != null) {
+  public static void toChangeDescription(Change dqChange, String entryNameForDescribedObject, GedcomxConversionResult result) {
+    if (dqChange != null) {
       try {
-        DateTime dateTime = dqRepositoryChange.getDateTime();
-        String parsePattern = "d MMM yyyy";
-        if (dateTime.getTime() != null) {
-          parsePattern += " HH:mm:ss.SSS";
-        }
-
-        String dateTimeString = dateTime.getValue();
-        if (dateTime.getTime() != null) {
-          dateTimeString += ' ' + dateTime.getTime();
-        }
-        java.util.Date date = parseDateString(parsePattern, dateTimeString);
+        java.util.Date date = toDate(dqChange);
 
         RDFLiteral lastModified = new RDFLiteral(date);
 
-        Description gedxRepositoryRecordDescription = new Description();
-        gedxRepositoryRecordDescription.setAbout(URI.create(aboutObjId));
-        gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
+        Description gedxDescription = new Description();
+        gedxDescription.setAbout(URI.create(entryNameForDescribedObject));
+        gedxDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
 
-        result.addDescription(gedxRepositoryRecordDescription);
+        result.addDescription(gedxDescription, date);
       } catch (Throwable ex) {
         // something went wrong, so probably does not conform to the standard; we will skip it
         // TODO: log?
       }
     }
+  }
+
+  public static java.util.Date toDate(Change dqChange) {
+    if (dqChange == null)
+      return null;
+    DateTime dateTime = dqChange.getDateTime();
+    String parsePattern = "d MMM yy";
+    if (dateTime.getTime() != null) {
+      parsePattern += " HH:mm:ss.SSS";
+    }
+
+    String dateTimeString = dateTime.getValue();
+    if (dateTime.getTime() != null) {
+      dateTimeString += ' ' + dateTime.getTime();
+    }
+    try {
+      return parseDateString(parsePattern, dateTimeString);
+    }
+    catch (ParseException e) {
+      //TODO: logWarning
+    }
+    return null;
   }
 
   public static ConfidenceLevel toConfidenceLevel(String dqQuality) {

@@ -19,10 +19,10 @@ import org.folg.gedcom.model.*;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class FamilyMapper {
@@ -33,16 +33,17 @@ public class FamilyMapper {
     List<SpouseRef> wives = ged5Family.getWifeRefs();
     SpouseRef wife = wives.size() > 0 ? wives.get(0) : null;
     Relationship coupleRelationship = null;
+    Date lastModified = CommonMapper.toDate(ged5Family.getChange());
     if ( husband != null && wife != null) {
       coupleRelationship = CommonMapper.toRelationship(husband, wife, RelationshipType.Couple);
-      result.addRelationship(coupleRelationship);
+      result.addRelationship(coupleRelationship, lastModified);
     }
 
     for (ChildRef child : ged5Family.getChildRefs()) {
       if (husband != null)
-        result.addRelationship(CommonMapper.toRelationship(husband, child, RelationshipType.ParentChild));
+        result.addRelationship(CommonMapper.toRelationship(husband, child, RelationshipType.ParentChild), lastModified);
       if (wife != null)
-        result.addRelationship(CommonMapper.toRelationship(wife, child, RelationshipType.ParentChild));
+        result.addRelationship(CommonMapper.toRelationship(wife, child, RelationshipType.ParentChild), lastModified);
     }
 
     if (coupleRelationship != null) {

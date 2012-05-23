@@ -15,6 +15,7 @@
     <gedcom.version>1.1-SNAPSHOT</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <slf-api.version>1.6.4</slf-api.version>
   </properties>
 
   <dependencies>
@@ -27,6 +28,17 @@
       <groupId>org.folg.gedcom</groupId>
       <artifactId>gedcom</artifactId>
       <version>${gedcom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jcl</artifactId>
+      <version>${slf-api.version}</version>
+      <scope>runtime</scope>
     </dependency>
 
     <!--test dependencies-->

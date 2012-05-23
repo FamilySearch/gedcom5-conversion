@@ -68,7 +68,7 @@ public class SourceDescriptionMapper {
         String inlineRepoId = dqSource.getId() + ".REPO";
         Organization gedxOrganization = new Organization();
         gedxOrganization.setId(inlineRepoId);
-        result.addOrganization(gedxOrganization);
+        result.addOrganization(gedxOrganization, null);
         gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(inlineRepoId)));
       }
 
@@ -115,7 +115,7 @@ public class SourceDescriptionMapper {
       CommonMapper.toChangeDescription(dqSource.getChange(), CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId()), result);
     }
 
-    result.addDescription(gedxSourceDescription);
+    result.addDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
   }
 
   public void toOrganization(Repository dqRepository, GedcomxConversionResult result) throws IOException {
@@ -180,7 +180,7 @@ public class SourceDescriptionMapper {
       CommonMapper.toChangeDescription(dqRepository.getChange(), CommonMapper.getOrganizationEntryName(gedxOrganization.getId()), result);
     }
 
-    result.addOrganization(gedxOrganization);
+    result.addOrganization(gedxOrganization, CommonMapper.toDate(dqRepository.getChange()));
   }
 
   private TypeReference<ResourceType> mapToKnownResourceType(String mediaType) {

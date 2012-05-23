@@ -25,6 +25,7 @@ import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 
 public class GedcomxOutputstreamConversionResult implements GedcomxConversionResult {
@@ -44,27 +45,27 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   }
 
   @Override
-  public void addPerson(Person person) throws IOException {
+  public void addPerson(Person person, Date lastModified) throws IOException {
     String entryName = CommonMapper.getPersonEntryName(person.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person);
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified);
   }
 
   @Override
-  public void addRelationship(Relationship relationship) throws IOException {
+  public void addRelationship(Relationship relationship, Date lastModified) throws IOException {
     String entryName = CommonMapper.getRelationshipEntryName(relationship.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, relationship);
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, relationship, lastModified);
   }
 
   @Override
-  public void addDescription(Description description) throws IOException {
+  public void addDescription(Description description, Date lastModified) throws IOException {
     String entryName = CommonMapper.getDescriptionEntryName(description.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description);
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description, lastModified);
   }
 
   @Override
-  public void addOrganization(Organization organization) throws IOException {
+  public void addOrganization(Organization organization, Date lastModified) throws IOException {
     String entryName = CommonMapper.getOrganizationEntryName(organization.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization);
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization, lastModified);
   }
 
 /*

@@ -62,7 +62,7 @@ public class PersonMapper {
     //////////////////////////////////////////////////////////////////////
     // Add the person to the conversion results
 
-    result.addPerson(gedxPerson);
+    result.addPerson(gedxPerson, CommonMapper.toDate(dqPerson.getChange()));
   }
 
   private void processFacts(Person gedxPerson, List<EventFact> facts, GedcomxConversionResult result) throws IOException {

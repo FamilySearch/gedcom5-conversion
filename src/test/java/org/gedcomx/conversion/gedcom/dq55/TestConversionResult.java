@@ -11,6 +11,7 @@ import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addPerson(Person person) throws IOException {
+  public void addPerson(Person person, Date lastModified) throws IOException {
     this.persons.add(person);
   }
 
@@ -35,7 +36,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addRelationship(Relationship relationship) throws IOException {
+  public void addRelationship(Relationship relationship, Date lastModified) throws IOException {
     this.relationships.add(relationship);
   }
 
@@ -44,7 +45,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addDescription(Description description) throws IOException {
+  public void addDescription(Description description, Date lastModified) throws IOException {
     this.descriptions.add(description);
   }
 
@@ -53,7 +54,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addOrganization(Organization organization) throws IOException {
+  public void addOrganization(Organization organization, Date lastModified) throws IOException {
     this.organizations.add(organization);
   }
 }
