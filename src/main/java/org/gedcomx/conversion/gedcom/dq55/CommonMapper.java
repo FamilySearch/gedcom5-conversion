@@ -130,31 +130,6 @@ public class CommonMapper {
     return sourceReferences.size() > 0 ? sourceReferences : null;
   }
 
-  /**
-   * Create a GedcomX fact
-   * @param knownType fact type
-   * @param dateStr date (can be null)
-   * @param placeStr place (can be null)
-   * @return GedcomX fact
-   */
-  public static Fact toFact(FactType knownType, String dateStr, String placeStr) {
-    Fact fact = new Fact();
-    fact.setKnownType(knownType);
-
-    if (dateStr != null) {
-      Date date = new Date();
-      date.setOriginal(dateStr);
-      fact.setDate(date);
-    }
-
-    if (placeStr != null) {
-      Place place = new Place();
-      place.setOriginal(placeStr);
-      fact.setPlace(place);
-    }
-    return fact;
-  }
-
   public static void toChangeDescription(Change dqRepositoryChange, String aboutObjId, GedcomxConversionResult result) {
     if (dqRepositoryChange != null) {
       try {
