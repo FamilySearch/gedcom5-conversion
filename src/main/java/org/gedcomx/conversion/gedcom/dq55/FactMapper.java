@@ -20,8 +20,10 @@ import org.folg.gedcom.model.EventFact;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Place;
+import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.FactType;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class FactMapper {
@@ -137,7 +139,7 @@ public class FactMapper {
     factMap.put("_SEPR", FactType.Separation);
   }
 
-  static Fact toFact(EventFact fact) {
+  static Fact toFact(EventFact fact, GedcomxConversionResult result) throws IOException {
     fact.getType();
     if(fact.getTag() == null) {
       //TODO warn/log
@@ -199,6 +201,10 @@ public class FactMapper {
           if(factValue != null) {
             gedxFact.setOriginal(factValue);
           }
+
+          // add source references to the fact
+          gedxFact.setSources(CommonMapper.toSourcesAndSourceReferences(fact.getSourceCitations(), result));
+
           return gedxFact;
         }
       }

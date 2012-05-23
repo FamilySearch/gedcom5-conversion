@@ -48,8 +48,7 @@ public class FamilyMapper {
     if (coupleRelationship != null) {
       for (EventFact eventFact : ged5Family.getEventsFacts()) {
         System.out.println("eventFact " + eventFact.getTag() + ": " + eventFact.getDate() + " at " + eventFact.getPlace());
-        Fact fact = FactMapper.toFact(eventFact);
-        fact.setSources(CommonMapper.toSourcesAndSourceReferences(eventFact.getSourceCitations(), result));
+        Fact fact = FactMapper.toFact(eventFact, result);
         coupleRelationship.addFact(fact);
       }
       coupleRelationship.setNotes(CommonMapper.toNotes(ged5Family.getNotes()));

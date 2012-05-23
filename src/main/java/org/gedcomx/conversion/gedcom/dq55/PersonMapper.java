@@ -56,7 +56,7 @@ public class PersonMapper {
     //////////////////////////////////////////////////////////////////////
     // Process facts
 
-    processFacts(gedxPerson, dqPerson.getEventsFacts());
+    processFacts(gedxPerson, dqPerson.getEventsFacts(), result);
 
 
     //////////////////////////////////////////////////////////////////////
@@ -65,13 +65,13 @@ public class PersonMapper {
     result.addPerson(gedxPerson);
   }
 
-  private void processFacts(Person gedxPerson, List<EventFact> facts) {
+  private void processFacts(Person gedxPerson, List<EventFact> facts, GedcomxConversionResult result) throws IOException {
     if(facts == null) {
       return;
     }
 
     for(EventFact fact : facts) {
-      Fact gedxFact = FactMapper.toFact(fact);
+      Fact gedxFact = FactMapper.toFact(fact, result);
 
       if(gedxFact == null) {
         fact.getType();
