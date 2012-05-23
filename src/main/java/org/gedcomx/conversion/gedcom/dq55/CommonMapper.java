@@ -24,6 +24,7 @@ import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.*;
+import org.gedcomx.conclusion.Date;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
@@ -31,6 +32,7 @@ import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ConfidenceLevel;
+import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 import org.gedcomx.types.TypeReference;
 
@@ -74,7 +76,7 @@ public class CommonMapper {
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
         gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
-        result.addDescription(gedxSourceDescription);
+        result.addDescription(gedxSourceDescription, null);
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
@@ -128,33 +130,45 @@ public class CommonMapper {
     return sourceReferences.size() > 0 ? sourceReferences : null;
   }
 
-  public static void toChangeDescription(Change dqRepositoryChange, String aboutObjId, GedcomxConversionResult result) {
-    if (dqRepositoryChange != null) {
+  public static void toChangeDescription(Change dqChange, String entryNameForDescribedObject, GedcomxConversionResult result) {
+    if (dqChange != null) {
       try {
-        DateTime dateTime = dqRepositoryChange.getDateTime();
-        String parsePattern = "d MMM yyyy";
-        if (dateTime.getTime() != null) {
-          parsePattern += " HH:mm:ss.SSS";
-        }
-
-        String dateTimeString = dateTime.getValue();
-        if (dateTime.getTime() != null) {
-          dateTimeString += ' ' + dateTime.getTime();
-        }
-        java.util.Date date = parseDateString(parsePattern, dateTimeString);
+        java.util.Date date = toDate(dqChange);
 
         RDFLiteral lastModified = new RDFLiteral(date);
 
-        Description gedxRepositoryRecordDescription = new Description();
-        gedxRepositoryRecordDescription.setAbout(URI.create(aboutObjId));
-        gedxRepositoryRecordDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
+        Description gedxDescription = new Description();
+        gedxDescription.setAbout(URI.create(entryNameForDescribedObject));
+        gedxDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
 
-        result.addDescription(gedxRepositoryRecordDescription);
+        result.addDescription(gedxDescription, date);
       } catch (Throwable ex) {
         // something went wrong, so probably does not conform to the standard; we will skip it
         // TODO: log?
       }
     }
+  }
+
+  public static java.util.Date toDate(Change dqChange) {
+    if (dqChange == null)
+      return null;
+    DateTime dateTime = dqChange.getDateTime();
+    String parsePattern = "d MMM yy";
+    if (dateTime.getTime() != null) {
+      parsePattern += " HH:mm:ss.SSS";
+    }
+
+    String dateTimeString = dateTime.getValue();
+    if (dateTime.getTime() != null) {
+      dateTimeString += ' ' + dateTime.getTime();
+    }
+    try {
+      return parseDateString(parsePattern, dateTimeString);
+    }
+    catch (ParseException e) {
+      //TODO: logWarning
+    }
+    return null;
   }
 
   public static ConfidenceLevel toConfidenceLevel(String dqQuality) {
