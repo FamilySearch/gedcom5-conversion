@@ -43,6 +43,7 @@ public class SourceReferenceMapperTest {
 
   @BeforeClass
   public void setUp() throws Exception {
+    SequentialIdentifierGenerator.reset();
     URL gedcomUrl = this.getClass().getClassLoader().getResource("Case007-SourceCitatoins.ged");
     File gedcomFile = new File(gedcomUrl.toURI());
     ModelParser modelParser = new ModelParser();
@@ -60,11 +61,10 @@ public class SourceReferenceMapperTest {
     Family dqFamily = gedcom.getFamilies().get(0);
     TestConversionResult result = new TestConversionResult();
     GedcomMapper gedcomMapper = new GedcomMapper();
-    gedcomMapper.toPersons(gedcom.getPeople(), result);
 
     FamilyMapper mapper = new FamilyMapper();
 
-    String uuidPart = null;
+    String generatedId = null;
 
     mapper.toRelationship(dqFamily, result);
     assertNotNull(result.getRelationships());
@@ -81,8 +81,8 @@ public class SourceReferenceMapperTest {
         assertNotNull(gedxSourceReference);
         assertNotNull(gedxSourceReference.getDescription());
         assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
-        uuidPart = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
-        assertNotNull(UUID.fromString(uuidPart));
+        generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
+        assertNotNull(generatedId, "1");
         assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
         assertNull(gedxSourceReference.getDescription().getExtensionElements());
         assertNotNull(gedxSourceReference.getAttribution());
@@ -101,8 +101,7 @@ public class SourceReferenceMapperTest {
     assertEquals(result.getDescriptions().size(), 1);
     Description gedxSourceDescription = result.getDescriptions().get(0);
     assertNotNull(gedxSourceDescription);
-    assertNotNull(UUID.fromString(gedxSourceDescription.getId()));
-    assertEquals(gedxSourceDescription.getId(), uuidPart);
+    assertEquals(gedxSourceDescription.getId(), generatedId);
     assertNull(gedxSourceDescription.getType());
     assertNull(gedxSourceDescription.getExtensionAttributes());
     assertNull(gedxSourceDescription.getAbout());
@@ -122,7 +121,6 @@ public class SourceReferenceMapperTest {
     Family dqFamily = gedcom.getFamilies().get(1);
     TestConversionResult result = new TestConversionResult();
     GedcomMapper gedcomMapper = new GedcomMapper();
-    gedcomMapper.toPersons(gedcom.getPeople(), result);
 
     FamilyMapper mapper = new FamilyMapper();
 
@@ -133,7 +131,7 @@ public class SourceReferenceMapperTest {
     assertEquals(result.getDescriptions().size(), 1);
     Description gedxSourceDescription = result.getDescriptions().get(0);
     assertNotNull(gedxSourceDescription);
-    assertNotNull(UUID.fromString(gedxSourceDescription.getId()));
+    assertEquals(gedxSourceDescription.getId(), "2");
     assertNull(gedxSourceDescription.getType());
     assertNull(gedxSourceDescription.getExtensionAttributes());
     assertNull(gedxSourceDescription.getAbout());

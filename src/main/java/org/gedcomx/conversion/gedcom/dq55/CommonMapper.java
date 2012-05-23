@@ -24,7 +24,6 @@ import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.*;
-import org.gedcomx.conclusion.Date;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
@@ -32,7 +31,6 @@ import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ConfidenceLevel;
-import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 import org.gedcomx.types.TypeReference;
 
@@ -74,7 +72,7 @@ public class CommonMapper {
       if ((dqSource.getRef() != null) || ((dqSource.getValue() != null) || (dqSource.getText() != null) || (dqSource.getQuality() != null))) { // TODO: may need to update the condition to include notes or media
         Description gedxSourceDescription = new Description();
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(UUID.randomUUID().toString()); // TODO: need a real identifier here?
+        gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
         result.addDescription(gedxSourceDescription);
 
