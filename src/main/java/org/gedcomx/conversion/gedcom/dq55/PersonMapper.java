@@ -88,20 +88,13 @@ public class PersonMapper {
     }
 
     if(fact.getValue().equalsIgnoreCase("M")) {
-      //TODO Use gender constructor that takes type
-      Gender gender = new Gender();
-      gender.setKnownType(GenderType.Male);
-      gedxPerson.setGender(gender);
+      gedxPerson.setGender(new Gender(GenderType.Male));
     }
     else if(fact.getValue().equalsIgnoreCase("F")) {
-      Gender gender = new Gender();
-      gender.setKnownType(GenderType.Female);
-      gedxPerson.setGender(gender);
+      gedxPerson.setGender(new Gender(GenderType.Female));
     }
     else if(fact.getValue().equalsIgnoreCase("U")) {
-      Gender gender = new Gender();
-      gender.setKnownType(GenderType.Unknown);
-      gedxPerson.setGender(gender);
+      gedxPerson.setGender(new Gender(GenderType.Unknown));
     }
     else  {
       //TODO warn/log
