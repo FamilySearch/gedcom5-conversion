@@ -66,7 +66,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
     if (lastModified != null) {
       handleLastModified(CommonMapper.getOrganizationEntryName(person.getId()), lastModified);
     }
