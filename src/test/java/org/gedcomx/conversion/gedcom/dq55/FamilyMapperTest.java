@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeTest;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -52,6 +53,8 @@ public class FamilyMapperTest {
     assertEquals(result.getRelationships().size(), 5);
 
     Relationship relCouple = testRelationship(0, RelationshipType.Couple, "I1", "I11", 1);
+    assertSize(relCouple.getSources(), 1);
+    assertSize(relCouple.getNotes(), 1);
 
     testRelationship(1, RelationshipType.ParentChild, "I1", "I2", 0);
     testRelationship(2, RelationshipType.ParentChild, "I11", "I2", 0);
@@ -68,6 +71,8 @@ public class FamilyMapperTest {
     assertEquals(result.getRelationships().size(), 3);
 
     Relationship relCouple = testRelationship(0, RelationshipType.Couple, "I15", "I14", 1);
+    assertSize(relCouple.getSources(), 0);
+    assertSize(relCouple.getNotes(), 0);
 
     testRelationship(1, RelationshipType.ParentChild, "I15", "I1", 0);
     testRelationship(2, RelationshipType.ParentChild, "I14", "I1", 0);
@@ -82,6 +87,18 @@ public class FamilyMapperTest {
     assertEquals(result.getRelationships().size(), 1);
 
     Relationship relCouple = testRelationship(0, RelationshipType.Couple, "I117", "I14", 2);
+    assertSize(relCouple.getSources(), 1);
+    assertSize(relCouple.getNotes(), 2);
+  }
+
+  private void assertSize(List list, int count) {
+    if (count == 0) {
+      if (list != null)
+        assertEquals(list.size(), 0);
+    }
+    else {
+      assertEquals(list.size(), count);
+    }
   }
 
   private Relationship testRelationship(int relNumber, RelationshipType relationshipType, String person1Id, String person2Id, int factCount) {
