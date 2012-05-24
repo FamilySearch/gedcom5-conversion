@@ -4,13 +4,19 @@
 2 VERS 5.5
 2 FORM LINEAGE-LINKED
 1 CHAR UTF-8
-1 SUBM @SUB1@
-0 @SUB1@ SUBM
+1 SUBM @SUBM1@
+0 @SUBM1@ SUBM
 1 NAME Henri Herkimer Hofmeir
 1 ADDR 1 Genealogist Way
 2 CONT Hometown, ZZ  99999
 2 CONT United States
+0 @SUBM2@ SUBM
+1 NAME SubmitterGiven1 SubmitterSurname1
+1 ADDR 2 Genealogist Way
+2 CONT Hometown, ZZ  99999
+2 CONT United States
 0 @INDI1@ INDI
+1 SUBM @SUBM2@
 1 NAME Joanna Maria /Louwaert/
 1 BIRT
 2 DATE 30 Jan 1820

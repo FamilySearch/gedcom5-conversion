@@ -20,7 +20,7 @@ public class FamilyMapperTest {
 
   @BeforeClass
   public void setUp() throws Exception {
-    URL gedcomUrl = this.getClass().getClassLoader().getResource("Fam001.ged");
+    URL gedcomUrl = this.getClass().getClassLoader().getResource("Case009-Family.ged");
     File gedcomFile = new File(gedcomUrl.toURI());
     ModelParser modelParser = new ModelParser();
 
