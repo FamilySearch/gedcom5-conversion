@@ -15,12 +15,11 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.*;
-import org.gedcomx.common.ResourceReference;
-import org.gedcomx.common.URI;
+import org.folg.gedcom.model.Repository;
+import org.folg.gedcom.model.RepositoryRef;
+import org.folg.gedcom.model.Source;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
-import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
@@ -29,9 +28,6 @@ import org.gedcomx.types.ResourceType;
 import org.gedcomx.types.TypeReference;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Pattern;
 
 
 public class SourceDescriptionMapper {
@@ -116,54 +112,8 @@ public class SourceDescriptionMapper {
 
   public void toOrganization(Repository dqRepository, GedcomxConversionResult result) throws IOException {
     Organization gedxOrganization = new Organization();
-    gedxOrganization.setId(dqRepository.getId());
 
-    gedxOrganization.setName(new RDFLiteral(dqRepository.getName()));
-
-    final org.folg.gedcom.model.Address dqAddress = dqRepository.getAddress();
-    if (dqAddress != null) {
-      Address gedxAddress = new Address();
-
-      gedxAddress.setValue(dqAddress.getValue());
-      gedxAddress.setStreet(dqAddress.getAddressLine1());
-      gedxAddress.setStreet2(dqAddress.getAddressLine2());
-      gedxAddress.setStreet3(dqAddress.getAddressLine3());
-      gedxAddress.setCity(dqAddress.getCity());
-      gedxAddress.setStateOrProvince(dqAddress.getState());
-      gedxAddress.setPostalCode(dqAddress.getPostalCode());
-      gedxAddress.setCountry(dqAddress.getCountry());
-
-      gedxOrganization.setAddresses(Arrays.asList(gedxAddress));
-    }
-
-    if ((dqRepository.getPhone() != null) || (dqRepository.getFax() != null)) {
-      gedxOrganization.setPhones(new ArrayList<ResourceReference>());
-      if (dqRepository.getPhone() != null) {
-        ResourceReference phone = new ResourceReference();
-        boolean inGlobalFormat = inCanonicalGlobalFormat(dqRepository.getPhone());
-        String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
-        phone.setResource(URI.create(scheme + dqRepository.getPhone()));
-        gedxOrganization.getPhones().add(phone);
-      }
-      if (dqRepository.getFax() != null) {
-        ResourceReference fax = new ResourceReference();
-        boolean inGlobalFormat = inCanonicalGlobalFormat(dqRepository.getFax());
-        String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
-        fax.setResource(URI.create(scheme + dqRepository.getFax()));
-        gedxOrganization.getPhones().add(fax);
-      }
-    }
-
-    if (dqRepository.getEmail() != null) {
-      ResourceReference email = new ResourceReference();
-      gedxOrganization.setEmails(new ArrayList<ResourceReference>());
-      email.setResource(URI.create("mailto:" + dqRepository.getEmail()));
-      gedxOrganization.getEmails().add(email);
-    }
-
-    if (dqRepository.getWww() != null) {
-      gedxOrganization.setHomepage(new RDFLiteral(dqRepository.getWww()));
-    }
+    CommonMapper.populateAgent(gedxOrganization, dqRepository.getId(), dqRepository.getName(), dqRepository.getAddress(), dqRepository.getPhone(), dqRepository.getFax(), dqRepository.getEmail(), dqRepository.getWww());
 
     // TODO: add logging for fields we are not processing right now
 //    dqRepository.getExtensions();
@@ -209,10 +159,5 @@ public class SourceDescriptionMapper {
     }
 
     return resourceTypeRef;
-  }
-
-  private boolean inCanonicalGlobalFormat(String telephoneNumber) {
-    final Pattern pattern = Pattern.compile("^\\+[\\d \\.\\(\\)\\-/]+");
-    return pattern.matcher(telephoneNumber).matches();
   }
 }

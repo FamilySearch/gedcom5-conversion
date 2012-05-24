@@ -18,6 +18,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Submitter;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Person;
+import org.gedcomx.metadata.rdf.RDFLiteral;
 
 import java.io.IOException;
 
@@ -25,6 +26,19 @@ import java.io.IOException;
 public class SubmitterMapper {
   public void toContributor(Submitter dqSubmitter, GedcomxConversionResult result) throws IOException {
     Person gedxContributor = new Person();
+
+    CommonMapper.populateAgent(gedxContributor, dqSubmitter.getId(), dqSubmitter.getName(), dqSubmitter.getAddress(), dqSubmitter.getPhone(), dqSubmitter.getFax(), dqSubmitter.getEmail(), dqSubmitter.getWww());
+
+    if (dqSubmitter.getLanguage() != null) {
+      gedxContributor.setLanguage(new RDFLiteral(dqSubmitter.getLanguage()));
+    }
+
+    // TODO: add logging for fields we are not processing right now
+//    dqSubmitter.getId();
+//    dqSubmitter.getName();
+//    dqSubmitter.getRin();
+//    dqSubmitter.getValue();
+//    dqSubmitter.getExtensions();
 
     result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
   }

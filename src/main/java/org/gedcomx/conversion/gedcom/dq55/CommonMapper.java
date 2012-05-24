@@ -23,11 +23,15 @@ import org.gedcomx.common.Attribution;
 import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
-import org.gedcomx.conclusion.*;
+import org.gedcomx.conclusion.Relationship;
+import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
+import org.gedcomx.metadata.foaf.Address;
+import org.gedcomx.metadata.foaf.Agent;
 import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
@@ -37,7 +41,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  */
@@ -247,5 +253,61 @@ public class CommonMapper {
     String gedxPersonId = ged5PersonRef.getRef(); // gedx id is same as ged5 id
     reference.setResource( new URI(getPersonEntryName(gedxPersonId)));
     return reference;
+  }
+
+  public static boolean inCanonicalGlobalFormat(String telephoneNumber) {
+    final Pattern pattern = Pattern.compile("^\\+[\\d \\.\\(\\)\\-/]+");
+    return pattern.matcher(telephoneNumber).matches();
+  }
+
+  public static void populateAgent(Agent agent, String id, String name, org.folg.gedcom.model.Address address, String phone, String fax, String email, String www) {
+    agent.setId(id);
+    agent.setName(new RDFLiteral(name));
+
+    if(address != null) {
+      agent.setAddresses(new ArrayList<Address>());
+      Address gedxAddress = new Address();
+      gedxAddress.setValue(address.getValue());
+      gedxAddress.setCity(address.getCity());
+      gedxAddress.setCountry(address.getCountry());
+      gedxAddress.setPostalCode(address.getPostalCode());
+      gedxAddress.setStateOrProvince(address.getState());
+      gedxAddress.setStreet(address.getAddressLine1());
+      gedxAddress.setStreet2(address.getAddressLine2());
+      gedxAddress.setStreet3(address.getAddressLine3());
+      agent.getAddresses().add(gedxAddress);
+
+      // TODO log/warn if address.getName() is valued
+    }
+
+    if (phone != null || fax != null) {
+      agent.setPhones(new ArrayList<ResourceReference>());
+      if (phone != null) {
+        ResourceReference phoneRef = new ResourceReference();
+        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
+        String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
+        phoneRef.setResource(URI.create(scheme + phone));
+        agent.getPhones().add(phoneRef);
+      }
+      if (fax != null) {
+        ResourceReference faxRef = new ResourceReference();
+        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
+        String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
+        faxRef.setResource(URI.create(scheme + fax));
+        agent.getPhones().add(faxRef);
+      }
+    }
+
+    if (email != null) {
+      ResourceReference emailRef = new ResourceReference();
+      agent.setEmails(new ArrayList<ResourceReference>());
+      //TODO catch URI creation exceptions and log/warn
+      emailRef.setResource(URI.create("mailto:" + email));
+      agent.getEmails().add(emailRef);
+    }
+
+    if (www != null) {
+      agent.setHomepage(new RDFLiteral(www));
+    }
   }
 }
