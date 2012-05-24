@@ -19,6 +19,7 @@ import org.folg.gedcom.model.Family;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conclusion.Fact;
+import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
@@ -124,14 +125,44 @@ public class SourceReferenceMapperTest {
 
     FamilyMapper mapper = new FamilyMapper();
 
+    String generatedId = null;
+
     mapper.toRelationship(dqFamily, result);
     assertNotNull(result.getRelationships());
     assertEquals(result.getRelationships().size(), 3);
+    for (Relationship gedxRelationship : result.getRelationships()) {
+      if (gedxRelationship.getKnownType() == RelationshipType.Couple) {
+        assertNotNull(gedxRelationship.getFacts());
+        assertEquals(gedxRelationship.getFacts().size(), 1);
+        Fact gedxFact = gedxRelationship.getFacts().get(0);
+        assertNotNull(gedxFact);
+        assertNotNull(gedxFact.getSources());
+        assertEquals(gedxFact.getSources().size(), 1);
+        SourceReference gedxSourceReference = gedxFact.getSources().get(0);
+        assertNotNull(gedxSourceReference);
+        assertNotNull(gedxSourceReference.getDescription());
+        assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
+        generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
+        assertNotNull(generatedId, "2");
+        assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
+        assertNull(gedxSourceReference.getDescription().getExtensionElements());
+        assertNotNull(gedxSourceReference.getAttribution());
+        assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Possibly);
+        assertNull(gedxSourceReference.getAttribution().getModified());
+        assertNull(gedxSourceReference.getAttribution().getProofStatement());
+        assertNull(gedxSourceReference.getAttribution().getContributor());
+        assertNull(gedxSourceReference.getId());
+        assertNull(gedxSourceReference.getType());
+        assertNull(gedxSourceReference.getExtensionAttributes());
+        assertNull(gedxSourceReference.getExtensionElements());
+        assertNull(gedxSourceReference.getResource());
+      }
+    }
     assertNotNull(result.getDescriptions());
     assertEquals(result.getDescriptions().size(), 1);
     Description gedxSourceDescription = result.getDescriptions().get(0);
     assertNotNull(gedxSourceDescription);
-    assertEquals(gedxSourceDescription.getId(), "2");
+    assertEquals(gedxSourceDescription.getId(), generatedId);
     assertNull(gedxSourceDescription.getType());
     assertNull(gedxSourceDescription.getExtensionAttributes());
     assertNull(gedxSourceDescription.getAbout());
@@ -142,6 +173,147 @@ public class SourceReferenceMapperTest {
     assertEquals(gedxDecoratedSourceDescription.getDescription().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getDescription().get(0).getValue(), "\"Germany, Births and Baptisms, 1558-1898,\" index, FamilySearch (https://familysearch.org/pal:/MM9.1.1/VHQB-CHW :accessed 22 May 2012), Joannes Baptista Louwart.");
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 0);
+  }
+
+  @Test
+  public void testToSourcesAndSourceReferences3() throws Exception {
+    org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(0);
+    TestConversionResult result = new TestConversionResult();
+    GedcomMapper gedcomMapper = new GedcomMapper();
+
+    PersonMapper mapper = new PersonMapper();
+
+    String generatedId = null;
+
+    mapper.toPerson(dqPerson, result);
+    assertNotNull(result.getPersons());
+    assertEquals(result.getPersons().size(), 1);
+
+    Person gedxPerson = result.getPersons().get(0);
+    assertNotNull(gedxPerson.getFacts());
+    assertEquals(gedxPerson.getFacts().size(), 1);
+    Fact gedxFact = gedxPerson.getFacts().get(0);
+    assertNotNull(gedxFact);
+    assertNotNull(gedxFact.getSources());
+    assertEquals(gedxFact.getSources().size(), 1);
+    SourceReference gedxSourceReference = gedxFact.getSources().get(0);
+    assertNotNull(gedxSourceReference);
+    assertNotNull(gedxSourceReference.getDescription());
+    assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
+    generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
+    assertNotNull(generatedId, "3");
+    assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
+    assertNull(gedxSourceReference.getDescription().getExtensionElements());
+    assertNotNull(gedxSourceReference.getAttribution());
+    assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Apparently);
+    assertNull(gedxSourceReference.getAttribution().getModified());
+    assertNull(gedxSourceReference.getAttribution().getProofStatement());
+    assertNull(gedxSourceReference.getAttribution().getContributor());
+    assertNull(gedxSourceReference.getId());
+    assertNull(gedxSourceReference.getType());
+    assertNull(gedxSourceReference.getExtensionAttributes());
+    assertNull(gedxSourceReference.getExtensionElements());
+    assertNull(gedxSourceReference.getResource());
+
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 1);
+    Description gedxSourceDescription = result.getDescriptions().get(0);
+    assertNotNull(gedxSourceDescription);
+    assertEquals(gedxSourceDescription.getId(), generatedId);
+    assertNull(gedxSourceDescription.getType());
+    assertNull(gedxSourceDescription.getExtensionAttributes());
+    assertNull(gedxSourceDescription.getAbout());
+    assertNotNull(gedxSourceDescription.getExtensionElements());
+    DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
+    assertUnusedFieldsAreUnused(gedxDecoratedSourceDescription);
+    assertEquals(gedxDecoratedSourceDescription.getCreated().size(), 0);
+    assertEquals(gedxDecoratedSourceDescription.getDescription().size(), 1);
+    assertEquals(gedxDecoratedSourceDescription.getDescription().get(0).getValue(), "__SOUR_JoannesBaptistaLouwaert__");
+    assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 0);
+  }
+
+  @Test
+  public void testToSourcesAndSourceReferences4() throws Exception {
+    org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(1);
+    TestConversionResult result = new TestConversionResult();
+    GedcomMapper gedcomMapper = new GedcomMapper();
+
+    PersonMapper mapper = new PersonMapper();
+
+    String generatedId = null;
+
+    mapper.toPerson(dqPerson, result);
+    assertNotNull(result.getPersons());
+    assertEquals(result.getPersons().size(), 1);
+
+    Person gedxPerson = result.getPersons().get(0);
+    assertNotNull(gedxPerson.getFacts());
+    assertEquals(gedxPerson.getFacts().size(), 1);
+    Fact gedxFact = gedxPerson.getFacts().get(0);
+    assertNotNull(gedxFact);
+    assertNotNull(gedxFact.getSources());
+    assertEquals(gedxFact.getSources().size(), 1);
+    SourceReference gedxSourceReference = gedxFact.getSources().get(0);
+    assertNotNull(gedxSourceReference);
+    assertNotNull(gedxSourceReference.getDescription());
+    assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
+    generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
+    assertNotNull(generatedId, "4");
+    assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
+    assertNull(gedxSourceReference.getDescription().getExtensionElements());
+    assertNotNull(gedxSourceReference.getAttribution());
+    assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Perhaps);
+    assertNull(gedxSourceReference.getAttribution().getModified());
+    assertNull(gedxSourceReference.getAttribution().getProofStatement());
+    assertNull(gedxSourceReference.getAttribution().getContributor());
+    assertNull(gedxSourceReference.getId());
+    assertNull(gedxSourceReference.getType());
+    assertNull(gedxSourceReference.getExtensionAttributes());
+    assertNull(gedxSourceReference.getExtensionElements());
+    assertNull(gedxSourceReference.getResource());
+
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 0);
+  }
+
+  @Test
+  public void testToSourcesAndSourceReferences5() throws Exception {
+    org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(2);
+    TestConversionResult result = new TestConversionResult();
+    GedcomMapper gedcomMapper = new GedcomMapper();
+
+    PersonMapper mapper = new PersonMapper();
+
+    String generatedId = null;
+
+    mapper.toPerson(dqPerson, result);
+    assertNotNull(result.getPersons());
+    assertEquals(result.getPersons().size(), 1);
+
+    Person gedxPerson = result.getPersons().get(0);
+    assertNotNull(gedxPerson.getFacts());
+    assertEquals(gedxPerson.getFacts().size(), 1);
+    Fact gedxFact = gedxPerson.getFacts().get(0);
+    assertNotNull(gedxFact);
+    assertNotNull(gedxFact.getSources());
+    assertEquals(gedxFact.getSources().size(), 1);
+    SourceReference gedxSourceReference = gedxFact.getSources().get(0);
+    assertNotNull(gedxSourceReference);
+    assertNotNull(gedxSourceReference.getDescription());
+    assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
+    generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
+    assertNotNull(generatedId, "5");
+    assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
+    assertNull(gedxSourceReference.getDescription().getExtensionElements());
+    assertNull(gedxSourceReference.getAttribution());
+    assertNull(gedxSourceReference.getId());
+    assertNull(gedxSourceReference.getType());
+    assertNull(gedxSourceReference.getExtensionAttributes());
+    assertNull(gedxSourceReference.getExtensionElements());
+    assertNull(gedxSourceReference.getResource());
+
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 0);
   }
 
   private void assertUnusedFieldsAreUnused(DublinCoreDescriptionDecorator gedxDecoratedSourceDescription) {

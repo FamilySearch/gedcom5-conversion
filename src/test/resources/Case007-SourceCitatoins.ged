@@ -12,10 +12,22 @@
 2 CONT United States
 0 @INDI1@ INDI
 1 NAME Joannes Baptista /Louwaert/
+1 BIRT
+2 DATE 5 Oct 1794
+2 SOUR __SOUR_JoannesBaptistaLouwaert__
+3 QUAY 1
 0 @INDI2@ INDI
 1 NAME Franciscus /Louwaert/
+1 DEAT
+2 DATE 26 Mar 1825
+2 SOUR
+3 QUAY 0
 0 @INDI3@ INDI
 1 NAME Barbara /Verbeke/
+1 BIRT
+2 DATE 5 Oct 1794
+2 SOUR
+3 TEXT On 1 October 1830 appeared ... Joannes Baptista Louwaert ... adult son of ... Barbare Verbeke, age 66 years ....
 0 @INDI4@ INDI
 1 NAME Joanna /Verstraete/
 0 @INDI5@ INDI
@@ -60,7 +72,7 @@
 4 CONT Verbegen, welche sich in Bruggen in Flandern verehelicht haben
 4 CONT die Tauftzeugen seyend gewesen Joannes Baptista Diskoll
 4 CONT und Maria Marusch
-3 QUAY 3
+3 QUAY 2
 2 SOUR
 0 @SOUR1@ SOUR
 1 DATA

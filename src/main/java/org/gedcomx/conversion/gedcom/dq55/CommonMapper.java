@@ -72,11 +72,10 @@ public class CommonMapper {
 
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
       if ((dqSource.getRef() != null) || ((dqSource.getValue() != null) || (dqSource.getText() != null) || (dqSource.getQuality() != null))) { // TODO: may need to update the condition to include notes or media
+        boolean sourceDescriptionHasData = false;
         Description gedxSourceDescription = new Description();
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
         gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
-
-        result.addDescription(gedxSourceDescription, null);
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
@@ -85,6 +84,7 @@ public class CommonMapper {
 
         if (dqSource.getRef() != null) {
           gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+          sourceDescriptionHasData = true;
 
           if (dqSource.getPage() != null) {
             gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
@@ -103,15 +103,18 @@ public class CommonMapper {
           }
         } else if (dqSource.getValue() != null) {
           gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
+          sourceDescriptionHasData = true;
         }
 
         if (dqSource.getText() != null) {
           // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+          // sourceDescriptionHasData = true;
         }
 
-        if (dqSource.getQuality() != null) {
+        ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
+        if (gedxConfidenceLevel != null) {
           Attribution attribution = new Attribution();
-          attribution.setConfidence(new TypeReference<ConfidenceLevel>(toConfidenceLevel(dqSource.getQuality())));
+          attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
           gedxSourceReference.setAttribution(attribution);
         }
 
@@ -120,6 +123,10 @@ public class CommonMapper {
         //dqSource.getNoteRefs();
         //dqSource.getMedia();
         //dqSource.getMediaRefs();
+
+        if (sourceDescriptionHasData) {
+          result.addDescription(gedxSourceDescription, null);
+        }
 
         sourceReferences.add(gedxSourceReference);
       } else {
