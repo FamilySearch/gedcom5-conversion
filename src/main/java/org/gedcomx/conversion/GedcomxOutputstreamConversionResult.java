@@ -63,6 +63,12 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   }
 
   @Override
+  public void addContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+    String entryName = CommonMapper.getContributorEntryName(person.getId());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified);
+  }
+
+  @Override
   public void addOrganization(Organization organization, Date lastModified) throws IOException {
     String entryName = CommonMapper.getOrganizationEntryName(organization.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization, lastModified);

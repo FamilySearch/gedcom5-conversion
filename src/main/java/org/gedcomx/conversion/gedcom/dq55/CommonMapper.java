@@ -24,15 +24,12 @@ import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.*;
-import org.gedcomx.conclusion.Date;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.rdf.Description;
-import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ConfidenceLevel;
-import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
 import org.gedcomx.types.TypeReference;
 
@@ -192,14 +189,6 @@ public class CommonMapper {
   }
 
   /**
-   * @param gedxDescriptionId resource to be saved in zip file
-   * @return entry name in the zip file for the given resource
-   */
-  public static String getDescriptionEntryName(String gedxDescriptionId) {
-    return "descriptions/" + gedxDescriptionId;
-  }
-
-  /**
    * @param gedxPersonId to be saved in zip file
    * @return entry name in the zip file for the given resource
    */
@@ -209,6 +198,18 @@ public class CommonMapper {
 
   public static String getRelationshipEntryName(String id) {
     return "relationships/" + id;
+  }
+
+  /**
+   * @param gedxDescriptionId resource to be saved in zip file
+   * @return entry name in the zip file for the given resource
+   */
+  public static String getDescriptionEntryName(String gedxDescriptionId) {
+    return "descriptions/" + gedxDescriptionId;
+  }
+
+  public static String getContributorEntryName(String id) {
+    return "contributors/" + id;
   }
 
   public static String getOrganizationEntryName(String id) {

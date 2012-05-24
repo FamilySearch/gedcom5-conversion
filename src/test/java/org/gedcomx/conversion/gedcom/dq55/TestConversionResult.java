@@ -17,9 +17,10 @@ import java.util.*;
 public class TestConversionResult implements GedcomxConversionResult {
   private Map<String, Map<String, String>> entryAttributes = new HashMap<String, Map<String, String>>();
   private List<Person> persons = new ArrayList<Person>();
-  private List<Description> descriptions = new ArrayList<Description>();
-  private List<Organization> organizations = new ArrayList<Organization>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
+  private List<Description> descriptions = new ArrayList<Description>();
+  private List<org.gedcomx.metadata.foaf.Person> contributors = new ArrayList<org.gedcomx.metadata.foaf.Person>();
+  private List<Organization> organizations = new ArrayList<Organization>();
 
   public List<Person> getPersons() {
     return persons;
@@ -58,6 +59,19 @@ public class TestConversionResult implements GedcomxConversionResult {
     }
 
     this.descriptions.add(description);
+  }
+
+  public List<org.gedcomx.metadata.foaf.Person> getContributors() {
+    return contributors;
+  }
+
+  @Override
+  public void addContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+    if (lastModified != null) {
+      handleLastModified(CommonMapper.getOrganizationEntryName(person.getId()), lastModified);
+    }
+
+    this.contributors.add(person);
   }
 
   public List<Organization> getOrganizations() {
