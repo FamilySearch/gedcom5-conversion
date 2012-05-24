@@ -39,13 +39,15 @@ public class FamilyMapperTest {
 
   @BeforeMethod
   public void setUpTest() throws Exception {
+    // executed once before each @Test case
+    // reset the result to a known and empty state
     result = new TestConversionResult();
     GedcomMapper gedcomMapper = new GedcomMapper();
     gedcomMapper.toPersons(gedcom.getPeople(), result);
   }
 
   @Test
-  public void testToFamilyF1() throws Exception {
+  public void testFamilyF1() throws Exception {
     FamilyMapper mapper = new FamilyMapper();
     Family dqFamily = gedcom.getFamilies().get(0);
 
@@ -63,7 +65,7 @@ public class FamilyMapperTest {
   }
 
   @Test
-  public void testToFamilyF2() throws Exception {
+  public void testFamilyF2() throws Exception {
     FamilyMapper mapper = new FamilyMapper();
     Family dqFamily = gedcom.getFamilies().get(1);
 
@@ -79,7 +81,7 @@ public class FamilyMapperTest {
   }
 
   @Test
-  public void testToFamilyF10() throws Exception {
+  public void testFamilyF10() throws Exception {
     FamilyMapper mapper = new FamilyMapper();
     Family dqFamily = gedcom.getFamilies().get(2);
 
