@@ -186,8 +186,8 @@ public class SourceDescriptionMapperDescriptionTest {
 
     mapper.toSourceDescription(dqSource, result);
     assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 2);
-    Description gedxSourceDescription = result.getDescriptions().get(1);
+    assertEquals(result.getDescriptions().size(), 1);
+    Description gedxSourceDescription = result.getDescriptions().get(0);
     assertNotNull(gedxSourceDescription);
     assertEquals(gedxSourceDescription.getId(), "SOUR19");
     assertNull(gedxSourceDescription.getAbout());
@@ -205,8 +205,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 0);
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour19_titl__");
-    // Description that is the result of the CHAN tag
-    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "descriptions/" + gedxSourceDescription.getId(), "2011-11-11T11:11:11.111-07:00");
+    // result of the CHAN tag
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "Fri Nov 11 11:11:11 MST 2011");
+    // TODO: assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "2011-11-11T11:11:11.111-07:00");
   }
 
   @Test
@@ -217,8 +218,8 @@ public class SourceDescriptionMapperDescriptionTest {
 
     mapper.toSourceDescription(dqSource, result);
     assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 2);
-    Description gedxSourceDescription = result.getDescriptions().get(1);
+    assertEquals(result.getDescriptions().size(), 1);
+    Description gedxSourceDescription = result.getDescriptions().get(0);
     assertNotNull(gedxSourceDescription);
     assertEquals(gedxSourceDescription.getId(), "SOUR20");
     assertNull(gedxSourceDescription.getAbout());
@@ -236,29 +237,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 0);
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour20_titl__");
-    // Description that is the result of the CHAN tag
-    assertDescriptionResultingFromChanTag(result.getDescriptions().get(0), "descriptions/" + gedxSourceDescription.getId(), "2011-11-11T00:00:00.000-07:00");
-  }
-
-  private void assertDescriptionResultingFromChanTag(Description gedxDescription, String aboutId, String dateTimeValue) {
-    assertNotNull(gedxDescription);
-    assertNull(gedxDescription.getExtensionAttributes());
-    assertNull(gedxDescription.getId());
-    assertNull(gedxDescription.getType());
-    assertNotNull(gedxDescription.getAbout());
-    assertEquals(gedxDescription.getAbout().toString(), aboutId);
-    assertNotNull(gedxDescription.getExtensionElements());
-    assertEquals(gedxDescription.getExtensionElements().size(), 1);
-    JAXBElement<RDFLiteral> modifiedContainer = (JAXBElement<RDFLiteral>)gedxDescription.getExtensionElements().get(0);
-    assertEquals(modifiedContainer.getName().getNamespaceURI(), "http://purl.org/dc/terms/");
-    assertEquals(modifiedContainer.getName().getLocalPart(), "modified");
-    assertEquals(modifiedContainer.getDeclaredType(), RDFLiteral.class);
-    RDFLiteral value = modifiedContainer.getValue();
-    assertNotNull(value);
-    assertNull(value.getLang());
-    assertNull(value.getExtensionAttributes());
-    assertEquals(value.getDatatype().toString(), "http://www.w3.org/2001/XMLSchema#dateTime");
-    assertEquals(value.getValue(), dateTimeValue);
+    // result of the CHAN tag
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "Fri Nov 11 00:00:00 MST 2011");
+    // TODO: assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "2011-11-11T00:00:00.000-07:00");
   }
 
   private void assertMediaTypeToResourceTypeMappingUsingInlineRepo(int sourceIndex, String sourceId, ResourceType expectedResourceType) throws Exception {

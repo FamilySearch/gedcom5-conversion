@@ -111,10 +111,6 @@ public class SourceDescriptionMapper {
     //dqSource.getItalic(); // PAF extension elements; will not process
     //dqSource.getParen();  // PAF extension elements; will not process
 
-    if (dqSource.getChange() != null) {
-      CommonMapper.toChangeDescription(dqSource.getChange(), CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId()), result);
-    }
-
     result.addDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
   }
 
@@ -175,10 +171,6 @@ public class SourceDescriptionMapper {
 //    dqRepository.getNotes();
 //    dqRepository.getRin();
 //    dqRepository.getValue(); // expected to always be null
-
-    if (dqRepository.getChange() != null) {
-      CommonMapper.toChangeDescription(dqRepository.getChange(), CommonMapper.getOrganizationEntryName(gedxOrganization.getId()), result);
-    }
 
     result.addOrganization(gedxOrganization, CommonMapper.toDate(dqRepository.getChange()));
   }

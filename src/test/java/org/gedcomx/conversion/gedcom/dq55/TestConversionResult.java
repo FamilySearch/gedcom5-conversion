@@ -10,13 +10,11 @@ import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-/**
- */
+
 public class TestConversionResult implements GedcomxConversionResult {
+  private Map<String, Map<String, String>> entryAttributes = new HashMap<String, Map<String, String>>();
   private List<Person> persons = new ArrayList<Person>();
   private List<Description> descriptions = new ArrayList<Description>();
   private List<Organization> organizations = new ArrayList<Organization>();
@@ -28,6 +26,10 @@ public class TestConversionResult implements GedcomxConversionResult {
 
   @Override
   public void addPerson(Person person, Date lastModified) throws IOException {
+    if (lastModified != null) {
+      handleLastModified(CommonMapper.getPersonEntryName(person.getId()), lastModified);
+    }
+
     this.persons.add(person);
   }
 
@@ -37,6 +39,10 @@ public class TestConversionResult implements GedcomxConversionResult {
 
   @Override
   public void addRelationship(Relationship relationship, Date lastModified) throws IOException {
+    if (lastModified != null) {
+      handleLastModified(CommonMapper.getRelationshipEntryName(relationship.getId()), lastModified);
+    }
+
     this.relationships.add(relationship);
   }
 
@@ -46,6 +52,10 @@ public class TestConversionResult implements GedcomxConversionResult {
 
   @Override
   public void addDescription(Description description, Date lastModified) throws IOException {
+    if (lastModified != null) {
+      handleLastModified(CommonMapper.getDescriptionEntryName(description.getId()), lastModified);
+    }
+
     this.descriptions.add(description);
   }
 
@@ -55,6 +65,21 @@ public class TestConversionResult implements GedcomxConversionResult {
 
   @Override
   public void addOrganization(Organization organization, Date lastModified) throws IOException {
+    if (lastModified != null) {
+      handleLastModified(CommonMapper.getOrganizationEntryName(organization.getId()), lastModified);
+    }
+
     this.organizations.add(organization);
+  }
+
+  public Map<String, String> getEntryAttributes(String entryName) {
+    return entryAttributes.get(entryName);
+  }
+
+  private void handleLastModified(String entryName, Date lastModified) {
+    if (!entryAttributes.containsKey(entryName)) {
+      entryAttributes.put(entryName, new HashMap<String, String>());
+    }
+    entryAttributes.get(entryName).put("Last-Modified", lastModified.toString());
   }
 }

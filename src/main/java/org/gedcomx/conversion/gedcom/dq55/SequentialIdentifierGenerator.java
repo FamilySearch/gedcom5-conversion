@@ -29,4 +29,7 @@ public class SequentialIdentifierGenerator {
   public static void reset() {
     lastId.set(0);
   }
+
+  private SequentialIdentifierGenerator() { } // added to remove "major" sonar warning
+                                              // formatted to minimize impact on code coverage metrics
 }

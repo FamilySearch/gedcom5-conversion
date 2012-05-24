@@ -71,95 +71,84 @@ public class CommonMapper {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
 
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
-      if ((dqSource.getRef() != null) || ((dqSource.getValue() != null) || (dqSource.getText() != null) || (dqSource.getQuality() != null))) { // TODO: may need to update the condition to include notes or media
-        boolean sourceDescriptionHasData = false;
-        Description gedxSourceDescription = new Description();
-        DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+      boolean sourceDescriptionHasData = false;
+      boolean sourceReferenceHasData = false;
+      Description gedxSourceDescription = new Description();
+      DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
+      gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
-        String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
-        SourceReference gedxSourceReference = new SourceReference();
-        gedxSourceReference.setDescription(new ResourceReference());
-        gedxSourceReference.getDescription().setResource(URI.create(entryName));
+      String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
+      SourceReference gedxSourceReference = new SourceReference();
+      gedxSourceReference.setDescription(new ResourceReference());
+      gedxSourceReference.getDescription().setResource(URI.create(entryName));
 
-        if (dqSource.getRef() != null) {
-          gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
-          sourceDescriptionHasData = true;
+      if (dqSource.getRef() != null) {
+        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+        sourceDescriptionHasData = true;
 
-          if (dqSource.getPage() != null) {
-            gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
+        if (dqSource.getPage() != null) {
+          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
+        }
+
+        if (dqSource.getDate() != null) {
+          final String parsePattern = "d MMM yyyy";
+          try {
+            java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
+            gedxDecoratedSourceDescription.created(date);
           }
-
-          if (dqSource.getDate() != null) {
-            final String parsePattern = "d MMM yyyy";
-            try {
-              java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
-              gedxDecoratedSourceDescription.created(date);
-            }
-            catch (Throwable ex) {
-              // something went wrong, so probably does not conform to the standard; we will skip it
-              // TODO: log?
-            }
+          catch (Throwable ex) {
+            // something went wrong, so probably does not conform to the standard; we will skip it
+            // TODO: log?
           }
-        } else if (dqSource.getValue() != null) {
-          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
-          sourceDescriptionHasData = true;
         }
+      } else if (dqSource.getValue() != null) {
+        gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
+        sourceDescriptionHasData = true;
+      }
 
-        if (dqSource.getText() != null) {
-          // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
-          // sourceDescriptionHasData = true;
-        }
+      if (dqSource.getText() != null) {
+        // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+        // sourceDescriptionHasData = true;
+      }
 
-        ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
-        if (gedxConfidenceLevel != null) {
-          Attribution attribution = new Attribution();
-          attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
-          gedxSourceReference.setAttribution(attribution);
-        }
+      ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
+      if (gedxConfidenceLevel != null) {
+        Attribution attribution = new Attribution();
+        attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
+        gedxSourceReference.setAttribution(attribution);
+        sourceReferenceHasData = true;
+      }
 
-        // TODO: log?
-        //dqSource.getNotes();
-        //dqSource.getNoteRefs();
-        //dqSource.getMedia();
-        //dqSource.getMediaRefs();
+      // TODO: log?
+      //dqSource.getNotes();
+      //dqSource.getNoteRefs();
+      //dqSource.getMedia();
+      //dqSource.getMediaRefs();
 
-        if (sourceDescriptionHasData) {
-          result.addDescription(gedxSourceDescription, null);
-        }
+      if (sourceDescriptionHasData) {
+        result.addDescription(gedxSourceDescription, null);
+        sourceReferenceHasData = true;
+      }
 
+      if (sourceReferenceHasData) {
         sourceReferences.add(gedxSourceReference);
-      } else {
-        // TODO: DallanQ produced a source without any data to convert; log?
+      }
+
+      if ((!sourceDescriptionHasData) && (!sourceReferenceHasData)) {
+        // TODO: SOUR had no convertible data; log
       }
     }
 
     return sourceReferences.size() > 0 ? sourceReferences : null;
   }
 
-  public static void toChangeDescription(Change dqChange, String entryNameForDescribedObject, GedcomxConversionResult result) {
-    if (dqChange != null) {
-      try {
-        java.util.Date date = toDate(dqChange);
-
-        RDFLiteral lastModified = new RDFLiteral(date);
-
-        Description gedxDescription = new Description();
-        gedxDescription.setAbout(URI.create(entryNameForDescribedObject));
-        gedxDescription.addExtensionElement(objectFactory.createModifiedElement(lastModified));
-
-        result.addDescription(gedxDescription, date);
-      } catch (Throwable ex) {
-        // something went wrong, so probably does not conform to the standard; we will skip it
-        // TODO: log?
-      }
-    }
-  }
-
   public static java.util.Date toDate(Change dqChange) {
-    if (dqChange == null)
+    if (dqChange == null) {
       return null;
+    }
+
     DateTime dateTime = dqChange.getDateTime();
+
     String parsePattern = "d MMM yy";
     if (dateTime.getTime() != null) {
       parsePattern += " HH:mm:ss.SSS";
@@ -169,13 +158,17 @@ public class CommonMapper {
     if (dateTime.getTime() != null) {
       dateTimeString += ' ' + dateTime.getTime();
     }
+
+    java.util.Date extractedDate;
     try {
-      return parseDateString(parsePattern, dateTimeString);
+      extractedDate = parseDateString(parsePattern, dateTimeString);
     }
     catch (ParseException e) {
       //TODO: logWarning
+      extractedDate = null;
     }
-    return null;
+
+    return extractedDate;
   }
 
   public static ConfidenceLevel toConfidenceLevel(String dqQuality) {

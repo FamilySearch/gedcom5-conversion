@@ -235,28 +235,9 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNull(gedxOrganization.getHomepage().getExtensionAttributes());
     assertEquals(gedxOrganization.getHomepage().getValue(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
 
-    // Description that is the result of the CHAN tag
-    assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 1);
-    Description gedxDescription = result.getDescriptions().get(0);
-    assertNotNull(gedxDescription);
-    assertNull(gedxDescription.getExtensionAttributes());
-    assertNull(gedxDescription.getId());
-    assertNull(gedxDescription.getType());
-    assertNotNull(gedxDescription.getAbout());
-    assertEquals(gedxDescription.getAbout().toString(), "organizations/REPO5");
-    assertNotNull(gedxDescription.getExtensionElements());
-    assertEquals(gedxDescription.getExtensionElements().size(), 1);
-    JAXBElement<RDFLiteral> modifiedContainer = (JAXBElement<RDFLiteral>)gedxDescription.getExtensionElements().get(0);
-    assertEquals(modifiedContainer.getName().getNamespaceURI(), "http://purl.org/dc/terms/");
-    assertEquals(modifiedContainer.getName().getLocalPart(), "modified");
-    assertEquals(modifiedContainer.getDeclaredType(), RDFLiteral.class);
-    RDFLiteral value = modifiedContainer.getValue();
-    assertNotNull(value);
-    assertNull(value.getLang());
-    assertNull(value.getExtensionAttributes());
-    assertEquals(value.getDatatype().toString(), "http://www.w3.org/2001/XMLSchema#dateTime");
-    assertEquals(value.getValue(), "2011-11-11T11:11:11.111-07:00");
+    // result of the CHAN tag
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "Fri Nov 11 11:11:11 MST 2011");
+    // TODO: assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "2011-11-11T11:11:11.111-07:00");
   }
 
   @Test
@@ -328,28 +309,9 @@ public class SourceDescriptionMapperOrganizationTest {
     // WWW
     assertNull(gedxOrganization.getHomepage());
 
-    // Description that is the result of the CHAN tag
-    assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 1);
-    Description gedxDescription = result.getDescriptions().get(0);
-    assertNotNull(gedxDescription);
-    assertNull(gedxDescription.getExtensionAttributes());
-    assertNull(gedxDescription.getId());
-    assertNull(gedxDescription.getType());
-    assertNotNull(gedxDescription.getAbout());
-    assertEquals(gedxDescription.getAbout().toString(), "organizations/REPO6");
-    assertNotNull(gedxDescription.getExtensionElements());
-    assertEquals(gedxDescription.getExtensionElements().size(), 1);
-    JAXBElement<RDFLiteral> modifiedContainer = (JAXBElement<RDFLiteral>)gedxDescription.getExtensionElements().get(0);
-    assertEquals(modifiedContainer.getName().getNamespaceURI(), "http://purl.org/dc/terms/");
-    assertEquals(modifiedContainer.getName().getLocalPart(), "modified");
-    assertEquals(modifiedContainer.getDeclaredType(), RDFLiteral.class);
-    RDFLiteral value = modifiedContainer.getValue();
-    assertNotNull(value);
-    assertNull(value.getLang());
-    assertNull(value.getExtensionAttributes());
-    assertEquals(value.getDatatype().toString(), "http://www.w3.org/2001/XMLSchema#dateTime");
-    assertEquals(value.getValue(), "2011-11-11T00:00:00.000-07:00");
+    // result of the CHAN tag
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "Fri Nov 11 00:00:00 MST 2011");
+    // TODO: assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "2011-11-11T00:00:00.000-07:00");
   }
 
   @Test
