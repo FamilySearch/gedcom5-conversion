@@ -228,7 +228,12 @@ public class CommonMapper {
     relationship.setKnownType(relationshipType);
     relationship.setPerson1(toReference(person1));
     relationship.setPerson2(toReference(person2));
-    relationship.setId(person1.getRef() + "-" + person2.getRef());
+    String prefix = "";
+    if (relationshipType.equals(RelationshipType.Couple))
+      prefix = "C-";
+    else if (relationshipType.equals(RelationshipType.ParentChild))
+      prefix = "PC-";
+    relationship.setId(prefix + person1.getRef() + "-" + person2.getRef());
     return relationship;
   }
 
