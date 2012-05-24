@@ -6,6 +6,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.fileformat.GedcomxTimeStampUtil;
 import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 
@@ -80,6 +81,7 @@ public class TestConversionResult implements GedcomxConversionResult {
     if (!entryAttributes.containsKey(entryName)) {
       entryAttributes.put(entryName, new HashMap<String, String>());
     }
-    entryAttributes.get(entryName).put("Last-Modified", lastModified.toString());
+
+    entryAttributes.get(entryName).put("DC-modified", GedcomxTimeStampUtil.formatAsXmlUTC(lastModified));
   }
 }

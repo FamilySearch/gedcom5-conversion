@@ -206,8 +206,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour19_titl__");
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "Fri Nov 11 11:11:11 MST 2011");
-    // TODO: assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "2011-11-11T11:11:11.111-07:00");
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), "2011-11-11T18:11:11.111Z");
   }
 
   @Test
@@ -238,8 +237,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour20_titl__");
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "Fri Nov 11 00:00:00 MST 2011");
-    // TODO: assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("Last-Modified"), "2011-11-11T00:00:00.000-07:00");
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), "2011-11-11T07:00:00.000Z");
   }
 
   private void assertMediaTypeToResourceTypeMappingUsingInlineRepo(int sourceIndex, String sourceId, ResourceType expectedResourceType) throws Exception {

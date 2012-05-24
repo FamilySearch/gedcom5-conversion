@@ -236,8 +236,7 @@ public class SourceDescriptionMapperOrganizationTest {
     assertEquals(gedxOrganization.getHomepage().getValue(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
 
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "Fri Nov 11 11:11:11 MST 2011");
-    // TODO: assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "2011-11-11T11:11:11.111-07:00");
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("DC-modified"), "2011-11-11T18:11:11.111Z");
   }
 
   @Test
@@ -310,8 +309,7 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNull(gedxOrganization.getHomepage());
 
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "Fri Nov 11 00:00:00 MST 2011");
-    // TODO: assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("Last-Modified"), "2011-11-11T00:00:00.000-07:00");
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("DC-modified"), "2011-11-11T07:00:00.000Z");
   }
 
   @Test
