@@ -31,7 +31,7 @@ public interface GedcomxConversionResult {
 
   void addDescription(Description description, Date lastModified) throws IOException;
 
-  public void addContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException;
+  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException;
 
   void addOrganization(Organization organization, Date lastModified) throws IOException;
 }

@@ -26,6 +26,7 @@ import java.util.List;
 public class GedcomMapper {
   private final PersonMapper personMapper = new PersonMapper();
   private final FamilyMapper familyMapper = new FamilyMapper();
+  private final SubmitterMapper submitterMapper = new SubmitterMapper();
   private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
 
   public GedcomxOutputstreamConversionResult toGedcomx(Gedcom dqGedcom, OutputStream outputStream) throws IOException {
@@ -35,6 +36,8 @@ public class GedcomMapper {
     toRelationships(dqGedcom.getFamilies(), dqGedcom, result);
     toSourceDescriptions(dqGedcom.getSources(), result);
     toOrganizations(dqGedcom.getRepositories(), result);
+
+    submitterMapper.toContributor(dqGedcom.getSubmitter(), result);
 
     return result;
   }

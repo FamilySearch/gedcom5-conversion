@@ -26,6 +26,6 @@ public class SubmitterMapper {
   public void toContributor(Submitter dqSubmitter, GedcomxConversionResult result) throws IOException {
     Person gedxContributor = new Person();
 
-    result.addContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
+    result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
   }
 }

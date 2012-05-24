@@ -26,6 +26,8 @@ import org.gedcomx.metadata.rdf.Description;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GedcomxOutputstreamConversionResult implements GedcomxConversionResult {
@@ -63,9 +65,11 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   }
 
   @Override
-  public void addContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
     String entryName = CommonMapper.getContributorEntryName(person.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified);
+    Map<String, String> attributes = new HashMap<String, String>();
+    attributes.put("DC-creator", Boolean.TRUE.toString());
+    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified, attributes);
   }
 
   @Override
