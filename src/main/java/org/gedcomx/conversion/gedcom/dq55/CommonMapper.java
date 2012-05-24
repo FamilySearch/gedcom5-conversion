@@ -41,8 +41,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -94,15 +93,7 @@ public class CommonMapper {
         }
 
         if (dqSource.getDate() != null) {
-          final String parsePattern = "d MMM yyyy";
-          try {
-            java.util.Date date = parseDateString(parsePattern, dqSource.getDate());
-            gedxDecoratedSourceDescription.created(date);
-          }
-          catch (Throwable ex) {
-            // something went wrong, so probably does not conform to the standard; we will skip it
-            // TODO: log?
-          }
+            gedxDecoratedSourceDescription.created(toDate(dqSource.getDate()));
         }
       } else if (dqSource.getValue() != null) {
         gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
@@ -149,9 +140,10 @@ public class CommonMapper {
     if (dqChange == null) {
       return null;
     }
+    return toDate(dqChange.getDateTime());
+  }
 
-    DateTime dateTime = dqChange.getDateTime();
-
+  private static Date toDate(DateTime dateTime) {
     String parsePattern = "d MMM yy";
     if (dateTime.getTime() != null) {
       parsePattern += " HH:mm:ss.SSS";
@@ -162,7 +154,7 @@ public class CommonMapper {
       dateTimeString += ' ' + dateTime.getTime();
     }
 
-    java.util.Date extractedDate;
+    Date extractedDate;
     try {
       extractedDate = parseDateString(parsePattern, dateTimeString);
     }
@@ -170,7 +162,19 @@ public class CommonMapper {
       //TODO: logWarning
       extractedDate = null;
     }
+    return extractedDate;
+  }
 
+  private static Date toDate(String dateString) {
+    String parsePattern = "d MMM yy";
+    Date extractedDate;
+    try {
+      extractedDate = parseDateString(parsePattern, dateString);
+    }
+    catch (ParseException e) {
+      //TODO: logWarning
+      extractedDate = null;
+    }
     return extractedDate;
   }
 
