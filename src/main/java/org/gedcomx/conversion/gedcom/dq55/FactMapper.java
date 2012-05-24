@@ -42,7 +42,7 @@ public class FactMapper {
     factMap.put("OCCU", FactType.Occupation);  factMap.put("OCCUPATION", FactType.Occupation);
     factMap.put("PROP", FactType.Possessions);  factMap.put("PROPERTY", FactType.Possessions);
     factMap.put("RELI", FactType.ReligiousAffiliation);  factMap.put("RELIGION", FactType.ReligiousAffiliation);
-    factMap.put("RESI", FactType.Dwelling);  factMap.put("RESIDENCE", FactType.Dwelling);
+    factMap.put("RESI", FactType.Residence);  factMap.put("RESIDENCE", FactType.Residence);
     factMap.put("SSN", FactType.SocialSecurityNumber);  factMap.put("SOC_SEC_NUMBER", FactType.SocialSecurityNumber);
     factMap.put("TITL", FactType.TitleOfNobility);  factMap.put("TITLE", FactType.TitleOfNobility);
     //TODO Handle custom
@@ -93,7 +93,7 @@ public class FactMapper {
     factMap.put("CITN", FactType.Citizenship);
     factMap.put("BLESS", FactType.Blessing);
     factMap.put("BLSL", FactType.Blessing); // Blessing - LDS
-    factMap.put("DWEL", FactType.Dwelling);
+    factMap.put("DWEL", FactType.Residence);
     factMap.put("_EXCM", FactType.Excommunication);
     factMap.put("EXCO", FactType.Excommunication);
     factMap.put("_FNRL", FactType.Funeral);
@@ -122,7 +122,7 @@ public class FactMapper {
     factMap.put("ORDL", FactType.Ordination); // Ordination - LDS
     factMap.put("DPRT", FactType.PortOfDeparture);
     factMap.put("DEPA", FactType.PortOfDeparture);
-    factMap.put("RESIR", FactType.Dwelling);
+    factMap.put("RESIR", FactType.Residence);
     factMap.put("RACE", FactType.Race);
     factMap.put("STLB", FactType.Stillborn);
     factMap.put("STIL", FactType.Stillborn);
