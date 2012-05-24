@@ -1,0 +1,401 @@
+﻿0 HEAD
+1 SOUR PAF
+  2 NAME Personal Ancestral File
+  2 VERS 5.2.18.0
+  2 CORP The Church of Jesus Christ of Latter-day Saints
+  3 ADDR 50 East North Temple Street
+  4 CONT Salt Lake City, UT 84150
+  4 CONT USA
+1 DEST Other
+1 DATE 10 May 2012
+2 TIME 13:37:22
+1 FILE Louwaert - Speculative Research - PAF import export.ged
+1 GEDC
+  2 VERS 5.5
+  2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 LANG English
+1 SUBM @SUB1@
+0 @SUB1@ SUBM
+1 NAME Thad Thomas
+1 ADDR 2987 Nila Way
+  2 CONT Salt Lake City, UT  84124-3020
+  2 CTRY United States
+1 PHON 801-274-5573
+1 EMAIL info@blueskiff.com
+
+0 @I1@ INDI
+1 NAME Petrus Marinus /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Petrus Marinus
+1 SEX M
+1 BIRT
+  2 DATE 3 May 1875
+  2 PLAC Gent, Oost-Vlaanderen, Belgium
+  2 SOUR @S1@
+  3 DATA
+  4 TEXT Name:  Peter Marie Louwaert Birth:  3 May 1875 in Other Country Death:  18 Apr 1947 in San Fr
+  5 CONC ancisco, California
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  3 DATA
+  4 TEXT Birth date:  abt 1876 Birth place:  Belgium Residence date:  1920 Residence place:  San Franc
+  5 CONC isco Assembly District 29, San Francisco, California Arrival date:  1877 Arrival place:
+1 DEAT
+  2 DATE 18 Apr 1947
+  2 PLAC San Francisco, California, United States
+  2 SOUR @S1@
+  3 DATA
+  4 TEXT Name:  Peter Marie Louwaert Birth:  3 May 1875 in Other Country Death:  18 Apr 1947 in San Fr
+  5 CONC ancisco, California
+1 _UID B3CD7A3DB182A64592843F6E1F066730D41B
+1 FAMS @F1@
+1 FAMC @F2@
+1 RESI
+  2 DATE 1898
+  2 PLAC San Francisco, California, United States
+1 RESI
+  2 DATE 9 Apr 1930
+  2 PLAC San Francisco, San Francisco, California, United States
+1 RESI
+  2 DATE 3 Jan 1920
+  2 PLAC San Francisco, San Francisco, California, United States
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  3 DATA
+  4 TEXT Birth date:  abt 1876 Birth place:  Belgium Residence date:  1920 Residence place:  San Franc
+  5 CONC isco Assembly District 29, San Francisco, California Arrival date:  1877 Arrival place:
+1 RESI
+  2 DATE 20 Apr 1910
+  2 PLAC San Francisco, San Francisco, California, United States
+1 NATU
+  2 DATE 1887
+1 EVEN
+  2 TYPE Arrival
+  2 DATE 1877
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  3 DATA
+  4 TEXT Birth date:  abt 1876 Birth place:  Belgium Residence date:  1920 Residence place:  San Franc
+  5 CONC isco Assembly District 29, San Francisco, California Arrival date:  1877 Arrival place:
+1 NOTE Record of birth as registered with civil authority -- Petrus Marinus Louwaert
+  2 CONT http://trees.ancestry.com/rd?f=image&guid=ff877b87-424a-4d85-9570-3d9f1541aec3&tid=14578697&p
+  2 CONC id=2160
+1 SOUR @S1@
+  2 DATA
+  3 TEXT Name:  Peter Marie Louwaert Birth:  3 May 1875 in Other Country Death:  18 Apr 1947 in San Fr
+  4 CONC ancisco, California
+1 SOUR @S5@
+  2 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  2 DATA
+  3 TEXT Birth date:  abt 1876 Birth place:  Belgium Residence date:  1920 Residence place:  San Franc
+  4 CONC isco Assembly District 29, San Francisco, California Arrival date:  1877 Arrival place:
+1 CHAN
+  2 DATE 10 May 2012
+  3 TIME 01:00:00
+
+0 @I2@ INDI
+1 NAME William Joseph /Louwaert/
+  2 SURN Louwaert
+  2 GIVN William Joseph
+1 SEX M
+1 BIRT
+  2 DATE 8 Nov 1908
+  2 PLAC San Francisco, California, United States
+1 DEAT
+  2 DATE 24 May 1977
+  2 PLAC Alameda, California, United States
+  2 SOUR @S1@
+  3 DATA
+  4 TEXT Birth date:  8 Nov 1908 Birth place:  California Death date:  24 May 1977 Death place:  Alame
+  5 CONC da, California
+1 _UID 7F427879DF772A4C974E02B5DC32CCEBDF5C
+1 FAMC @F1@
+1 RESI 
+  2 DATE 3 Jan 1920
+  2 PLAC San Francisco, San Francisco, California, United States
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  3 DATA
+  4 TEXT Birth date:  abt 1909 Birth place:  California Residence date:  1920 Residence place:  San Fr
+  5 CONC ancisco Assembly District 29, San Francisco, California
+1 SOUR @S1@
+  2 DATA
+  3 TEXT Birth date:  8 Nov 1908 Birth place:  California Death date:  24 May 1977 Death place:  Alame
+  4 CONC da, California
+1 CHAN
+  2 DATE 10 May 2012
+  3 TIME 01:00:00
+
+0 @I8@ INDI
+1 NAME Emma Sabine /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Emma Sabine
+1 SEX F
+1 BIRT
+  2 DATE 7 Jul 1896
+  2 PLAC San Francisco, California, United States
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: Oakland, Alameda, California; Roll: T625_87; Page: 21B; Enumerati
+  3 DATA
+  4 TEXT Birth date:  abt 1897 Birth place:  California Residence date:  1920 Residence place:  Oaklan
+  5 CONC d, Alameda, California
+  2 SOUR @S1@
+  3 DATA
+  4 TEXT Birth date:  7 Jul 1896 Birth place:  California Death date:  12 Apr 1967 Death place:  Alame
+  5 CONC da, California
+1 DEAT
+  2 DATE 12 Apr 1967
+  2 PLAC Emeryville, Alameda, California, United States
+  2 SOUR @S1@
+  3 DATA
+  4 TEXT Birth date:  7 Jul 1896 Birth place:  California Death date:  12 Apr 1967 Death place:  Alame
+  5 CONC da, California
+1 _UID 1CA07473A95D7540B470594FFA54ADAACF45
+1 FAMC @F1@
+1 CHAN
+2 DATE 10 May 2012
+3 TIME 01:00:00
+
+0 @I11@ INDI
+1 NAME Christina Louise Marie /Zupar/
+  2 SURN Zupar
+  2 GIVN Christina Louise Marie
+1 SEX F
+1 BIRT
+  2 DATE Apr 1880
+  2 PLAC California, United States
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  3 DATA
+  4 TEXT Birth date:  abt 1881 Birth place:  California Residence date:  1920 Residence place:  San Fr
+  5 CONC ancisco Assembly District 29, San Francisco, California
+1 DEAT
+  2 DATE 6 Aug 1931
+  2 PLAC San Francisco, California, United States
+1 _UID 4ACE5D4301B5014D9CC41F11BD68CAA5E071
+1 FAMS @F1@
+1 SOUR @S5@
+  2 PAGE Year: 1920; Census Place: San Francisco Assembly District 29, San Francisco, California; Ro
+  2 DATA
+  3 TEXT Birth date:  abt 1881 Birth place:  California Residence date:  1920 Residence place:  San Fr
+  4 CONC ancisco Assembly District 29, San Francisco, California
+1 CHAN
+  2 DATE 10 May 2012
+  3 TIME 01:00:00
+
+0 @I14@ INDI
+1 NAME Coleta Séraphina /DeReyghere/
+  2 SURN DeReyghere
+  2 GIVN Coleta Séraphina
+1 SEX F
+1 BIRT
+  2 DATE 18 May 1831
+  2 PLAC Brugge, West-Vlaanderen, Belgium
+  2 SOUR @S17@
+  3 DATA
+  4 TEXT Birth date:  abt 1833 Birth place:   Marriage date:  30 Jul 1896 Marriage place:  Chicago, Co
+  5 CONC ok, Illinois
+1 DEAT
+  2 DATE 2 Oct 1917
+  2 PLAC Proviso Township, Cook, Illinois, United States
+1 BURI
+  2 DATE 6 Oct 1917
+  2 PLAC Hillside, Cook, Illinois, United States
+1 _UID 985645B407175A4D8730DE00095A167B3593
+1 FAMS @F2@
+1 FAMS @F10@
+1 EVEN
+  2 TYPE Arrival
+  2 DATE 1878
+1 NOTE Record of birth as registered with civil authority -- Coleta Seraphina de Reyghere
+  2 CONT http://trees.ancestry.com/rd?f=image&guid=18c68621-2a09-4c12-b225-85e467b22e87&tid=14578697&p
+  2 CONC id=2173
+  2 CONT
+  2 CONT Record of birth as registered with civil authority -- Coleta Seraphina de Reyghere
+  2 CONT http://trees.ancestry.com/rd?f=image&guid=18c68621-2a09-4c12-b225-85e467b22e87&tid=14578697&p
+  2 CONC id=2173
+1 CHAN
+2 DATE 10 May 2012
+3 TIME 01:00:00
+
+0 @I15@ INDI
+1 NAME Joannes Franciscus /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Joannes Franciscus
+1 SEX M
+1 BIRT
+  2 DATE 15 Jun 1831
+  2 PLAC Brugge, West-Vlaanderen, Belgium
+1 _UID 985B64A5E307C64C979F423B7AE71AD3F96F
+1 FAMS @F2@
+1 EVEN Also accessed 28 Dec 2011 via https://familysearch.org/pal:/MM9.3.1/TH-1-16955-75301-29?cc=1849782&wc=9370542
+  2 TYPE Arrival
+  2 DATE 7 Aug 1880
+  2 PLAC New York, New York, United States
+1 EVEN
+  2 TYPE Departure
+  2 DATE Bef. 7 Aug 1880
+  2 PLAC Antwerpen, Belgium
+1 CHAN
+  2 DATE 10 May 2012
+  3 TIME 01:00:00
+
+0 @I117@ INDI
+1 NAME Serephine F /DeRock/
+  2 SURN DeRock
+  2 GIVN Serephine F
+1 SEX M
+1 BIRT
+  2 DATE May 1835
+  2 PLAC Netherlands
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: Proviso, Cook, Illinois; Roll: T625_362; Page: 10A; Enumeration D
+  3 DATA
+  4 TEXT Birth date:  abt 1836 Birth place:  Holland Residence date:  1920 Residence place:  Proviso
+  5 CONC , Cook, Illinois Arrival date:  1876 Arrival place:
+  2 SOUR @S17@
+  3 DATA
+  4 TEXT Birth date:  abt 1837 Birth place:   Marriage date:  30 Jul 1896 Marriage place:  Chicago, Co
+  5 CONC ok, Illinois
+1 DEAT
+  2 DATE 16 Apr 1921
+  2 PLAC Proviso Township, Cook, Illinois, United States
+1 BURI
+  2 DATE 19 Apr 1921
+  2 PLAC Hillside, Cook, Illinois, United States
+1 _UID 219F16D40C0DC2478EC3EC8B38A651CA8DCD
+1 FAMS @F10@
+1 RESI 
+  2 DATE 7 Feb 1920
+  2 PLAC Proviso Township, Cook, Illinois, United States
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: Proviso, Cook, Illinois; Roll: T625_362; Page: 10A; Enumeration D
+  3 DATA
+  4 TEXT Birth date:  abt 1836 Birth place:  Holland Residence date:  1920 Residence place:  Proviso
+  5 CONC , Cook, Illinois Arrival date:  1876 Arrival place:
+1 EVEN
+  2 TYPE Arrival
+  2 DATE 1876
+  2 SOUR @S5@
+  3 PAGE Year: 1920; Census Place: Proviso, Cook, Illinois; Roll: T625_362; Page: 10A; Enumeration D
+  3 DATA
+  4 TEXT Birth date:  abt 1836 Birth place:  Holland Residence date:  1920 Residence place:  Proviso
+  5 CONC , Cook, Illinois Arrival date:  1876 Arrival place:
+1 EVEN 
+  2 TYPE Arrival
+  2 DATE 1878
+  1 SOUR @S17@
+  2 DATA
+  3 TEXT Birth date:  abt 1837 Birth place:   Marriage date:  30 Jul 1896 Marriage place:  Chicago, Co
+  4 CONC ok, Illinois
+1 CHAN
+2 DATE 10 May 2012
+3 TIME 01:00:00
+
+0 @F1@ FAM
+1 _UID BB15CF6289BA0B488B206FF9222E7CFB714B
+1 HUSB @I1@
+1 WIFE @I11@
+1 CHIL @I2@
+1 CHIL @I8@
+1 MARR
+2 DATE 10 Feb 1896
+2 PLAC San Francisco, San Francisco, California, United States
+2 SOUR @S13@
+3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+3 DATA
+4 DATE 12 Feb 1896
+2 SOUR @S13@
+3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+2 SOUR @S13@
+3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+2 SOUR @S13@
+3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+
+0 @F2@ FAM
+1 _UID 3ABB19B4E5CC824987E15550564EC939F136
+1 HUSB @I15@
+1 WIFE @I14@
+1 CHIL @I1@
+1 CHIL @I117@
+1 MARR
+  2 DATE 4 Jul 1856
+  2 PLAC Brugge, West-Vlaanderen, Belgium
+
+0 @F10@ FAM
+1 _UID 156664F2BD434941BEFE583F3734A3FEBAD5
+1 HUSB @I117@
+1 WIFE @I14@
+1 MARR
+  2 DATE 23 Aug 1892
+  2 PLAC Milwaukee, Milwaukee, Wisconsin, United States
+  2 SOUR @S80@
+  3 PAGE Serafine De Rock and Mrs. Collete Lowvard
+  3 DATA
+  4 TEXT Groom's Name: 	Serafine De Rock Groom's Birth Date: 	 Groom's Birthplace: 	 Groom's Age: 	 Br
+  5 CONC ide's Name: 	Mrs. Collete Lowvard Bride's Birth Date: 	 Bride's Birthplace: 	 Bride's Age
+  5 CONC : 	 Marriage Date: 	23 Aug 1892 Marriage Place: 	Milwaukee, Wisconsin Groom's Father's Name
+  5 CONC : 	Louis De Rock Groom's Mother's Name: 	Serafina Polus Bride's Father's Name: 	Lawrence Rieg
+  5 CONC lere Bride's Mother's Name: 	Serefina De Porte Groom's Race: 	 Groom's Marital Status: 	 Groo
+  5 CONC m's Previous Wife's Name: 	 Bride's Race: 	 Bride's Marital Status: 	 Bride's Previous Husban
+  5 CONC d's Name: 	 Indexing Project (Batch) Number: 	I00647-1 System Origin: 	Wisconsin-EASy Sourc
+  5 CONC e Film Number: 	1292303 Reference Number:
+  4 DATE 23 Aug 1892
+  2 SOUR @S80@
+  3 PAGE Serafine Derock and Collete Louevand
+  3 DATA
+  4 TEXT Groom's Name: Serafine Derock Groom's Birth Date:  Groom's Birthplace: Holland, Europe Groom'
+  5 CONC s Age:  Bride's Name: Collete Louevand Bride's Birth Date:  Bride's Birthplace: Brugge, Belgi
+  5 CONC um Bride's Age:  Marriage Date: 23 Aug 1892 Marriage Place: Milwaukee, Milwaukee, Wisconsin
+  5 CONC Indexing Project (Batch) Number: M00433-7 System Origin: Wisconsin-EASy Source Film Number:
+  5 CONC 1013991 Reference Number: 240
+1 MARR
+  2 DATE 30 Jul 1896
+  2 PLAC Chicago, Cook, Illinois, United States
+  2 SOUR @S17@
+  3 DATA
+  4 TEXT Birth date:  abt 1837 Birth place:   Marriage date:  30 Jul 1896 Marriage place:  Chicago, Co
+  5 CONC ok, Illinois
+  2 SOUR @S17@
+  3 DATA
+  4 TEXT Birth date:  abt 1833 Birth place:   Marriage date:  30 Jul 1896 Marriage place:  Chicago, Co
+  5 CONC ok, Illinois
+
+0 @S1@ SOUR
+  1 REPO @REPO1@
+  1 TITL California Death Index, 1940-1997
+  1 AUTH Ancestry.com
+  1 PUBL Online publication - Provo, UT, USA: Ancestry.com Operations Inc, 2000.Original data - Stat
+  2 CONC e of California. California Deat
+0 @S5@ SOUR
+  1 REPO @REPO1@
+  1 TITL 1920 United States Federal Census
+  1 AUTH Ancestry.com
+  1 PUBL Online publication - Provo, UT, USA: Ancestry.com Operations Inc, 2009. Images reproduced b
+  2 CONC y FamilySearch. For details on t
+0 @S13@ SOUR
+  1 REPO @REPO15@
+  1 TITL The San Francisco call. : (San Francisco [Calif.]) 1895-1913
+  1 PUBL Charles M. Shortridge
+  1 NOTE Vol. 77, no. 85 (Mar. 5, 1895)-v. 115, no. 7 (Dec. 8, 1913).
+0 @S17@ SOUR
+  1 REPO @REPO1@
+  1 TITL Cook County, Illinois, Marriages Index, 1871-1920
+  1 AUTH Ancestry.com
+  1 PUBL Online publication - Provo, UT, USA: Ancestry.com Operations, Inc., 2011.Original data - “Ill
+  2 CONC inois, Cook County Marriages
+0 @S80@ SOUR
+  1 REPO @REPO14@
+  1 TITL Wisconsin Marriages, 1836-1930
+  1 PUBL FamilySearch (https://www.familysearch.org)
+
+0 @REPO1@ REPO
+  1 NAME Ancestry.com
+  1 ADDR http://www.Ancestry.com
+0 @REPO14@ REPO
+  1 NAME FamilySearch Internet (www.familysearch.org)
+0 @REPO15@ REPO
+  1 NAME Library of Congress - Chronicling America: Historic American Newspapers
+  1 ADDR http://chroniclingamerica.loc.gov/
+0 TRLR
