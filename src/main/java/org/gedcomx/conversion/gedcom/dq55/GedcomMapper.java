@@ -32,7 +32,7 @@ public class GedcomMapper {
     GedcomxOutputstreamConversionResult result = new GedcomxOutputstreamConversionResult(outputStream);
 
     toPersons(dqGedcom.getPeople(), result);
-    toRelationships(dqGedcom.getFamilies(), result);
+    toRelationships(dqGedcom.getFamilies(), dqGedcom, result);
     toSourceDescriptions(dqGedcom.getSources(), result);
     toOrganizations(dqGedcom.getRepositories(), result);
 
@@ -45,9 +45,9 @@ public class GedcomMapper {
     }
   }
 
-  private void toRelationships(List<Family> dqFamilies, GedcomxConversionResult result) throws IOException {
+  private void toRelationships(List<Family> dqFamilies, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
     for (Family family : dqFamilies) {
-      familyMapper.toRelationship(family, result);
+      familyMapper.toRelationship(family, dqGedcom, result);
     }
   }
 

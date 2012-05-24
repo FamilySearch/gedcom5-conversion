@@ -60,6 +60,13 @@ public class PersonMapper {
 
 
     //////////////////////////////////////////////////////////////////////
+    // Process sources
+
+    List<SourceReference> sources = CommonMapper.toSourcesAndSourceReferences(dqPerson.getSourceCitations(), result);
+    gedxPerson.setSources(sources);
+
+
+    //////////////////////////////////////////////////////////////////////
     // Add the person to the conversion results
 
     result.addPerson(gedxPerson, CommonMapper.toDate(dqPerson.getChange()));

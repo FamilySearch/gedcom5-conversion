@@ -32,10 +32,8 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.net.URL;
 import java.text.DateFormat;
-import java.util.UUID;
 
 import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
 
 
 public class SourceReferenceMapperTest {
@@ -67,7 +65,7 @@ public class SourceReferenceMapperTest {
 
     String generatedId = null;
 
-    mapper.toRelationship(dqFamily, result);
+    mapper.toRelationship(dqFamily, null, result);
     assertNotNull(result.getRelationships());
     assertEquals(result.getRelationships().size(), 3);
     for (Relationship gedxRelationship : result.getRelationships()) {
@@ -127,7 +125,7 @@ public class SourceReferenceMapperTest {
 
     String generatedId = null;
 
-    mapper.toRelationship(dqFamily, result);
+    mapper.toRelationship(dqFamily, null, result);
     assertNotNull(result.getRelationships());
     assertEquals(result.getRelationships().size(), 3);
     for (Relationship gedxRelationship : result.getRelationships()) {

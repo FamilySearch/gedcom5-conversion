@@ -51,7 +51,7 @@ public class FactMapper {
 
     // Events (Short and long tag names, from the standard)
     // Individual
-    factMap.put("ADOP", FactType.Adopted);  factMap.put("ADOPTION", FactType.Adopted);
+    factMap.put("ADOP", FactType.Adoption);  factMap.put("ADOPTION", FactType.Adoption);
     factMap.put("BAPM", FactType.Baptism);  factMap.put("BAPTISM", FactType.Baptism);
     factMap.put("BARM", FactType.BarMitzvah);  factMap.put("BAR_MITZVAH", FactType.BarMitzvah);
     factMap.put("BASM", FactType.BatMitzvah);  factMap.put("BAS_MITZVAH", FactType.BatMitzvah);

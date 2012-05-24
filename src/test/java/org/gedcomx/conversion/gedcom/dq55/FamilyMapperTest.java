@@ -11,7 +11,8 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.net.URL;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 
 public class FamilyMapperTest {
@@ -39,7 +40,7 @@ public class FamilyMapperTest {
 
     FamilyMapper mapper = new FamilyMapper();
 
-    mapper.toRelationship(dqFamily, result);
+    mapper.toRelationship(dqFamily, null, result);
     assertNotNull(result.getRelationships());
 //    assertEquals(result.getRelationships().size(), 3);
 
