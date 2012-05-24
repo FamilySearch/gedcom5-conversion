@@ -9,7 +9,7 @@
 1 DEST Other
 1 DATE 10 May 2012
 2 TIME 13:37:22
-1 FILE Louwaert - Speculative Research - PAF import export.ged
+1 FILE Louwaert - Speculative Research.ged
 1 GEDC
   2 VERS 5.5
   2 FORM LINEAGE-LINKED
@@ -17,12 +17,12 @@
 1 LANG English
 1 SUBM @SUB1@
 0 @SUB1@ SUBM
-1 NAME Thad Thomas
-1 ADDR 2987 Nila Way
-  2 CONT Salt Lake City, UT  84124-3020
+1 NAME Thadman Henry
+1 ADDR 101 S 200 E
+  2 CONT Salt Lake City, UT  84124
   2 CTRY United States
-1 PHON 801-274-5573
-1 EMAIL info@blueskiff.com
+1 PHON 801-842-3626
+1 EMAIL quick@whiz.com
 
 0 @I1@ INDI
 1 NAME Petrus Marinus /Louwaert/
