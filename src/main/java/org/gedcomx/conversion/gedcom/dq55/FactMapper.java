@@ -120,8 +120,15 @@ public class FactMapper {
     factMap.put("MOVE", FactType.Move);
     factMap.put("ORDI", FactType.Ordinance); // In 5.5 standard
     factMap.put("ORDL", FactType.Ordination); // Ordination - LDS
-    factMap.put("DPRT", FactType.PortOfDeparture);
-    factMap.put("DEPA", FactType.PortOfDeparture);
+
+    //TODO Put in after gedcomx has been built with the proper tags...
+//    factMap.put("ARVL", FactType.Arrival);
+//    factMap.put("ARRI", FactType.Arrival);
+//    factMap.put("ARRIVAL", FactType.Arrival);
+//    factMap.put("DPRT", FactType.Departure);
+//    factMap.put("DEPA", FactType.Departure);
+//    factMap.put("DEPARTURE", FactType.Departure);
+
     factMap.put("RESIR", FactType.Residence);
     factMap.put("RACE", FactType.Race);
     factMap.put("STLB", FactType.Stillborn);
@@ -130,6 +137,11 @@ public class FactMapper {
     factMap.put("BAPT", FactType.Baptism);
     factMap.put("_NAMS", FactType.Namesake);
     factMap.put("SOC_", FactType.SocialSecurityNumber);
+    factMap.put("ENLIST", FactType.MilitaryService);
+    factMap.put("_DEG", FactType.ScholasticAchievement);
+    factMap.put("_DEGREE", FactType.ScholasticAchievement);
+    factMap.put("EMPL", FactType.Occupation);
+    factMap.put("_EMPLOY", FactType.Occupation);
     // (Family)
     factMap.put("CLAW", FactType.CommonLawMarriage);
     factMap.put("_DIV", FactType.Divorce);
