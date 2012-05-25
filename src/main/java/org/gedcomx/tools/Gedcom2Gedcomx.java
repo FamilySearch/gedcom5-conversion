@@ -62,6 +62,7 @@ public class Gedcom2Gedcomx {
     for (File gedcom55File : fileList) {
       ModelParser modelParser = new ModelParser();
       Gedcom gedcom = modelParser.parseGedcom(gedcom55File);
+      gedcom.createIndexes();
 
       if (gedxOut != null) {
         GedcomMapper mapper = new GedcomMapper();

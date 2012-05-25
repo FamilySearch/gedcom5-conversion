@@ -15,14 +15,69 @@
  */
 package org.gedcomx.tools;
 
+import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
 public class Gedcom2GedcomxTest {
   @Test
   public void testMain() throws Exception {
-    assertTrue(true);
+    URL gedcomUrl = GedcomMapper.class.getClassLoader().getResource("Case009-Family.ged");
+    String ouputFile = System.getProperty("user.dir") + "/target/test.gedx";
+    String[] args = new String[] {"-i", gedcomUrl.getPath(), "-o", ouputFile};
+    Gedcom2Gedcomx.main(args);
+    assertTrue(new File(ouputFile).exists());
+    JarFile jarFile = new JarFile(ouputFile);
+    assertEquals(jarFile.getManifest().getEntries().size(), 54);
+//    listContents(ouputFile);
+  }
+
+  private static void listContents(String ouputFile) throws IOException {
+    JarFile jarFile = new JarFile(ouputFile);
+    System.out.print("Main Attributes: ");
+    printAttributes(jarFile.getManifest().getMainAttributes());
+    Enumeration entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+      printEntry(entries.nextElement());
+    }
+  }
+
+  private static void printEntry(Object jarEntry) throws IOException {
+    JarEntry entry = (JarEntry)jarEntry;
+    String name = entry.getName();
+    long size = entry.getSize();
+    long compressedSize = entry.getCompressedSize();
+
+    Attributes attributes = entry.getAttributes();
+    System.out.print(name + "\t" + size + "\t" + compressedSize + "\t");
+    printAttributes(attributes);
+  }
+
+  private static void printAttributes(Attributes attributes) {
+    if (attributes != null ) {
+      System.out.print("[");
+      String sep = "";
+      for (Object attrKey : attributes.keySet()) {
+        System.out.print(sep + attrKey + ":" + attributes.get(attrKey));
+        sep = ",";
+      }
+      System.out.println("]");
+    }
+  }
+
+  private static void printProp(String prop) {
+    System.out.println(prop + "=" + System.getProperty(prop));
   }
 }
