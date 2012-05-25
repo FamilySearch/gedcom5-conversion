@@ -16,6 +16,7 @@
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
+    <logback.version>1.0.3</logback.version>
   </properties>
 
   <dependencies>
@@ -35,9 +36,9 @@
       <version>${slf-api.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jcl</artifactId>
-      <version>${slf-api.version}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
 

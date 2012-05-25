@@ -27,7 +27,6 @@ import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
-import org.gedcomx.metadata.dc.ObjectFactory;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Agent;
 import org.gedcomx.metadata.rdf.Description;
@@ -36,18 +35,23 @@ import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
 import org.gedcomx.types.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- */
+
 public class CommonMapper {
-  private static ObjectFactory objectFactory = new ObjectFactory();
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
+  private static final String PARSEFORMAT_D_MMM_YY = "d MMM yy";
+  public static final String PARSEFORMAT_HH_MM_SS_SSS = "HH:mm:ss.SSS";
 
   /**
    * Create a list of GedcomX Notes based on the ged5 notes.
@@ -72,7 +76,11 @@ public class CommonMapper {
   public static List<SourceReference> toSourcesAndSourceReferences(List<SourceCitation> dqSources, GedcomxConversionResult result) throws IOException {
     List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
 
+    int index = 0;
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
+      Marker sourceContext = ConversionContext.getDetachedMarker("SOUR." + (++index));
+      ConversionContext.addReference(sourceContext);
+
       boolean sourceDescriptionHasData = false;
       boolean sourceReferenceHasData = false;
       Description gedxSourceDescription = new Description();
@@ -101,6 +109,7 @@ public class CommonMapper {
       }
 
       if (dqSource.getText() != null) {
+        logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
         // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
         // sourceDescriptionHasData = true;
       }
@@ -113,11 +122,15 @@ public class CommonMapper {
         sourceReferenceHasData = true;
       }
 
-      // TODO: log?
-      //dqSource.getNotes();
-      //dqSource.getNoteRefs();
-      //dqSource.getMedia();
-      //dqSource.getMediaRefs();
+      int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();
+      if (cntNotes > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+      }
+
+      int cntMedia = dqSource.getMedia().size() + dqSource.getMediaRefs().size();
+      if (cntMedia > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+      }
 
       if (sourceDescriptionHasData) {
         result.addDescription(gedxSourceDescription, null);
@@ -129,8 +142,10 @@ public class CommonMapper {
       }
 
       if ((!sourceDescriptionHasData) && (!sourceReferenceHasData)) {
-        // TODO: SOUR had no convertible data; log
+        logger.warn(ConversionContext.getContext(), "Source citation did not have any data that was mapped into GEDCOM X");
       }
+
+      ConversionContext.removeReference(sourceContext);
     }
 
     return sourceReferences.size() > 0 ? sourceReferences : null;
@@ -140,13 +155,17 @@ public class CommonMapper {
     if (dqChange == null) {
       return null;
     }
-    return toDate(dqChange.getDateTime());
+    Marker changeContext = ConversionContext.getDetachedMarker("CHAN");
+    ConversionContext.addReference(changeContext);
+    java.util.Date date = toDate(dqChange.getDateTime());
+    ConversionContext.removeReference(changeContext);
+    return date;
   }
 
-  private static Date toDate(DateTime dateTime) {
-    String parsePattern = "d MMM yy";
+  private static java.util.Date toDate(DateTime dateTime) {
+    String parsePattern = PARSEFORMAT_D_MMM_YY;
     if (dateTime.getTime() != null) {
-      parsePattern += " HH:mm:ss.SSS";
+      parsePattern += ' '  + PARSEFORMAT_HH_MM_SS_SSS;
     }
 
     String dateTimeString = dateTime.getValue();
@@ -154,20 +173,21 @@ public class CommonMapper {
       dateTimeString += ' ' + dateTime.getTime();
     }
 
-    Date extractedDate;
+    java.util.Date extractedDate;
     try {
       extractedDate = parseDateString(parsePattern, dateTimeString);
     }
     catch (ParseException e) {
+      logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateTimeString);
       //TODO: logWarning
       extractedDate = null;
     }
     return extractedDate;
   }
 
-  private static Date toDate(String dateString) {
-    String parsePattern = "d MMM yy";
-    Date extractedDate;
+  private static java.util.Date toDate(String dateString) {
+    String parsePattern = PARSEFORMAT_D_MMM_YY;
+    java.util.Date extractedDate;
     try {
       extractedDate = parseDateString(parsePattern, dateString);
     }

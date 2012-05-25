@@ -26,12 +26,20 @@ import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.metadata.rdf.RDFValue;
 import org.gedcomx.types.ResourceType;
 import org.gedcomx.types.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 import java.io.IOException;
 
 
 public class SourceDescriptionMapper {
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
+
   public void toSourceDescription(Source dqSource, GedcomxConversionResult result) throws IOException {
+    Marker sourceContext = ConversionContext.getDetachedMarker(String.format("@%s@ SOUR", dqSource.getId()));
+    ConversionContext.addReference(sourceContext);
+
     Description gedxSourceDescription = new Description();
     DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
     gedxSourceDescription.setId(dqSource.getId());
@@ -53,7 +61,7 @@ public class SourceDescriptionMapper {
     }
 
     if (dqSource.getText() != null) {
-      // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+      logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
     }
 
     if (dqSource.getRepositoryRef() != null) {
@@ -108,9 +116,14 @@ public class SourceDescriptionMapper {
     //dqSource.getParen();  // PAF extension elements; will not process
 
     result.addDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
+
+    ConversionContext.removeReference(sourceContext);
   }
 
   public void toOrganization(Repository dqRepository, GedcomxConversionResult result) throws IOException {
+    Marker repositoryContext = ConversionContext.getDetachedMarker(String.format("@%s@ REPO", dqRepository.getId()));
+    ConversionContext.addReference(repositoryContext);
+
     Organization gedxOrganization = new Organization();
 
     CommonMapper.populateAgent(gedxOrganization, dqRepository.getId(), dqRepository.getName(), dqRepository.getAddress(), dqRepository.getPhone(), dqRepository.getFax(), dqRepository.getEmail(), dqRepository.getWww());
@@ -123,6 +136,8 @@ public class SourceDescriptionMapper {
 //    dqRepository.getValue(); // expected to always be null
 
     result.addOrganization(gedxOrganization, CommonMapper.toDate(dqRepository.getChange()));
+
+    ConversionContext.removeReference(repositoryContext);
   }
 
   private TypeReference<ResourceType> mapToKnownResourceType(String mediaType) {

@@ -19,12 +19,16 @@ import org.folg.gedcom.model.Submitter;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Person;
 import org.gedcomx.metadata.rdf.RDFLiteral;
+import org.slf4j.Marker;
 
 import java.io.IOException;
 
 
 public class SubmitterMapper {
   public void toContributor(Submitter dqSubmitter, GedcomxConversionResult result) throws IOException {
+    Marker submitterContext = ConversionContext.getDetachedMarker(String.format("@%s@ SUBM", dqSubmitter.getId()));
+    ConversionContext.addReference(submitterContext);
+
     Person gedxContributor = new Person();
 
     CommonMapper.populateAgent(gedxContributor, dqSubmitter.getId(), dqSubmitter.getName(), dqSubmitter.getAddress(), dqSubmitter.getPhone(), dqSubmitter.getFax(), dqSubmitter.getEmail(), dqSubmitter.getWww());
@@ -41,5 +45,7 @@ public class SubmitterMapper {
 //    dqSubmitter.getExtensions();
 
     result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
+
+    ConversionContext.removeReference(submitterContext);
   }
 }

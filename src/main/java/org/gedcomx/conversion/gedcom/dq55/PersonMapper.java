@@ -21,21 +21,26 @@ import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.GenderType;
 import org.gedcomx.types.NamePartType;
 import org.gedcomx.types.NameType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PersonMapper {
 
-  public PersonMapper() {
-  }
+public class PersonMapper {
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
   public void toPerson(org.folg.gedcom.model.Person dqPerson, GedcomxConversionResult result) throws IOException {
     if (dqPerson == null) {
       return;
     }
+
+    Marker personContext = ConversionContext.getDetachedMarker(String.format("@%s@ INDI", dqPerson.getId()));
+    ConversionContext.addReference(personContext);
 
     Person gedxPerson = new Person();
     gedxPerson.setId(dqPerson.getId());
@@ -43,9 +48,20 @@ public class PersonMapper {
     //////////////////////////////////////////////////////////////////////
     // Process NAMES
 
+    int index = 0;
     List<Name> gedxNames = new ArrayList<Name>();
     for (org.folg.gedcom.model.Name dqName : dqPerson.getNames()) {
-      gedxNames.addAll(toNameList(dqName));
+      Marker nameContext = ConversionContext.getDetachedMarker("NAME." + (++index));
+      ConversionContext.addReference(nameContext);
+
+      int cntNamesBeforeThisNameObj = gedxNames.size();
+      gedxNames.addAll(toNameList(dqName, result));
+      if ((cntNamesBeforeThisNameObj == 0) && (gedxNames.size() > 0)) {
+        // the first name encountered is assumed to be the preferred name per the recommendation given in the GEDCOM 5.5.1 specification
+        gedxNames.get(0).setPreferred(Boolean.TRUE);
+      }
+
+      ConversionContext.removeReference(nameContext);
     }
 
     if (gedxNames.size() > 0) {
@@ -68,8 +84,11 @@ public class PersonMapper {
 
     //////////////////////////////////////////////////////////////////////
     // Add the person to the conversion results
+    java.util.Date lastModified = CommonMapper.toDate(dqPerson.getChange());
 
-    result.addPerson(gedxPerson, CommonMapper.toDate(dqPerson.getChange()));
+    result.addPerson(gedxPerson, lastModified);
+
+    ConversionContext.removeReference(personContext);
   }
 
   private void processFacts(Person gedxPerson, List<EventFact> facts, GedcomxConversionResult result) throws IOException {
@@ -77,7 +96,11 @@ public class PersonMapper {
       return;
     }
 
+    int index = 0;
     for(EventFact fact : facts) {
+      Marker factContext = ConversionContext.getDetachedMarker(fact.getTag() + '.' + (++index));
+      ConversionContext.addReference(factContext);
+
       Fact gedxFact = FactMapper.toFact(fact, result);
 
       if(gedxFact == null) {
@@ -90,12 +113,17 @@ public class PersonMapper {
       if(gedxFact != null) {
         gedxPerson.addFact(gedxFact);
       }
+
+      ConversionContext.removeReference(factContext);
     }
   }
 
   private void processSex(Person gedxPerson, EventFact fact) {
+    Marker genderContext = ConversionContext.getDetachedMarker("SEX");
+    ConversionContext.addReference(genderContext);
+
     if(gedxPerson.getGender() != null) {
-      //TODO warn/log (but continue)
+      logger.warn(ConversionContext.getContext(), "Missing gender designation");
     }
 
     if(fact.getValue().equalsIgnoreCase("M")) {
@@ -108,11 +136,13 @@ public class PersonMapper {
       gedxPerson.setGender(new Gender(GenderType.Unknown));
     }
     else  {
-      //TODO warn/log
+      logger.warn(ConversionContext.getContext(), "Unrecognized gender designation");
     }
+
+    ConversionContext.removeReference(genderContext);
   }
 
-  private List<Name> toNameList(org.folg.gedcom.model.Name dqName) {
+  private List<Name> toNameList(org.folg.gedcom.model.Name dqName, GedcomxConversionResult result) throws IOException {
     List<Name> nameList = new ArrayList<Name>();
 
     if (dqName == null) {
@@ -134,7 +164,7 @@ public class PersonMapper {
       Name gedxNickname = new Name();
       gedxNickname.setKnownType(NameType.Nickname);
       NameForm nickname = new NameForm();
-      nickname.setFullText(dqName.getNickname()); // TODO: append the surname?  might end up being a bad idea
+      nickname.setFullText(dqName.getNickname());
       gedxNickname.setPrimaryForm(nickname);
       nameList.add(gedxNickname);
     }
@@ -143,7 +173,7 @@ public class PersonMapper {
       Name gedxMarriedName = new Name();
       gedxMarriedName.setKnownType(NameType.MarriedName);
       NameForm marriedName = new NameForm();
-      marriedName.setFullText(dqName.getMarriedName()); // TODO: is this just a surname?
+      marriedName.setFullText(dqName.getMarriedName());
       gedxMarriedName.setPrimaryForm(marriedName);
       nameList.add(gedxMarriedName);
     }
@@ -152,62 +182,46 @@ public class PersonMapper {
       Name gedxAka = new Name();
       gedxAka.setKnownType(NameType.AlsoKnownAs);
       NameForm alias = new NameForm();
-      alias.setFullText(dqName.getMarriedName()); // TODO: is this just a surname?
+      alias.setFullText(dqName.getMarriedName());
       gedxAka.setPrimaryForm(alias);
       nameList.add(gedxAka);
     }
 
-    // dqName.getAkaTag() // GEDCOM 5.5 formatting data that we will not preserve
+    if ((dqName.getExtensions() != null) && (dqName.getExtensions().size() > 0)) {
+      for (String tag : dqName.getExtensions().keySet()) {
+        logger.warn(ConversionContext.getContext(), "GEDCOM 5.5 parser did not support this tag: {}", tag);
+      }
+    }
 
-//    if ((dqName.getExtensions() != null) && (dqName.getExtensions().size() > 0)) {
-//      // TODO: appears in resource data set from Paul Dupaix
-//    }
-//    if ((dqName.getMarriedName() != null) && (dqName.getMarriedName().trim().length() > 0)) {
-//      // TODO: appears in resource data set from Paul Dupaix
-//    }
-//    if ((dqName.getMarriedNameTag() != null) && (dqName.getMarriedNameTag().trim().length() > 0)) {
-//      // TODO: appears in resource data set from Paul Dupaix
-//    }
-//    if ((dqName.getMedia() != null) && (dqName.getMedia().size() > 0)) {
-//      assert false;
-//    }
-//    if ((dqName.getMediaRefs() != null) && (dqName.getMediaRefs().size() > 0)) {
-//      assert false;
-//    }
-//    if ((dqName.getNickname() != null) && (dqName.getNickname().trim().length() > 0)) {
-//      // TODO: appears in resource data set from Paul Dupaix
-//    }
-//    if ((dqName.getNoteRefs() != null) && (dqName.getNoteRefs().size() > 0)) {
-//      assert false;
-//    }
-//    if ((dqName.getNotes() != null) && (dqName.getNotes().size() > 0)) {
-//      // TODO: rare (and probably an error on ancestry's side) in my data
-//    }
-//    if ((dqName.getSourceCitations() != null) && (dqName.getSourceCitations().size() > 0)) {
-//      // TODO: common case in my data
-//    }
-//    if ((dqName.getSurnamePrefix() != null) && (dqName.getSurnamePrefix().trim().length() > 0)) {
-//      assert false;
-//    }
+    int cntNotes = dqName.getNotes().size() + dqName.getNoteRefs().size();
+    if (cntNotes > 0) {
+      logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+    }
+
+    int cntMedia = dqName.getMedia().size() + dqName.getMediaRefs().size();
+    if (cntMedia > 0) {
+      logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+    }
+
+    if ((dqName.getSourceCitations() != null) && (dqName.getSourceCitations().size() > 0)) {
+      List<SourceReference> sources = CommonMapper.toSourcesAndSourceReferences(dqName.getSourceCitations(), result);
+      gedxName.setSources(sources);
+    }
+
 //    if ((dqName.getType() != null) && (dqName.getType().trim().length() > 0)) {
 //      // TODO: appears in resource data set from Paul Dupaix
-//    }
-//    if ((dqName.getTypeTag() != null) && (dqName.getTypeTag().trim().length() > 0)) {
-//      assert false;
+//        gedxName.setKnownType();
+//        gedxName.setType();
 //    }
 
-    //dqName.getAllMedia(); // requires dq's Gedcom instance
-    //dqName.getAllNotes(); // requires dq's Gedcom instance
+    //dqName.getAkaTag() // data about GEDCOM 5.5 formatting that we will not preserve
+    //dqName.getTypeTag() // data about GEDCOM 5.5 formatting that we will not preserve
 
-//    gedxName.setAlternateForms();
-//    gedxName.setAttribution();
-//    gedxName.setExtensionElements();
-//    gedxName.setId();
-//    gedxName.setKnownType();
-//    gedxName.setPreferred();
-//    gedxName.setPrimaryForm();
-//    gedxName.setSources();
-//    gedxName.setType();
+    //dqName.getAllMedia(); // media not handled via this method; see getMedia and getMediaRefs
+    //dqName.getAllNotes(); // notes not handled via this method; see getNotes and getNoteRefs
+
+    //gedxName.setAttribution(); // DallanQ parser currently chooses not to handle per-item SUBM references
+    //gedxName.setPreferred(); // handled outside this mapping method
 
     return nameList;
   }
