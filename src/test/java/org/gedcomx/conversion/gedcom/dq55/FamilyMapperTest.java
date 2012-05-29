@@ -11,15 +11,12 @@ import org.gedcomx.types.RelationshipType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeTest;
 
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
+import static org.testng.Assert.*;
 
 
 public class FamilyMapperTest {
@@ -93,6 +90,31 @@ public class FamilyMapperTest {
     assertSize(relCouple.getNotes(), 2);
   }
 
+  @Test
+  public void testFamilyF20() throws Exception {
+    // Test child to family facts
+    Relationship rel;
+    FamilyMapper mapper = new FamilyMapper();
+    Family dqFamily = gedcom.getFamilies().get(3);
+
+    mapper.toRelationship(dqFamily, gedcom, result);
+    assertEquals(result.getRelationships().size(), 7);
+
+    testRelationship(0, RelationshipType.Couple, "I1000", "I1001", 0);
+    rel = testRelationship(1, RelationshipType.ParentChild, "I1000", "I1002", 1);
+    testFact(rel, FactType.Adopted);
+    rel = testRelationship(2, RelationshipType.ParentChild, "I1001", "I1002", 1);
+    testFact(rel, FactType.Adopted);
+    rel = testRelationship(3, RelationshipType.ParentChild, "I1000", "I1003", 1);
+    testFact(rel, FactType.Foster);
+    rel = testRelationship(4, RelationshipType.ParentChild, "I1001", "I1003", 1);
+    testFact(rel, FactType.Foster);
+    rel = testRelationship(5, RelationshipType.ParentChild, "I1000", "I1004", 1);
+    testFact(rel, FactType.Biological);
+    rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
+    testFact(rel, FactType.Biological);
+  }
+
   private void assertSize(List list, int count) {
     if (count == 0) {
       if (list != null)
@@ -117,21 +139,27 @@ public class FamilyMapperTest {
     assertEquals(person2.getResource().toString(), CommonMapper.getPersonEntryName(person2Id));
 
     if (factCount > 0) {
+      assertNotNull(relationship.getFacts());
       assertEquals(relationship.getFacts().size(), factCount);
       Fact fact0 = relationship.getFacts().get(0);
       if (relationshipType.equals(RelationshipType.Couple)) {
         assertEquals(fact0.getKnownType(), FactType.Marriage);
-      }
-      else if (relationshipType.equals(RelationshipType.ParentChild)) {
-        assertEquals(fact0.getKnownType(), FactType.Marriage);
-      }
-      for (Fact fact : relationship.getFacts()) {
-        assertNotNull(fact.getDate());
-        assertNotNull(fact.getPlace());
+        assertNotNull(fact0.getDate());
+        assertNotNull(fact0.getPlace());
       }
     }
 
     assertNull(relationship.getExtensionElements());
   }
 
+  private void testFact(Relationship relationship, FactType factType) {
+    boolean found = false;
+    for (Fact fact : relationship.getFacts()) {
+      if(fact.getKnownType().equals(factType)) {
+        found = true;
+        break;
+      }
+    }
+    assertTrue(found);
+  }
 }

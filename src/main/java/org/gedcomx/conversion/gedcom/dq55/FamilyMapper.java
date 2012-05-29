@@ -110,6 +110,8 @@ public class FamilyMapper {
           }
           else {
             //TODO log/warn
+
+            // Sometimes we see the STAT fields in the PEDI field (challenged, disproven, proven), so when we start reading the STAT field, read it from here as well...
           }
         }
       }

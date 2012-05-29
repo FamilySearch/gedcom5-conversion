@@ -293,6 +293,59 @@
 2 DATE 10 May 2012
 3 TIME 01:00:00
 
+0 @I1000@ INDI
+1 NAME John /Louwaert/
+  2 SURN Louwaert
+  2 GIVN John
+1 SEX M
+1 DEAT
+  2 DATE 18 Apr 1947
+  2 PLAC San Francisco, California, United States
+1 FAMS @F20@
+
+0 @I1001@ INDI
+1 NAME Jane /Jensen/
+  2 SURN Jensen
+  2 GIVN Jane
+1 SEX F
+1 DEAT
+  2 DATE 3 Jun 1943
+  2 PLAC San Francisco, California, United States
+1 FAMS @F20@
+
+0 @I1002@ INDI
+1 NAME Billy /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Billy
+1 SEX M
+1 DEAT
+  2 DATE 18 Apr 1957
+  2 PLAC San Francisco, California, United States
+1 FAMC @F20@
+  2 PEDI adopted
+
+0 @I1003@ INDI
+1 NAME Ben /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Ben
+1 SEX M
+1 DEAT
+  2 DATE 3 Apr 1961
+  2 PLAC San Francisco, California, United States
+1 FAMC @F20@
+  2 PEDI foster
+
+0 @I1004@ INDI
+1 NAME Ella /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Ella
+1 SEX F
+1 DEAT
+  2 DATE 21 Jan 1951
+  2 PLAC San Francisco, California, United States
+1 FAMC @F20@
+  2 PEDI birth
+
 0 @F1@ FAM
 1 _UID BB15CF6289BA0B488B206FF9222E7CFB714B
 1 HUSB @I1@
@@ -370,6 +423,13 @@
   2 PAGE Serafine De Rock and Mrs. Collete Lowvard
   2 DATA
   3 TEXT Groom's Name: 	Serafine De Rock Groom's Birth Date: 	 Groom's Birthplace: 	 Groom's Age: 	 Br
+
+0 @F20@ FAM
+1 HUSB @I1000@
+1 WIFE @I1001@
+1 CHIL @I1002@
+1 CHIL @I1003@
+1 CHIL @I1004@
 
 0 @S1@ SOUR
   1 REPO @REPO1@

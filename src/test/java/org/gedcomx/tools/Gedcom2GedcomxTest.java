@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -40,7 +39,7 @@ public class Gedcom2GedcomxTest {
     Gedcom2Gedcomx.main(args);
     assertTrue(new File(ouputFile).exists());
     JarFile jarFile = new JarFile(ouputFile);
-    assertEquals(jarFile.getManifest().getEntries().size(), 54);
+    assertEquals(jarFile.getManifest().getEntries().size(), 66);
 //    listContents(ouputFile);
   }
 
