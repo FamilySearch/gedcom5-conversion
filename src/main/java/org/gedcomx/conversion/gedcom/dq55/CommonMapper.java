@@ -51,7 +51,7 @@ import java.util.regex.Pattern;
 public class CommonMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
   private static final String PARSEFORMAT_D_MMM_YY = "d MMM yy";
-  public static final String PARSEFORMAT_HH_MM_SS_SSS = "HH:mm:ss.SSS";
+  private static final String PARSEFORMAT_HH_MM_SS_SSS = "HH:mm:ss.SSS";
 
   /**
    * Create a list of GedcomX Notes based on the ged5 notes.
@@ -334,4 +334,7 @@ public class CommonMapper {
       agent.setHomepage(new RDFLiteral(www));
     }
   }
+
+  private CommonMapper() { } // added to remove "major" sonar warning
+                             // formatted to minimize impact on code coverage metrics
 }

@@ -43,7 +43,7 @@ public class SourceReferenceMapperTest {
   @BeforeClass
   public void setUp() throws Exception {
     SequentialIdentifierGenerator.reset();
-    URL gedcomUrl = this.getClass().getClassLoader().getResource("Case007-SourceCitatoins.ged");
+    URL gedcomUrl = this.getClass().getClassLoader().getResource("Case007-SourceCitations.ged");
     File gedcomFile = new File(gedcomUrl.toURI());
     ModelParser modelParser = new ModelParser();
 
