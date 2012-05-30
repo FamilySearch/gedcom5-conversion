@@ -46,6 +46,7 @@ public class SubmitterMapperTest {
     assertEquals(((List<GedcomTag>)dqSubmitter.getExtensions().get("folg.more_tags")).get(0).getTag(), "UID");
     assertEquals(((List<GedcomTag>)dqSubmitter.getExtensions().get("folg.more_tags")).get(0).getValue(), "23456");
 
+    // execute conversion and test conversion outcome
     mapper.toContributor(dqSubmitter, result);
     assertNotNull(result.getContributors());
     assertEquals(result.getContributors().size(), 1);
