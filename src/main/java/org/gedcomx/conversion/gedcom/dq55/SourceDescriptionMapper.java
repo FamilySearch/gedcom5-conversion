@@ -85,11 +85,9 @@ public class SourceDescriptionMapper {
             gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqRepositoryRef.getCallNumber()));
           }
 
-          if (dqRepositoryRef.getMediaType() != null) {
-            TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqRepositoryRef.getMediaType());
-            if (mediaTypeRef != null) {
-              gedxSourceDescription.setType(mediaTypeRef);
-            }
+          TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqRepositoryRef.getMediaType());
+          if (mediaTypeRef != null) {
+            gedxSourceDescription.setType(mediaTypeRef);
           }
         } finally {
           ConversionContext.removeReference(repoContext);
@@ -100,11 +98,9 @@ public class SourceDescriptionMapper {
         gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqSource.getCallNumber()));
       }
 
-      if (dqSource.getMediaType() != null) {
-        TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqSource.getMediaType());
-        if (mediaTypeRef != null) {
-          gedxSourceDescription.setType(mediaTypeRef);
-        }
+      TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqSource.getMediaType());
+      if (mediaTypeRef != null) {
+        gedxSourceDescription.setType(mediaTypeRef);
       }
 
       int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();

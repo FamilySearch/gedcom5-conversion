@@ -127,6 +127,10 @@
 3 TIME 11:11:11.111
 0 @SOUR20@ SOUR
 1 TITL __sour20_titl__
+1 TYPE __spec_deviation__source_type__
+1 REFN __refn__
+1 RIN __RIN__
+1 UID __UID__
 1 CHAN
 2 DATE 11 Nov 2011
 0 @REPO1@ REPO
