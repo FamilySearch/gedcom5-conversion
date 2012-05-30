@@ -15,34 +15,61 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Person;
 import org.gedcomx.metadata.rdf.RDFLiteral;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class SubmitterMapper {
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
+
   public void toContributor(Submitter dqSubmitter, GedcomxConversionResult result) throws IOException {
     Marker submitterContext = ConversionContext.getDetachedMarker(String.format("@%s@ SUBM", dqSubmitter.getId()));
     ConversionContext.addReference(submitterContext);
 
     Person gedxContributor = new Person();
 
-    CommonMapper.populateAgent(gedxContributor, dqSubmitter.getId(), dqSubmitter.getName(), dqSubmitter.getAddress(), dqSubmitter.getPhone(), dqSubmitter.getFax(), dqSubmitter.getEmail(), dqSubmitter.getWww());
+    CommonMapper.populateAgent(gedxContributor
+        , dqSubmitter.getId()
+        , dqSubmitter.getName()
+        , dqSubmitter.getAddress()
+        , dqSubmitter.getPhone()
+        , dqSubmitter.getFax()
+        , dqSubmitter.getEmail()
+        , dqSubmitter.getWww()
+      );
 
     if (dqSubmitter.getLanguage() != null) {
       gedxContributor.setLanguage(new RDFLiteral(dqSubmitter.getLanguage()));
     }
 
-    // TODO: add logging for fields we are not processing right now
-//    dqSubmitter.getId();
-//    dqSubmitter.getName();
-//    dqSubmitter.getRin();
-//    dqSubmitter.getValue();
-//    dqSubmitter.getExtensions();
+    if (dqSubmitter.getRin() != null) {
+      logger.warn(ConversionContext.getContext(), "RIN ({}) was ignored.", dqSubmitter.getRin());
+    }
+
+    if (dqSubmitter.getValue() != null) {
+      logger.warn(ConversionContext.getContext(), "Unexpected submitter value ({}) was ignored.", dqSubmitter.getValue());
+    }
+
+    if (dqSubmitter.getExtensions().size() > 0) {
+      for (String extensionCategory : dqSubmitter.getExtensions().keySet()) {
+        for (GedcomTag tag : ((List<GedcomTag>)dqSubmitter.getExtension(extensionCategory))) {
+          logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+          // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+        }
+      }
+    }
+
+    dqSubmitter.getValue();
+    dqSubmitter.getExtensions();
 
     result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
 

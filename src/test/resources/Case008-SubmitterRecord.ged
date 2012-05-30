@@ -5,11 +5,18 @@
 2 FORM LINEAGE-LINKED
 1 CHAR UTF-8
 1 SUBM @SUBM1@
-0 @SUBM1@ SUBM
+0 @SUBM1@ SUBM __spec_deviation__value__
 1 NAME Henri Herkimer Hofmeir
 1 ADDR 1 Genealogist Way
 2 CONT Hometown, ZZ  99999
 2 CONT United States
+1 EMAIL info@nospam.com
+1 PHON 935-555-1212
+1 FAX 935-555-0101
+1 WWW http://nospam.com/
+1 LANG English
+1 RIN 12345
+1 UID 23456
 0 @SUBM2@ SUBM
 1 NAME SubmitterGiven1 SubmitterSurname1
 1 ADDR 2 Genealogist Way
