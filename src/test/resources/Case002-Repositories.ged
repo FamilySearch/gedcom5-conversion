@@ -98,3 +98,11 @@
 1 NAME Cape Girardeau County Archive Center
 1 PHON +1 573.204-2331
 1 FAX +1 (573)204/2334
+0 @REPO8@ REPO __Cape_Girardeau_County_Archive_Center__
+1 NAME Cape Girardeau County Archive Center
+1 REFN 12345
+2 TYPE MyType
+1 RIN 23456
+1 NOTE MyNote
+2 CONC ... and more of MyNote.
+1 DATE 5 May 1862

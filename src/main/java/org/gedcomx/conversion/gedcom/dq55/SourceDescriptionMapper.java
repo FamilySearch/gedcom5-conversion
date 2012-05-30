@@ -15,6 +15,7 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.model.RepositoryRef;
 import org.folg.gedcom.model.Source;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class SourceDescriptionMapper {
@@ -147,10 +149,12 @@ public class SourceDescriptionMapper {
         ConversionContext.removeReference(uidContext);
       }
 
-      if ((dqSource.getExtensions() != null) && (dqSource.getExtensions().size() > 0)) {
-        for (String tag : dqSource.getExtensions().keySet()) {
-          logger.warn(ConversionContext.getContext(), "GEDCOM 5.5 parser did not support this tag: {}", tag);
-          // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+      if (dqSource.getExtensions().size() > 0) {
+        for (String extensionCategory : dqSource.getExtensions().keySet()) {
+          for (GedcomTag tag : ((List<GedcomTag>)dqSource.getExtension(extensionCategory))) {
+            logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+            // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+          }
         }
       }
 
@@ -184,9 +188,11 @@ public class SourceDescriptionMapper {
         logger.warn(ConversionContext.getContext(), "Unexpected repository value ({}) was ignored.", dqRepository.getValue());
       }
 
-      if ((dqRepository.getExtensions() != null) && (dqRepository.getExtensions().size() > 0)) {
-        for (String tag : dqRepository.getExtensions().keySet()) {
-          logger.warn(ConversionContext.getContext(), "GEDCOM 5.5 parser did not support this tag: {}", tag);
+      if (dqRepository.getExtensions().size() > 0) {
+        for (String extensionCategory : dqRepository.getExtensions().keySet()) {
+          for (GedcomTag tag : ((List<GedcomTag>)dqRepository.getExtension(extensionCategory))) {
+            logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+          }
         }
       }
 

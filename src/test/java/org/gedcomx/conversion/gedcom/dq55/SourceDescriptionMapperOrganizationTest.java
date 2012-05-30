@@ -33,7 +33,7 @@ public class SourceDescriptionMapperOrganizationTest {
     gedcom = modelParser.parseGedcom(gedcomFile);
     assertNotNull(gedcom);
     assertNotNull(gedcom.getRepositories());
-    assertEquals(gedcom.getRepositories().size(), 5);
+    assertEquals(gedcom.getRepositories().size(), 6);
   }
 
   @Test
@@ -359,6 +359,49 @@ public class SourceDescriptionMapperOrganizationTest {
         fail("Unexpected phone: " + s);
       }
     }
+
+    // null in this repository
+    assertNull(gedxOrganization.getAddresses());
+    assertNull(gedxOrganization.getEmails());
+    assertNull(gedxOrganization.getHomepage());
+
+    // Description that is the result of the CHAN tag with a bogus value
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 0);
+  }
+
+  @Test
+  public void testToOrganization6() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(5);
+    TestConversionResult result = new TestConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO8");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
+
+    // PHON and FAX
+    assertNull(gedxOrganization.getPhones());
 
     // null in this repository
     assertNull(gedxOrganization.getAddresses());

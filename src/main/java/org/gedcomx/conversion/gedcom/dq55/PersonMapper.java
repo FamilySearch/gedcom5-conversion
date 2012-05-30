@@ -16,6 +16,7 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
+import org.folg.gedcom.model.GedcomTag;
 import org.gedcomx.conclusion.*;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.GenderType;
@@ -209,9 +210,12 @@ public class PersonMapper {
       logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
     }
 
-    if ((dqName.getExtensions() != null) && (dqName.getExtensions().size() > 0)) {
-      for (String tag : dqName.getExtensions().keySet()) {
-        logger.warn(ConversionContext.getContext(), "GEDCOM 5.5 parser did not support this tag: {}", tag);
+
+    if (dqName.getExtensions().size() > 0) {
+      for (String extensionCategory : dqName.getExtensions().keySet()) {
+        for (GedcomTag tag : ((List<GedcomTag>)dqName.getExtension(extensionCategory))) {
+          logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+        }
       }
     }
 
