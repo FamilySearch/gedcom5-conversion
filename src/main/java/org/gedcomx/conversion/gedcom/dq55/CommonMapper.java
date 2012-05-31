@@ -44,6 +44,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -51,7 +52,15 @@ import java.util.regex.Pattern;
 public class CommonMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
   private static final String PARSEFORMAT_D_MMM_YY = "d MMM yy";
-  private static final String PARSEFORMAT_HH_MM_SS_SSS = "HH:mm:ss.SSS";
+  private static final String PARSEFORMAT_SSS = ".SSS";
+  private static final String PARSEFORMAT_SS = ":ss";
+  private static final String PARSEFORMAT_HH_MM = "HH:mm";
+
+  private static final List<String> CHAN_DATE_ONLY_PARSE_PATTERNS = Arrays.asList(PARSEFORMAT_D_MMM_YY);
+  private static final List<String> CHAN_DATE_TIME_PARSE_PATTERNS = Arrays.asList(
+      PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM + PARSEFORMAT_SS + PARSEFORMAT_SSS
+    , PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM + PARSEFORMAT_SS
+    , PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM);
 
   /**
    * Create a list of GedcomX Notes based on the ged5 notes.
@@ -80,72 +89,73 @@ public class CommonMapper {
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {
       Marker sourceContext = ConversionContext.getDetachedMarker("SOUR." + (++index));
       ConversionContext.addReference(sourceContext);
+      try {
+        boolean sourceDescriptionHasData = false;
+        boolean sourceReferenceHasData = false;
+        Description gedxSourceDescription = new Description();
+        DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
+        gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
-      boolean sourceDescriptionHasData = false;
-      boolean sourceReferenceHasData = false;
-      Description gedxSourceDescription = new Description();
-      DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-      gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+        String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
+        SourceReference gedxSourceReference = new SourceReference();
+        gedxSourceReference.setDescription(new ResourceReference());
+        gedxSourceReference.getDescription().setResource(URI.create(entryName));
 
-      String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
-      SourceReference gedxSourceReference = new SourceReference();
-      gedxSourceReference.setDescription(new ResourceReference());
-      gedxSourceReference.getDescription().setResource(URI.create(entryName));
+        if (dqSource.getRef() != null) {
+          gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+          sourceDescriptionHasData = true;
 
-      if (dqSource.getRef() != null) {
-        gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
-        sourceDescriptionHasData = true;
+          if (dqSource.getPage() != null) {
+            gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
+          }
 
-        if (dqSource.getPage() != null) {
-          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
-        }
-
-        if (dqSource.getDate() != null) {
+          if (dqSource.getDate() != null) {
             gedxDecoratedSourceDescription.created(toDate(dqSource.getDate()));
+          }
+        } else if (dqSource.getValue() != null) {
+          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
+          sourceDescriptionHasData = true;
         }
-      } else if (dqSource.getValue() != null) {
-        gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
-        sourceDescriptionHasData = true;
-      }
 
-      if (dqSource.getText() != null) {
-        logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
-        // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
-        // sourceDescriptionHasData = true;
-      }
+        if (dqSource.getText() != null) {
+          logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
+          // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
+          // sourceDescriptionHasData = true;
+        }
 
-      ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
-      if (gedxConfidenceLevel != null) {
-        Attribution attribution = new Attribution();
-        attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
-        gedxSourceReference.setAttribution(attribution);
-        sourceReferenceHasData = true;
-      }
+        ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
+        if (gedxConfidenceLevel != null) {
+          Attribution attribution = new Attribution();
+          attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
+          gedxSourceReference.setAttribution(attribution);
+          sourceReferenceHasData = true;
+        }
 
-      int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();
-      if (cntNotes > 0) {
-        logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
-      }
+        int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();
+        if (cntNotes > 0) {
+          logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+        }
 
-      int cntMedia = dqSource.getMedia().size() + dqSource.getMediaRefs().size();
-      if (cntMedia > 0) {
-        logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
-      }
+        int cntMedia = dqSource.getMedia().size() + dqSource.getMediaRefs().size();
+        if (cntMedia > 0) {
+          logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+        }
 
-      if (sourceDescriptionHasData) {
-        result.addDescription(gedxSourceDescription, null);
-        sourceReferenceHasData = true;
-      }
+        if (sourceDescriptionHasData) {
+          result.addDescription(gedxSourceDescription, null);
+          sourceReferenceHasData = true;
+        }
 
-      if (sourceReferenceHasData) {
-        sourceReferences.add(gedxSourceReference);
-      }
+        if (sourceReferenceHasData) {
+          sourceReferences.add(gedxSourceReference);
+        }
 
-      if ((!sourceDescriptionHasData) && (!sourceReferenceHasData)) {
-        logger.warn(ConversionContext.getContext(), "Source citation did not have any data that was mapped into GEDCOM X");
+        if ((!sourceDescriptionHasData) && (!sourceReferenceHasData)) {
+          logger.warn(ConversionContext.getContext(), "Source citation did not have any data that was mapped into GEDCOM X");
+        }
+      } finally {
+        ConversionContext.removeReference(sourceContext);
       }
-
-      ConversionContext.removeReference(sourceContext);
     }
 
     return sourceReferences.size() > 0 ? sourceReferences : null;
@@ -157,31 +167,37 @@ public class CommonMapper {
     }
     Marker changeContext = ConversionContext.getDetachedMarker("CHAN");
     ConversionContext.addReference(changeContext);
-    java.util.Date date = toDate(dqChange.getDateTime());
-    ConversionContext.removeReference(changeContext);
+    java.util.Date date;
+    try {
+      date = toDate(dqChange.getDateTime());
+    } finally {
+      ConversionContext.removeReference(changeContext);
+    }
     return date;
   }
 
   private static java.util.Date toDate(DateTime dateTime) {
-    String parsePattern = PARSEFORMAT_D_MMM_YY;
-    if (dateTime.getTime() != null) {
-      parsePattern += ' '  + PARSEFORMAT_HH_MM_SS_SSS;
-    }
+    List<String> legitimateParsePatterns = dateTime.getTime() != null ? CHAN_DATE_TIME_PARSE_PATTERNS : CHAN_DATE_ONLY_PARSE_PATTERNS;
 
     String dateTimeString = dateTime.getValue();
     if (dateTime.getTime() != null) {
       dateTimeString += ' ' + dateTime.getTime();
     }
 
-    java.util.Date extractedDate;
-    try {
-      extractedDate = parseDateString(parsePattern, dateTimeString);
+    java.util.Date extractedDate = null;
+    for (String parsePattern : legitimateParsePatterns) {
+      try {
+        extractedDate = parseDateString(parsePattern, dateTimeString);
+        break;
+      }
+      catch (ParseException e) {
+      }
     }
-    catch (ParseException e) {
+
+    if (extractedDate == null) {
       logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateTimeString);
-      //TODO: logWarning
-      extractedDate = null;
     }
+
     return extractedDate;
   }
 
@@ -192,7 +208,7 @@ public class CommonMapper {
       extractedDate = parseDateString(parsePattern, dateString);
     }
     catch (ParseException e) {
-      //TODO: logWarning
+      logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateString);
       extractedDate = null;
     }
     return extractedDate;
@@ -259,10 +275,12 @@ public class CommonMapper {
     relationship.setPerson1(toReference(person1));
     relationship.setPerson2(toReference(person2));
     String prefix = "";
-    if (relationshipType.equals(RelationshipType.Couple))
+    if (relationshipType.equals(RelationshipType.Couple)) {
       prefix = "C-";
-    else if (relationshipType.equals(RelationshipType.ParentChild))
+    }
+    else if (relationshipType.equals(RelationshipType.ParentChild)) {
       prefix = "PC-";
+    }
     relationship.setId(prefix + person1.getRef() + "-" + person2.getRef());
     return relationship;
   }

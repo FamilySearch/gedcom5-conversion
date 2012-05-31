@@ -16,8 +16,9 @@
 1 CHAR UTF-8
 1 LANG English
 1 SUBM @SUB1@
+
 0 @SUB1@ SUBM
-1 NAME Thadman Henry
+1 NAME Henri Hofmeir
 1 ADDR 101 S 200 E
   2 CONT Salt Lake City, UT  84124
   2 CTRY United States
@@ -125,7 +126,7 @@
   4 CONC da, California
 1 CHAN
   2 DATE 10 May 2012
-  3 TIME 01:00:00
+  3 TIME 01:00
 
 0 @I8@ INDI
 1 NAME Emma Sabine /Louwaert/
@@ -155,7 +156,7 @@
 1 FAMC @F1@
 1 CHAN
 2 DATE 10 May 2012
-3 TIME 01:00:00
+3 TIME 01
 
 0 @I11@ INDI
 1 NAME Christina Louise Marie /Zupar/
@@ -182,7 +183,7 @@
   4 CONC ancisco Assembly District 29, San Francisco, California
 1 CHAN
   2 DATE 10 May 2012
-  3 TIME 01:00:00
+  3 TIME 01:00:00.1
 
 0 @I14@ INDI
 1 NAME Coleta Séraphina /DeReyghere/
@@ -217,7 +218,7 @@
   2 CONC id=2173
 1 CHAN
 2 DATE 10 May 2012
-3 TIME 01:00:00
+3 TIME 01:00:00.12
 
 0 @I15@ INDI
 1 NAME Joannes Franciscus /Louwaert/
@@ -239,7 +240,7 @@
   2 PLAC Antwerpen, Belgium
 1 CHAN
   2 DATE 10 May 2012
-  3 TIME 01:00:00
+  3 TIME 01:00:00.123
 
 0 @I117@ INDI
 1 NAME Serephine F /DeRock/
