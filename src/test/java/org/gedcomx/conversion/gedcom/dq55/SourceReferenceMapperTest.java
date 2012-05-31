@@ -108,7 +108,7 @@ public class SourceReferenceMapperTest {
     DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
     assertUnusedFieldsAreUnused(gedxDecoratedSourceDescription);
     assertEquals(gedxDecoratedSourceDescription.getCreated().size(), 1);
-    assertEquals(dateFormatter.format(gedxDecoratedSourceDescription.getCreated().get(0)), "Jan 31, 1820 12:00:00 AM");
+    assertEquals(gedxDecoratedSourceDescription.getCreated().get(0).getValue(), "31 Jan 1820");
     assertEquals(gedxDecoratedSourceDescription.getDescription().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getDescription().get(0).getValue(), "FHL INTL Film 1226427, Geboorten, 1820, No. 143");
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 1);

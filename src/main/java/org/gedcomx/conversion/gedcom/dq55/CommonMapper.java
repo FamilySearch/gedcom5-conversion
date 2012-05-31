@@ -23,6 +23,7 @@ import org.gedcomx.common.Attribution;
 import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
+import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -110,7 +111,7 @@ public class CommonMapper {
           }
 
           if (dqSource.getDate() != null) {
-            gedxDecoratedSourceDescription.created(toDate(dqSource.getDate()));
+            gedxDecoratedSourceDescription.created(dqSource.getDate());
           }
         } else if (dqSource.getValue() != null) {
           gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
@@ -198,19 +199,6 @@ public class CommonMapper {
       logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateTimeString);
     }
 
-    return extractedDate;
-  }
-
-  private static java.util.Date toDate(String dateString) {
-    String parsePattern = PARSEFORMAT_D_MMM_YY;
-    java.util.Date extractedDate;
-    try {
-      extractedDate = parseDateString(parsePattern, dateString);
-    }
-    catch (ParseException e) {
-      logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateString);
-      extractedDate = null;
-    }
     return extractedDate;
   }
 
