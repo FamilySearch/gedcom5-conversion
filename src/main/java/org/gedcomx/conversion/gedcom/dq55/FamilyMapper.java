@@ -21,97 +21,139 @@ import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.FactType;
 import org.gedcomx.types.RelationshipType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class FamilyMapper {
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
-  public void toRelationship(Family ged5Family, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
-    Marker familyContext = ConversionContext.getDetachedMarker(String.format("@%s@ FAM", ged5Family.getId()));
+  public void toRelationship(Family dqFamily, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
+    String familyId = dqFamily.getId();
+    Marker familyContext = ConversionContext.getDetachedMarker(String.format("@%s@ FAM", familyId));
     ConversionContext.addReference(familyContext);
 
-    List<SpouseRef> husbands = ged5Family.getHusbandRefs();
-    SpouseRef husband = husbands.size() > 0 ? husbands.get(0) : null;
-    List<SpouseRef> wives = ged5Family.getWifeRefs();
-    SpouseRef wife = wives.size() > 0 ? wives.get(0) : null;
+    List<SpouseRef> husbands = dqFamily.getHusbandRefs();
+    String husbandId = husbands.size() > 0 ? husbands.get(0).getRef() : null;
+    List<SpouseRef> wives = dqFamily.getWifeRefs();
+    String wifeId = wives.size() > 0 ? wives.get(0).getRef() : null;
     Relationship coupleRelationship = null;
-    Date lastModified = CommonMapper.toDate(ged5Family.getChange());
-    if ( husband != null && wife != null) {
-      coupleRelationship = CommonMapper.toRelationship(husband, wife, RelationshipType.Couple);
+
+    Date lastModified = CommonMapper.toDate(dqFamily.getChange());
+
+    if ( husbandId != null && wifeId != null) {
+      coupleRelationship = CommonMapper.toRelationship(familyId, husbandId, wifeId, RelationshipType.Couple);
       result.addRelationship(coupleRelationship, lastModified);
     }
 
-    for (ChildRef child : ged5Family.getChildRefs()) {
+    for (ChildRef child : dqFamily.getChildRefs()) {
       String childId = child.getRef();
-      Person dqChild = (dqGedcom == null || childId == null)?null: dqGedcom.getPerson(childId);
 
-      if (husband != null) {
-        Relationship gedxRelationship = CommonMapper.toRelationship(husband, child, RelationshipType.ParentChild);
-        addFacts(gedxRelationship, ged5Family, dqChild);
+      Person dqChild = (dqGedcom == null) ? null : dqGedcom.getPerson(childId);
+      List<ParentFamilyRef> childToFamilyLinks;
+      if (dqChild != null) {
+        childToFamilyLinks = dqChild.getParentFamilyRefs();
+      } else {
+        logger.warn(ConversionContext.getContext(), "Could not find referenced child (@{}@ INDI).", childId);
+        childToFamilyLinks = Collections.<ParentFamilyRef>emptyList();
+      }
+
+      if (husbandId != null) {
+        Relationship gedxRelationship = CommonMapper.toRelationship(familyId, husbandId, childId, RelationshipType.ParentChild);
+        addFacts(gedxRelationship, familyId, childToFamilyLinks);
         result.addRelationship(gedxRelationship, lastModified);
       }
-      if (wife != null) {
-        Relationship gedxRelationship = CommonMapper.toRelationship(wife, child, RelationshipType.ParentChild);
-        addFacts(gedxRelationship, ged5Family, dqChild);
+      if (wifeId != null) {
+        Relationship gedxRelationship = CommonMapper.toRelationship(familyId, wifeId, childId, RelationshipType.ParentChild);
+        addFacts(gedxRelationship, familyId, childToFamilyLinks);
         result.addRelationship(gedxRelationship, lastModified);
       }
     }
 
     if (coupleRelationship != null) {
       int index = 0;
-      for (EventFact eventFact : ged5Family.getEventsFacts()) {
+      for (EventFact eventFact : dqFamily.getEventsFacts()) {
         Marker factContext = ConversionContext.getDetachedMarker(eventFact.getTag() + '.' + (++index));
         ConversionContext.addReference(factContext);
 
-        System.out.println("eventFact " + eventFact.getTag() + ": " + eventFact.getDate() + " at " + eventFact.getPlace());
         Fact fact = FactMapper.toFact(eventFact, result);
         coupleRelationship.addFact(fact);
 
         ConversionContext.removeReference(factContext);
       }
-      coupleRelationship.setNotes(CommonMapper.toNotes(ged5Family.getNotes()));
-      coupleRelationship.setSources(CommonMapper.toSourcesAndSourceReferences(ged5Family.getSourceCitations(), result));
+      coupleRelationship.setSources(CommonMapper.toSourcesAndSourceReferences(dqFamily.getSourceCitations(), result));
+    }
+
+    int cntLdsOrdinances = dqFamily.getLdsOrdinances().size();
+    if (cntLdsOrdinances > 0) {
+      logger.warn(ConversionContext.getContext(), "Did not process information for {} LDS ordinances.", cntLdsOrdinances);
+    }
+
+    int cntNotes = dqFamily.getNotes().size() + dqFamily.getNoteRefs().size();
+    if (cntNotes > 0) {
+      logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+    }
+
+    int cntMedia = dqFamily.getMedia().size() + dqFamily.getMediaRefs().size();
+    if (cntMedia > 0) {
+      logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+    }
+
+    for (String refNum : dqFamily.getReferenceNumbers()) {
+      Marker refnContext = ConversionContext.getDetachedMarker("REFN");
+      ConversionContext.addReference(refnContext);
+      logger.warn(ConversionContext.getContext(), "User reference number ({}) was ignored.", refNum);
+      ConversionContext.removeReference(refnContext);
+    }
+
+    if (dqFamily.getRin() != null) {
+      logger.warn(ConversionContext.getContext(), "RIN ({}) was ignored.", dqFamily.getRin());
+    }
+
+    if (dqFamily.getUid() != null) {
+      Marker uidContext = ConversionContext.getDetachedMarker(dqFamily.getUidTag());
+      ConversionContext.addReference(uidContext);
+      logger.warn(ConversionContext.getContext(), "UID ({}) was ignored.", dqFamily.getUid());
+      ConversionContext.removeReference(uidContext);
+    }
+
+    if (dqFamily.getExtensions().size() > 0) {
+      for (String extensionCategory : dqFamily.getExtensions().keySet()) {
+        for (GedcomTag tag : ((List<GedcomTag>)dqFamily.getExtension(extensionCategory))) {
+          logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+          // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+        }
+      }
     }
 
     ConversionContext.removeReference(familyContext);
   }
 
-  private void addFacts(Relationship gedxRelationship, Family ged5Family, Person dqChild) {
-    if(dqChild == null) {
-      //TODO log/warn
-      return;
-    }
-    List<ParentFamilyRef> refs = dqChild.getParentFamilyRefs();
-    for(ParentFamilyRef ref : refs) {
-      if(ref.getRef().equals(ged5Family.getId())) {
+  private void addFacts(Relationship gedxRelationship, String ged5FamilyId, List<ParentFamilyRef> childToFamilyLinks) {
+    for (ParentFamilyRef ref : childToFamilyLinks) {
+      if (ref.getRef().equals(ged5FamilyId)) {
         String relationshipType = ref.getRelationshipType();
-        if(relationshipType != null) {
+        if (relationshipType != null) {
           relationshipType = relationshipType.toLowerCase().trim();
-          if(relationshipType.equals("adopted")) {
+          if (relationshipType.equalsIgnoreCase("adopted")) {
             Fact fact = new Fact();
             fact.setKnownType(FactType.Adopted);
             gedxRelationship.addFact(fact);
-          }
-          else if(relationshipType.equals("birth")) {
+          } else if (relationshipType.equalsIgnoreCase("birth")) {
             Fact fact = new Fact();
             fact.setKnownType(FactType.Biological);
             gedxRelationship.addFact(fact);
-          }
-          else if(relationshipType.equals("foster")) {
+          } else if (relationshipType.equalsIgnoreCase("foster")) {
             Fact fact = new Fact();
             fact.setKnownType(FactType.Foster);
             gedxRelationship.addFact(fact);
-          }
-          else if(relationshipType.equals("sealing")) {
-            //TODO log/warn that we are dropping for now
-          }
-          else {
-            //TODO log/warn
-
-            // Sometimes we see the STAT fields in the PEDI field (challenged, disproven, proven), so when we start reading the STAT field, read it from here as well...
+          } else {
+            logger.warn(ConversionContext.getContext(), "Information designating this relationship as \"{}\" was dropped.", ref.getRelationshipType());
           }
         }
       }

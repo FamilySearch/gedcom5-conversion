@@ -141,7 +141,7 @@ public class SourceDescriptionMapper {
       if (dqSource.getUid() != null) {
         Marker uidContext = ConversionContext.getDetachedMarker(dqSource.getUidTag());
         ConversionContext.addReference(uidContext);
-        logger.warn(ConversionContext.getContext(), "UID ({}) was ignored.", dqSource.getType());
+        logger.warn(ConversionContext.getContext(), "UID ({}) was ignored.", dqSource.getUid());
         ConversionContext.removeReference(uidContext);
       }
 

@@ -18,12 +18,10 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
-import org.folg.gedcom.model.SpouseRef;
 import org.gedcomx.common.Attribution;
 import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
-import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -252,35 +250,29 @@ public class CommonMapper {
 
   /**
    * Creates a GedcomX relationship from gedcom 5 objects.
-   * @param person1
-   * @param person2
+   * @param personId1
+   * @param personId2
    * @param relationshipType
    * @return relationship that was added
    */
-  public static Relationship toRelationship(SpouseRef person1, SpouseRef person2, RelationshipType relationshipType) {
+  public static Relationship toRelationship(String familyId, String personId1, String personId2, RelationshipType relationshipType) {
     Relationship relationship = new Relationship();
+
     relationship.setKnownType(relationshipType);
-    relationship.setPerson1(toReference(person1));
-    relationship.setPerson2(toReference(person2));
-    String prefix = "";
-    if (relationshipType.equals(RelationshipType.Couple)) {
-      prefix = "C-";
-    }
-    else if (relationshipType.equals(RelationshipType.ParentChild)) {
-      prefix = "PC-";
-    }
-    relationship.setId(prefix + person1.getRef() + "-" + person2.getRef());
+    relationship.setId(familyId + '-' + personId1 + '-' + personId2);
+    relationship.setPerson1(toReference(personId1));
+    relationship.setPerson2(toReference(personId2));
+
     return relationship;
   }
 
   /**
-   * Finds the gedcomx person corresponding to the ged5 person and creates a GedcomX reference to it.
-   * @param ged5PersonRef gedcom 5 person
-   * @return
+   * Returns a GEDCOM X reference for the given person identifier.
+   * @param gedxPersonId the identifier of the GEDCOM X person
+   * @return a ResourceReference instance for the person entry of the identified person
    */
-  public static ResourceReference toReference(SpouseRef ged5PersonRef) {
+  public static ResourceReference toReference(String gedxPersonId) {
     ResourceReference reference = new ResourceReference();
-    String gedxPersonId = ged5PersonRef.getRef(); // gedx id is same as ged5 id
     reference.setResource( new URI(getPersonEntryName(gedxPersonId)));
     return reference;
   }

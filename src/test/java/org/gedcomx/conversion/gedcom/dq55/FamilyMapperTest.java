@@ -53,7 +53,7 @@ public class FamilyMapperTest {
 
     Relationship relCouple = testRelationship(0, RelationshipType.Couple, "I1", "I11", 1);
     assertSize(relCouple.getSources(), 1);
-    assertSize(relCouple.getNotes(), 1);
+    assertSize(relCouple.getNotes(), 0);
 
     testRelationship(1, RelationshipType.ParentChild, "I1", "I2", 0);
     testRelationship(2, RelationshipType.ParentChild, "I11", "I2", 0);
@@ -87,7 +87,7 @@ public class FamilyMapperTest {
 
     Relationship relCouple = testRelationship(0, RelationshipType.Couple, "I117", "I14", 2);
     assertSize(relCouple.getSources(), 1);
-    assertSize(relCouple.getNotes(), 2);
+    assertSize(relCouple.getNotes(), 0);
   }
 
   @Test
