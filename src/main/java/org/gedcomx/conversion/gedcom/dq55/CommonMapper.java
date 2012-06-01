@@ -299,7 +299,9 @@ public class CommonMapper {
       gedxAddress.setStreet3(address.getAddressLine3());
       agent.getAddresses().add(gedxAddress);
 
-      // TODO log/warn if address.getName() is valued
+      if(address.getName() != null) {
+        logger.warn(ConversionContext.getContext(), "Ignoring address name: {}", address.getName());
+      }
     }
 
     if (phone != null || fax != null) {

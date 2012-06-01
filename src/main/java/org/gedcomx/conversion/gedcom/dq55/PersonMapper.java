@@ -88,6 +88,81 @@ public class PersonMapper {
       // Add the person to the conversion results
       java.util.Date lastModified = CommonMapper.toDate(dqPerson.getChange());
 
+
+      //////////////////////////////////////////////////////////////////////
+      // Warn about all fields we are not processing
+
+      if (dqPerson.getAssociations() != null && dqPerson.getAssociations().size() > 0) {
+        logger.warn(ConversionContext.getContext(), "Associations ignored.");
+      }
+      if (dqPerson.getRecordFileNumber() != null) {
+        logger.warn(ConversionContext.getContext(), "Record file number ignored: {}", dqPerson.getRecordFileNumber());
+      }
+      if (dqPerson.getReferenceNumbers() != null && dqPerson.getReferenceNumbers().size() > 0) {
+        logger.warn(ConversionContext.getContext(), "Reference numbers ignored.");
+      }
+
+      if (dqPerson.getAncestorInterestSubmitterRef() != null) {
+        logger.warn(ConversionContext.getContext(), "Ancestor interest ignored: {}.", dqPerson.getAncestorInterestSubmitterRef());
+      }
+
+      if (dqPerson.getDescendantInterestSubmitterRef() != null) {
+        logger.warn(ConversionContext.getContext(), "Descendant interest ignored: {}.", dqPerson.getDescendantInterestSubmitterRef());
+      }
+
+      int cntLdsOrdinances = dqPerson.getLdsOrdinances().size();
+      if (cntLdsOrdinances > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not process information for {} LDS ordinances.", cntLdsOrdinances);
+      }
+
+      if (dqPerson.getAddress() != null) {
+        logger.warn(ConversionContext.getContext(), "Address was ignored: {}", dqPerson.getAddress().getDisplayValue());
+      }
+
+      if (dqPerson.getEmail() != null) {
+        logger.warn(ConversionContext.getContext(), "e-mail ({}) was ignored.", dqPerson.getEmail());
+      }
+      if (dqPerson.getFax() != null) {
+        logger.warn(ConversionContext.getContext(), "fax ({}) was ignored.", dqPerson.getFax());
+      }
+      if (dqPerson.getPhone() != null) {
+        logger.warn(ConversionContext.getContext(), "phone ({}) was ignored.", dqPerson.getPhone());
+      }
+      if (dqPerson.getWww() != null) {
+        logger.warn(ConversionContext.getContext(), "www ({}) was ignored.", dqPerson.getWww());
+      }
+
+      if (dqPerson.getUid() != null) {
+        Marker uidContext = ConversionContext.getDetachedMarker(dqPerson.getUidTag());
+        ConversionContext.addReference(uidContext);
+        logger.warn(ConversionContext.getContext(), "UID ({}) was ignored.", dqPerson.getUid());
+        ConversionContext.removeReference(uidContext);
+      }
+
+      if (dqPerson.getRin() != null) {
+        logger.warn(ConversionContext.getContext(), "RIN ({}) was ignored.", dqPerson.getRin());
+      }
+
+      int cntNotes = dqPerson.getNotes().size() + dqPerson.getNoteRefs().size();
+      if (cntNotes > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+      }
+
+      int cntMedia = dqPerson.getMedia().size() + dqPerson.getMediaRefs().size();
+      if (cntMedia > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+      }
+
+      if (dqPerson.getExtensions().size() > 0) {
+        for (String extensionCategory : dqPerson.getExtensions().keySet()) {
+          for (GedcomTag tag : ((List<GedcomTag>)dqPerson.getExtension(extensionCategory))) {
+            logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+            // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+          }
+        }
+      }
+
+
       result.addPerson(gedxPerson, lastModified);
     } finally {
       ConversionContext.removeReference(personContext);
@@ -192,7 +267,7 @@ public class PersonMapper {
     }
 
     if ((dqName.getType() != null) && (dqName.getType().trim().length() > 0)) {
-      Marker nameTypeContext = ConversionContext.getDetachedMarker(dqName.getTypeTag());
+      Marker nameTypeContext = ConversionContext.getDetachedMarker((dqName.getTypeTag() == null)?"Undetermined":dqName.getTypeTag());
       ConversionContext.addReference(nameTypeContext);
       logger.warn(ConversionContext.getContext(), "Name type ({}) was ignored.", dqName.getType());
       //gedxName.setKnownType();

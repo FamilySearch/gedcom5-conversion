@@ -17,16 +17,22 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
+import org.folg.gedcom.model.GedcomTag;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Place;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.FactType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class FactMapper {
+  private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
   static final HashMap<String, FactType> factMap = new HashMap<String, FactType>();
 
   static {
@@ -47,7 +53,6 @@ public class FactMapper {
     factMap.put("TITL", FactType.TitleOfNobility);  factMap.put("TITLE", FactType.TitleOfNobility);
     //TODO Handle custom
 //    factMap.put("FACT", FactType.);
-
 
     // Events (Short and long tag names, from the standard)
     // Individual
@@ -76,6 +81,7 @@ public class FactMapper {
     factMap.put("WILL", FactType.Will);  /* long name is the same */
     //TODO Handle custom
 //    factMap.put("EVEN", FactType.);   factMap.put("EVENT", FactType.);
+
     // (Family)
     factMap.put("ANUL", FactType.Annulment);  factMap.put("ANNULMENT", FactType.Annulment);
     factMap.put("DIV", FactType.Divorce);  factMap.put("DIVORCE", FactType.Divorce);
@@ -120,15 +126,12 @@ public class FactMapper {
     factMap.put("MOVE", FactType.Move);
     factMap.put("ORDI", FactType.Ordinance); // In 5.5 standard
     factMap.put("ORDL", FactType.Ordination); // Ordination - LDS
-
-    //TODO Put in after gedcomx has been built with the proper tags...
-//    factMap.put("ARVL", FactType.Arrival);
-//    factMap.put("ARRI", FactType.Arrival);
-//    factMap.put("ARRIVAL", FactType.Arrival);
-//    factMap.put("DPRT", FactType.Departure);
-//    factMap.put("DEPA", FactType.Departure);
-//    factMap.put("DEPARTURE", FactType.Departure);
-
+    factMap.put("ARVL", FactType.Arrival);
+    factMap.put("ARRI", FactType.Arrival);
+    factMap.put("ARRIVAL", FactType.Arrival);
+    factMap.put("DPRT", FactType.Departure);
+    factMap.put("DEPA", FactType.Departure);
+    factMap.put("DEPARTURE", FactType.Departure);
     factMap.put("RESIR", FactType.Residence);
     factMap.put("RACE", FactType.Race);
     factMap.put("STLB", FactType.Stillborn);
@@ -142,6 +145,7 @@ public class FactMapper {
     factMap.put("_DEGREE", FactType.ScholasticAchievement);
     factMap.put("EMPL", FactType.Occupation);
     factMap.put("_EMPLOY", FactType.Occupation);
+
     // (Family)
     factMap.put("CLAW", FactType.CommonLawMarriage);
     factMap.put("_DIV", FactType.Divorce);
@@ -151,74 +155,120 @@ public class FactMapper {
     factMap.put("_SEPR", FactType.Separation);
   }
 
-  static Fact toFact(EventFact fact, GedcomxConversionResult result) throws IOException {
-    fact.getType();
-    if(fact.getTag() == null) {
-      //TODO warn/log
+  static Fact toFact(EventFact dqFact, GedcomxConversionResult result) throws IOException {
+    dqFact.getType();
+    if(dqFact.getTag() == null) {
+      logger.warn(ConversionContext.getContext(), "Empty tag encountered");
     }
     else {
-      // TODO don't warn on SEX, but warn on all other invalid tags...
-
-      String upperTag = fact.getTag().trim().toUpperCase();
+      String upperTag = dqFact.getTag().trim().toUpperCase();
       FactType factType = factMap.get(upperTag);
       if(factType == null) {
-        //TODO warn/log
+        // We don't show a warning for SEX since it is handled as gender in PersonMapper
+        if(!upperTag.equals("SEX")) {
+          logger.warn(ConversionContext.getContext(), "Ignoring tag: {}", dqFact.getTag());
+        }
       } else {
-        String factValue = fact.getValue();
+        String factValue = dqFact.getValue();
         if(factValue != null) {
-          //TODO OK to trim?
           factValue = factValue.trim();
           if(factValue.equals("")) {
             factValue = null;
           }
         }
 
-        String factPlace = fact.getPlace();
+        String factPlace = dqFact.getPlace();
         if(factPlace != null) {
-          //TODO OK to trim?
           factPlace = factPlace.trim();
           if(factPlace.equals("")) {
             factPlace = null;
           }
         }
 
-        String factDate = fact.getDate();
+        String factDate = dqFact.getDate();
         if(factDate != null) {
-          //TODO OK to trim?
           factDate = factDate.trim();
           if(factDate.equals("")) {
             factDate = null;
           }
         }
 
-        if(factDate == null && factPlace == null && factValue == null) {
-          //TODO log/warn
+        Fact gedxFact = new Fact();
+        gedxFact.setKnownType(factType);
+
+        if(factDate != null) {
+          Date date = new Date();
+          date.setOriginal(factDate);
+          gedxFact.setDate(date);
         }
-        else {
-          Fact gedxFact = new Fact();
-          gedxFact.setKnownType(factType);
 
-          if(factDate != null) {
-            Date date = new Date();
-            date.setOriginal(factDate);
-            gedxFact.setDate(date);
-          }
-
-          if(factPlace != null) {
-            Place place = new Place();
-            place.setOriginal(factPlace);
-            gedxFact.setPlace(place);
-          }
-
-          if(factValue != null) {
-            gedxFact.setOriginal(factValue);
-          }
-
-          // add source references to the fact
-          gedxFact.setSources(CommonMapper.toSourcesAndSourceReferences(fact.getSourceCitations(), result));
-
-          return gedxFact;
+        if(factPlace != null) {
+          Place place = new Place();
+          place.setOriginal(factPlace);
+          gedxFact.setPlace(place);
         }
+
+        if(factValue != null) {
+          gedxFact.setOriginal(factValue);
+        }
+
+        // add source references to the fact
+        gedxFact.setSources(CommonMapper.toSourcesAndSourceReferences(dqFact.getSourceCitations(), result));
+
+        if (dqFact.getCause() != null) {
+          logger.warn(ConversionContext.getContext(), "CAUS was ignored.");
+        }
+
+        if (dqFact.getAddress() != null) {
+          logger.warn(ConversionContext.getContext(), "Address was ignored: {}", dqFact.getAddress().getDisplayValue());
+        }
+
+        if (dqFact.getEmail() != null) {
+          logger.warn(ConversionContext.getContext(), "e-mail ({}) was ignored.", dqFact.getEmail());
+        }
+        if (dqFact.getFax() != null) {
+          logger.warn(ConversionContext.getContext(), "fax ({}) was ignored.", dqFact.getFax());
+        }
+        if (dqFact.getPhone() != null) {
+          logger.warn(ConversionContext.getContext(), "phone ({}) was ignored.", dqFact.getPhone());
+        }
+        if (dqFact.getWww() != null) {
+          logger.warn(ConversionContext.getContext(), "www ({}) was ignored.", dqFact.getWww());
+        }
+
+        if (dqFact.getUid() != null) {
+          Marker uidContext = ConversionContext.getDetachedMarker(dqFact.getUidTag());
+          ConversionContext.addReference(uidContext);
+          logger.warn(ConversionContext.getContext(), "UID ({}) was ignored.", dqFact.getUid());
+          ConversionContext.removeReference(uidContext);
+        }
+
+        if (dqFact.getRin() != null) {
+          logger.warn(ConversionContext.getContext(), "RIN ({}) was ignored.", dqFact.getRin());
+        }
+
+        int cntNotes = dqFact.getNotes().size() + dqFact.getNoteRefs().size();
+        if (cntNotes > 0) {
+          logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
+        }
+
+        int cntMedia = dqFact.getMedia().size() + dqFact.getMediaRefs().size();
+        if (cntMedia > 0) {
+          logger.warn(ConversionContext.getContext(), "Did not process {} media items or references to media items.", cntMedia);
+        }
+
+        if (dqFact.getExtensions().size() > 0) {
+          for (String extensionCategory : dqFact.getExtensions().keySet()) {
+            for (GedcomTag tag : ((List<GedcomTag>)dqFact.getExtension(extensionCategory))) {
+              logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
+              // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
+            }
+          }
+        }
+
+        dqFact.getSourceCitations();
+
+        return gedxFact;
       }
     }
 
