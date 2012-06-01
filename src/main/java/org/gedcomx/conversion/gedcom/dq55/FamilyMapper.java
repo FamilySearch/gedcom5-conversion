@@ -75,23 +75,33 @@ public class FamilyMapper {
       }
     }
 
-    if (coupleRelationship != null) {
-      int index = 0;
-      for (EventFact eventFact : dqFamily.getEventsFacts()) {
-        Marker factContext = ConversionContext.getDetachedMarker(eventFact.getTag() + '.' + (++index));
-        ConversionContext.addReference(factContext);
+    int index = 0;
+    for (EventFact eventFact : dqFamily.getEventsFacts()) {
+      Marker factContext = ConversionContext.getDetachedMarker(eventFact.getTag() + '.' + (++index));
+      ConversionContext.addReference(factContext);
 
+      if (coupleRelationship != null) {
         Fact fact = FactMapper.toFact(eventFact, result);
         coupleRelationship.addFact(fact);
-
-        ConversionContext.removeReference(factContext);
+      } else {
+        logger.warn(ConversionContext.getContext(), "Did not convert {} because it could not associated it with a couple.  (See GEDCOM X issue 7.)", eventFact.getTag());
       }
+
+      ConversionContext.removeReference(factContext);
+    }
+
+    if (coupleRelationship != null) {
       coupleRelationship.setSources(CommonMapper.toSourcesAndSourceReferences(dqFamily.getSourceCitations(), result));
+    } else {
+      int size = dqFamily.getSourceCitations().size();
+      if (size > 0) {
+        logger.warn(ConversionContext.getContext(), "Did not convert {} source citation(s) because it could not associated it with a couple.  (See GEDCOM X issue 7.)", size);
+      }
     }
 
     int cntLdsOrdinances = dqFamily.getLdsOrdinances().size();
     if (cntLdsOrdinances > 0) {
-      logger.warn(ConversionContext.getContext(), "Did not process information for {} LDS ordinances.", cntLdsOrdinances);
+      logger.warn(ConversionContext.getContext(), "Did not convert information for {} LDS ordinances.", cntLdsOrdinances);
     }
 
     int cntNotes = dqFamily.getNotes().size() + dqFamily.getNoteRefs().size();

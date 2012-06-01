@@ -98,7 +98,7 @@ public class FamilyMapperTest {
     Family dqFamily = gedcom.getFamilies().get(3);
 
     mapper.toRelationship(dqFamily, gedcom, result);
-    assertEquals(result.getRelationships().size(), 7);
+    assertEquals(result.getRelationships().size(), 9);
 
     testRelationship(0, RelationshipType.Couple, "I1000", "I1001", 0);
     rel = testRelationship(1, RelationshipType.ParentChild, "I1000", "I1002", 1);
@@ -113,6 +113,8 @@ public class FamilyMapperTest {
     testFact(rel, FactType.Biological);
     rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
     testFact(rel, FactType.Biological);
+    rel = testRelationship(7, RelationshipType.ParentChild, "I1000", "I1005", 0);
+    rel = testRelationship(8, RelationshipType.ParentChild, "I1001", "I1005", 0);
   }
 
   private void assertSize(List list, int count) {
@@ -147,6 +149,8 @@ public class FamilyMapperTest {
         assertNotNull(fact0.getDate());
         assertNotNull(fact0.getPlace());
       }
+    } else {
+      assertNull(relationship.getFacts());
     }
 
     assertNull(relationship.getExtensionElements());

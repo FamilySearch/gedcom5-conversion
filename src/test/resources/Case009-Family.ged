@@ -347,6 +347,19 @@
 1 FAMC @F20@
   2 PEDI birth
 
+0 @I1005@ INDI
+1 NAME Earl /Louwaert/
+  2 SURN Louwaert
+  2 GIVN Ella
+1 SEX M
+1 DEAT
+  2 DATE 21 Jan 1951
+  2 PLAC San Francisco, California, United States
+1 FAMC @F20@
+  2 PEDI sealed
+1 FAMC @F21@
+  2 PEDI __unknown__
+
 0 @F1@ FAM
 1 _UID BB15CF6289BA0B488B206FF9222E7CFB714B
 1 HUSB @I1@
@@ -360,15 +373,17 @@
   3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
   3 DATA
   4 DATE 12 Feb 1896
-  2 SOUR @S13@
-  3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
-  2 SOUR @S13@
-  3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
-  2 SOUR @S13@
-  3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
 1 SOUR @S13@
   2 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
 1 NOTE Several of the children were omitted to reduce the size of the file
+1 REFN 12345
+1 REFN 23456
+  2 TYPE MyRefnType
+1 RIN 34567
+1 JUNK
+1 SLGS
+  2 DATE 1 Jan 2012
+  2 TEMP SLAKE
 
 0 @F2@ FAM
 1 _UID 3ABB19B4E5CC824987E15550564EC939F136
@@ -431,6 +446,28 @@
 1 CHIL @I1002@
 1 CHIL @I1003@
 1 CHIL @I1004@
+1 CHIL @I1005@
+
+0 @F21@ FAM
+1 HUSB @I1000@
+1 WIFE @I1001@
+1 CHIL @I1005@
+
+0 @F22@ FAM
+1 HUSB @I1000@
+1 CHIL @I1005@
+
+0 @F23@ FAM
+1 WIFE @I1001@
+1 CHIL @I1005@
+
+0 @F24@ FAM
+1 CHIL @I1004@
+1 CHIL @I1005@
+1 MARR
+  2 DATE bef 1883
+1 SOUR @S80@
+  2 PAGE __source_detail__
 
 0 @S1@ SOUR
   1 REPO @REPO1@
