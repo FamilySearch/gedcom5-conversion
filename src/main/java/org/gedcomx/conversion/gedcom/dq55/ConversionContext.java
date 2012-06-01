@@ -37,9 +37,7 @@ public class ConversionContext {
     rootContext = new ThreadLocal<Marker>() {
         @Override
         protected Marker initialValue() {
-          synchronized (ConversionContext.class) {
-            return factory.get().getDetachedMarker("");
-          }
+          return factory.get().getDetachedMarker("");
         }
       };
   }
