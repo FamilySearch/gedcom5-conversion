@@ -68,9 +68,6 @@ public class SubmitterMapper {
       }
     }
 
-    dqSubmitter.getValue();
-    dqSubmitter.getExtensions();
-
     result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
 
     ConversionContext.removeReference(submitterContext);
