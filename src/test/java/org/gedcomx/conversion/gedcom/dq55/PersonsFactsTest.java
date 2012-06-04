@@ -284,8 +284,7 @@ public class PersonsFactsTest {
     assertEquals(result.getPersons().size(), 1);
 
     org.gedcomx.conclusion.Person gedxPerson = result.getPersons().get(0);
-    // TODO: uncomment w/ real size
-//    assertEquals(gedxPerson.getFacts().size(), 14);
+    assertEquals(gedxPerson.getFacts().size(), 66);
     checkFact(gedxPerson.getFacts(), FactType.CasteName, null, "1850", "Newbury, Ma.");
     checkFact(gedxPerson.getFacts(), FactType.CasteName, null, null, "Brahmin");
     checkFact(gedxPerson.getFacts(), FactType.PhysicalDescription, "Age: 44", null, null);
@@ -315,8 +314,45 @@ public class PersonsFactsTest {
 //    checkFact(gedxPerson.getFacts(), FactType.TitleOfNobility, "Rev.", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Adoption, null, null, "Troy, NY, USA");
     checkFact(gedxPerson.getFacts(), FactType.Adoption, null, null, "Honolulu, Oahu, HI");
+    checkFact(gedxPerson.getFacts(), FactType.Baptism, null, "16 APR 1923", "St Nathanial PE Church, Phila");
+    checkFact(gedxPerson.getFacts(), FactType.Baptism, null, "20 JUN 1919", "Chicago, IL");
+    checkFact(gedxPerson.getFacts(), FactType.BarMitzvah, null, "1864", "KRAKOW, AUSTRIA");
+    checkFact(gedxPerson.getFacts(), FactType.BarMitzvah, null, "4 SEP 1983", "Temple Israel, Memphis, Tennessee, United States of America");
+    checkFact(gedxPerson.getFacts(), FactType.BatMitzvah, null, "1964", "BETH ABRAHAM, NO. BERGEN, NJ");
+    checkFact(gedxPerson.getFacts(), FactType.BatMitzvah, null, "1965", "BETH ABRAHAM, NO. BERGEN, NJ");
+    checkFact(gedxPerson.getFacts(), FactType.BatMitzvah, null, "1864", "BETH ABRAHAM, NO. BERGEN, NJ");
+    checkFact(gedxPerson.getFacts(), FactType.BatMitzvah, null, "1866", "BETH ABRAHAM, NO. BERGEN, NJ");
+    checkFact(gedxPerson.getFacts(), FactType.Blessing, null, null, "HUBBARDSVILLE, NEW YORK");
+    checkFact(gedxPerson.getFacts(), FactType.Blessing, null, "31 JUL 1994", "St. Joseph's, Stephentown, NY");
+    checkFact(gedxPerson.getFacts(), FactType.Burial, null, "13 Dec 1946", "St. Louis No. 3 Cemetery, Toca/Rotge Tomb.");
+    checkFact(gedxPerson.getFacts(), FactType.Burial, null, "14 Dec 1946", "St. Louis No. 3 Cemetery, Toca/Rotge Tomb.");
+    checkFact(gedxPerson.getFacts(), FactType.Census, null, "02 JUN 1880", "1880, Sullivan Co., MO, USA");
+    checkFact(gedxPerson.getFacts(), FactType.Census, null, "02 JUN 1881", "1880, Sullivan Co., MO, USA");
+    checkFact(gedxPerson.getFacts(), FactType.Christening, null, "30 MAY 1865", "Brigham City,Weber Co,UT");
+    checkFact(gedxPerson.getFacts(), FactType.Christening, null, "1 MAY 1865", "Brigham City,Weber Co,UT");
+    checkFact(gedxPerson.getFacts(), FactType.AdultChristening, null, "24 APR 1674", null);
+    checkFact(gedxPerson.getFacts(), FactType.AdultChristening, null, "25 APR 1674", null);
+    checkFact(gedxPerson.getFacts(), FactType.Confirmation, null, "16 Nov 1997", "Mass of Christian Burial, St. Boniface Church, Piqua 10:00 AM.");
+    checkFact(gedxPerson.getFacts(), FactType.Confirmation, null, "13 Nov 1997", "Mass of Christian Burial, St. Boniface Church, Piqua 10:00 AM.");
     checkFact(gedxPerson.getFacts(), FactType.Cremation, null, "10 MAR 1999", "Hudson, Fla");
     checkFact(gedxPerson.getFacts(), FactType.Cremation, null, "1 MAR 1999", "Hudson, Fla");
+    checkFact(gedxPerson.getFacts(), FactType.Emigration, null, "1885", "Came to Thomas County, Iowa in covered wagon");
+    checkFact(gedxPerson.getFacts(), FactType.Emigration, null, "1886", "Came to Thomas County, Iowa in covered wagon");
+    checkFact(gedxPerson.getFacts(), FactType.FirstCommunion, null, "7 MAY 1921", "Church of Good Shepard, Manhatten, N.Y.C.,NY");
+    checkFact(gedxPerson.getFacts(), FactType.FirstCommunion, null, "7 MAY 1922", "Church of Good Shepard, Manhatten, N.Y.C.,NY");
+    checkFact(gedxPerson.getFacts(), FactType.Graduation, null, "5 JUN 1954", "Central Kitsap High  Silverdale Washington");
+    checkFact(gedxPerson.getFacts(), FactType.Graduation, null, "18 JUN 1954", "Central Kitsap High  Silverdale Washington");
+    checkFact(gedxPerson.getFacts(), FactType.Immigration, null, "1724", "\"Francis\"");
+    checkFact(gedxPerson.getFacts(), FactType.Immigration, null, "1734", "\"Francis\"");
+    checkFact(gedxPerson.getFacts(), FactType.Ordination, null, "31 MAR 1744", "Canterbury, Windham Co., CT.");
+    checkFact(gedxPerson.getFacts(), FactType.Ordination, null, "1 MAY 1744", "Canterbury, Windham Co., CT.");
+    checkFact(gedxPerson.getFacts(), FactType.Naturalization, null, "6 OCT 1854", "Philadelphia, Philadelphia Co., Pennsylvania");
+    checkFact(gedxPerson.getFacts(), FactType.Naturalization, null, "7 OCT 1854", "Philadelphia, Philadelphia Co., Pennsylvania");
+    checkFact(gedxPerson.getFacts(), FactType.Probate, null, "31 APR 1807", "Allegheny Co., Pennsylvania");
+    checkFact(gedxPerson.getFacts(), FactType.Probate, null, "28 APR 1807", "Allegheny Co., Pennsylvania");
+    checkFact(gedxPerson.getFacts(), FactType.Retirement, null, null, "Seidersville, PA");
+    checkFact(gedxPerson.getFacts(), FactType.Retirement, null, "1967", "Oklahoma City, Oklahoma");
+    checkFact(gedxPerson.getFacts(), FactType.Will, null, "22 APR 1761", "Rowan  Co, NC");
   }
 
   static void checkFact(List<Fact> facts, FactType factType, String value, String date, String place) {
