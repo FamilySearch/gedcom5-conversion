@@ -39,7 +39,7 @@ public class Gedcom2GedcomxTest {
     Gedcom2Gedcomx.main(args);
     assertTrue(new File(ouputFile).exists());
     JarFile jarFile = new JarFile(ouputFile);
-    assertEquals(jarFile.getManifest().getEntries().size(), 71);
+    assertEquals(jarFile.getManifest().getEntries().size(), 74);
 //    listContents(ouputFile);
   }
 
