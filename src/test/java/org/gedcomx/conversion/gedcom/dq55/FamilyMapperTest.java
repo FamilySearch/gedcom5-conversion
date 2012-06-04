@@ -129,7 +129,7 @@ public class FamilyMapperTest {
     mapper.toRelationship(dqFamily, gedcom, result);
     assertEquals(result.getRelationships().size(), 1);
 
-    rel = testRelationship(0, RelationshipType.Couple, "I1006", "I1007", 12);
+    rel = testRelationship(0, RelationshipType.Couple, "I1006", "I1007", 17);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.CountOfChildren, "5", null, null);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Annulment, null, "31 MAR 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Engagement, null, "1 JAN 1932", "San Francisco, California, United States");
@@ -139,6 +139,11 @@ public class FamilyMapperTest {
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageLicense, null, "3 MAY 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageSettlement, null, "4 JUL 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Residence, null, "5 NOV 1932", "San Francisco, California, United States");
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.CommonLawMarriage, null, null, null);
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.Divorce, null, "2 APR 1900", "San Francisco, California, United States");
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1896", null);
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1897", null);
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1898", null);
   }
 
   private void assertSize(List list, int count) {

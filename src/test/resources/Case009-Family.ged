@@ -525,6 +525,16 @@
 1 RESI
   2 DATE 5 NOV 1932
   2 PLAC San Francisco, California, United States
+1 CLAW
+1 _DIV
+  2 DATE 2 APR 1900
+  2 PLAC San Francisco, California, United States
+1 SEPA
+  2 DATE DEC 1896
+1 _SEPARATED
+  2 DATE DEC 1897
+1 _SEPR
+  2 DATE DEC 1898
 1 NCHI 5
 
 0 @S1@ SOUR
