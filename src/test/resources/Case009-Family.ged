@@ -360,6 +360,26 @@
 1 FAMC @F21@
   2 PEDI __unknown__
 
+0 @I1006@ INDI
+1 NAME John /Louwaert/
+  2 SURN Louwaert
+  2 GIVN John
+1 SEX M
+1 DEAT
+  2 DATE 18 Apr 1947
+  2 PLAC San Francisco, California, United States
+1 FAMS @F25@
+
+0 @I1007@ INDI
+1 NAME Jane /Jensen/
+  2 SURN Jensen
+  2 GIVN Jane
+1 SEX F
+1 DEAT
+  2 DATE 3 Jun 1943
+  2 PLAC San Francisco, California, United States
+1 FAMS @F25@
+
 0 @F1@ FAM
 1 _UID BB15CF6289BA0B488B206FF9222E7CFB714B
 1 HUSB @I1@
@@ -468,6 +488,44 @@
   2 DATE bef 1883
 1 SOUR @S80@
   2 PAGE __source_detail__
+
+0 @F25@ FAM
+1 HUSB @I1006@
+1 WIFE @I1007@
+1 MARR
+  2 DATE 29 MAR 1932
+  2 PLAC San Francisco, California, United States
+1 ANUL
+  2 DATE 31 MAR 1932
+  2 PLAC San Francisco, California, United States
+1 CENS
+  2 DATE 1 FEB 1932
+  2 PLAC San Francisco, California, United States
+1 DIV
+  2 DATE 2 APR 1932
+  2 PLAC San Francisco, California, United States
+1 DIVF
+  2 DATE 1 APR 1932
+  2 PLAC San Francisco, California, United States
+1 ENGA
+  2 DATE 1 JAN 1932
+  2 PLAC San Francisco, California, United States
+1 MARB
+  2 DATE 1 DEC 1931
+  2 PLAC San Francisco, California, United States
+1 MARC
+  2 DATE 1 NOV 1931
+  2 PLAC San Francisco, California, United States
+1 MARL
+  2 DATE 3 MAY 1932
+  2 PLAC San Francisco, California, United States
+1 MARS
+  2 DATE 4 JUL 1932
+  2 PLAC San Francisco, California, United States
+1 RESI
+  2 DATE 5 NOV 1932
+  2 PLAC San Francisco, California, United States
+1 NCHI 5
 
 0 @S1@ SOUR
   1 REPO @REPO1@

@@ -20,7 +20,14 @@
   2 PLAC San Francisco, San Francisco, California, United States
 1 NATU
   2 DATE 1887
-1 EVEN 
+1 OCCU Dressmaker
+1 EDUC
+  2 PLAC San Francisco, San Francisco, California, United States
+1 BATM
+  2 PLAC
+  2 DATE
+1 STLB
+1 EVEN
   2 TYPE Arrival 
   2 DATE 1877
 1 NOTE Record of birth as registered with civil authority -- Petrus Marinus Louwaert
@@ -55,33 +62,146 @@
 1 CHAN
   2 DATE 10 May 2012
     3 TIME 01:00:00
+0 @I2@ INDI
+1 NOTE Most of these facts are taken from real Gedcom 5.5 files, which is why some of them are not standard
+1 CITN
+  2 DATE 1853
+1 DWEL 88 Brookside Drive, Toronto
+1 EXCO
+  2 DATE 17 JAN 1850
+  2 PLAC GEORGIA FAMILY PLANTATION
+1 _EXCM
+  2 DATE 31 DEC 1911
+  2 PLAC Church of Chrisi Blue Bayou, disorderly conduct
+1 _FUN
+  2 DATE 1 MAR 1766
+  2 PLAC Mexico
+1 _FNRL
+  2 DATE 1 JAN 1911
+  2 PLAC Canada
+1 ILL Dysentery
+  2 DATE 1 JUL 1853
+  2 PLAC Oregon Trail
+1 ILLN Typhus
+  2 DATE 13 JUN 1821
+  2 PLAC England
+1 BLSL
+  2 DATE 31 May 1928
+  2 PLAC Bakersfield, Kern, California
+1 BLESS
+  2 DATE 1 JUN 1922
+  2 PLAC Johannesburg, South Africa
+1 _INTE
+  2 DATE 3 DEC 1867
+1 LVG
+1 MIL Corporal In The Militia, 1707
+1 _MIL
+  2 DATE from 15 JUN 1949 until 1 JUL 1971
+  2 _RNK Major U.S.A.F.
+  2 _STA Retired
+1 MILI Naval Lieutenant - Senior Grade
+1 MILI Union Soldier during Civil War
+1 _MILT
+  2 PLAC Co K 182d Regt OVI - Civil War
+1 MILT
+  2 DATE 1776
+  2 PLAC Private in the Revolutionary War
+1 _MILITARY_SERVICE
+  2 DATE 10 FEB 1865
+  2 PLAC Private, Mustered Out, Harpers Ferry, VA
+1 _MISE
+  2 DATE 11 FEB 1865
+1 MISE
+  2 DATE 13 FEB 1865
+1 _MILTID
+  2 DATE 14 FEB 1865
+1 MILA
+  2 DATE 15 FEB 1865
+1 MILD
+  2 DATE 13 JUN 1866
+1 MISN
+  2 DATE 6 JUL 1930
+  2 PLAC Southern States
+1 _MISN
+  2 DATE 7 JUL 1934
+  2 PLAC Utah
+1 MOVE
+  2 DATE 1886
+  2 PLAC Albany, Gentry Co, MO
+1 ORDI no
+1 ORDL
+  2 DATE 1886
+1 STIL death
+1 STLB
+1 RACE German
+1 RESIR Colorado
+1 BAP
+  2 DATE 8 AUG 1770
+  2 PLAC All Saints Church, Fulham, London
+1 BAPT
+  2 DATE 12 NOV 1797
+1 _NAMS Jacob's brother
+1 EMPL
+  2 DATE 1978
+  2 PLAC Nashville, Tennessee
+1 _EMPLOY
+  2 DATE 1981
+  2 PLAC Nashville, Tennessee
+1 _DEG
+  2 DATE DEC 1973
+  2 PLAC Bachelor of Arts, English
+1 _DEGREE
+  2 DATE 10 MAY 1980
+  2 PLAC Masters in Education
+1 ENLIST
+  2 DATE 1881
+1 SOC_ 528-30-8888
 0 @I3@ INDI
-1 NAME Peter Anthony /Louwaert/
-  2 SURN Louwaert
-  2 GIVN Peter Anthony
-1 SEX M
-1 BIRT
-  2 DATE 21 Nov 1921
-  2 PLAC San Francisco, California, United States
-1 DEAT
-  2 DATE 11 May 1999
-  2 PLAC Madison Heights, Oakland, Michigan, United States
-1 _UID 466580012C3A3446B8F1034C1DD0E4764B6B
-1 RESI
-  2 DATE 1993
-  2 PLAC Madison Heights, Oakland, Michigan, United States
-1 RESI
-  2 DATE 1993
-  2 PLAC Royal Oak, Oakland, Michigan, United States
-1 RESI
-  2 DATE 1999
-  2 PLAC Madison Heights, Oakland, Michigan, United States
-1 RESI
-  2 DATE 1995
-  2 PLAC Madison Heights, Oakland, Michigan, United States
-1 RESI
-  2 DATE 9 Apr 1930
-  2 PLAC San Francisco, San Francisco, California, United States
-1 CHAN
-  2 DATE 10 May 2012
-    3 TIME 01:00:00
+1 NOTE Most of these facts are taken from real Gedcom 5.5 files, which is why some of them are not standard
+1 CAST
+  2 DATE 1850
+  2 PLAC Newbury, Ma.
+1 CASTE
+  2 PLAC Brahmin
+1 DSCR Age: 44
+1 PHY_DESCRIPTION 5'7", 165#, medium complexion, brown eyes & hair
+1 EDUC Ryder College,
+  2 DATE 1934-
+  2 PLAC Trenton, NJ
+1 EDUCATION B.A. In Sociology And Applied Criminal Justice
+1 IDNO Glendale Az.
+1 IDENT_NUMBER Whistler, Alabama now Prichard Al
+1 NATI Chinese
+1 NATIONALITY Swedish
+1 NCHI 2
+1 CHILDREN_COUNT 5
+1 NMR
+  2 PLAC 4
+1 MARRIAGE_COUNT 3
+1 OCCU Teacher, Tabernacle Christian School
+1 OCCUPATION Kruidenier
+1 PROP
+  2 DATE 18 FEB 1768
+  2 PLAC Bought 100 acres in Windham county, Connecticut for 84 pounds
+1 PROPERTY 43 MAPPERLAY ROAD (THE LODGE HOUSE)
+1 RELI Quaker
+1 RELIGION Church of Christ
+1 RESI Russia, Oh, Dayton, Oh, West Milton, Oh
+1 RESIDENCE
+  2 DATE ABT 1740
+  2 PLAC Brocks Gap, VA
+1 SOC_SEC_NUMBER 485-70-7507
+1 SSN
+  2 PLAC  094-28-1549
+1 TITL Jr
+1 TITLE Rev.
+1 ADOP
+  2 PLAC Troy, NY, USA
+1 ADOPTION
+  2 PLAC Honolulu, Oahu, HI
+1 CREM
+  2 DATE 10 MAR 1999
+  2 PLAC Hudson, Fla
+1 CREMATION
+  2 DATE 1 MAR 1999
+  2 PLAC Hudson, Fla
