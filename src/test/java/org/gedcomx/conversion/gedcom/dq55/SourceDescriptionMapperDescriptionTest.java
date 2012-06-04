@@ -13,6 +13,10 @@ import org.testng.annotations.Test;
 import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static org.testng.Assert.*;
 
@@ -206,7 +210,13 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour19_titl__");
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), "2011-11-11T18:11:11.111Z");
+    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
+    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
+    Date date  = localFormat.parse("11 Nov 2011 11:11:11.111");
+    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
+    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -237,7 +247,13 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getTitle().get(0).getValue(), "__sour20_titl__");
     // result of the CHAN tag
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), "2011-11-11T07:00:00.000Z");
+    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
+    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
+    Date date  = localFormat.parse("11 Nov 2011 00:00:00.000");
+    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
+    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), targetFormat.format(date));
   }
 
   private void assertMediaTypeToResourceTypeMappingUsingInlineRepo(int sourceIndex, String sourceId, ResourceType expectedResourceType) throws Exception {
