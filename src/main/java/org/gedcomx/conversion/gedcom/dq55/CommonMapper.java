@@ -19,7 +19,6 @@ import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
 import org.gedcomx.common.Attribution;
-import org.gedcomx.common.Note;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Relationship;
@@ -60,21 +59,6 @@ public class CommonMapper {
       PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM + PARSEFORMAT_SS + PARSEFORMAT_SSS
     , PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM + PARSEFORMAT_SS
     , PARSEFORMAT_D_MMM_YY + ' ' + PARSEFORMAT_HH_MM);
-
-  /**
-   * Create a list of GedcomX Notes based on the ged5 notes.
-   * @param dqNotes Gedcom 5 notes
-   * @return GedcomX Notes
-   */
-  public static List<Note> toNotes(List<org.folg.gedcom.model.Note> dqNotes) {
-    List<Note> notes = new ArrayList<Note>(dqNotes.size());
-    for (org.folg.gedcom.model.Note dqNote : dqNotes) {
-      Note note = new Note();
-      note.setText(dqNote.getValue());
-      notes.add( note );
-    }
-    return notes;
-  }
 
   /**
    * Create a list of GedcomX SourceReference based on the ged5 SourceCitations.
@@ -190,10 +174,12 @@ public class CommonMapper {
         break;
       }
       catch (ParseException e) {
+        // the parse pattern being tried did not match the string we were given; do nothing
       }
     }
 
     if (extractedDate == null) {
+      // none of the legitimate parse patterns matched the string we were given
       logger.warn(ConversionContext.getContext(), "Could not parse DATE {}", dateTimeString);
     }
 
@@ -201,7 +187,8 @@ public class CommonMapper {
   }
 
   public static ConfidenceLevel toConfidenceLevel(String dqQuality) {
-    ConfidenceLevel confidenceLevel = null;
+    ConfidenceLevel confidenceLevel;
+
     if ("3".equals(dqQuality)) {
       confidenceLevel = ConfidenceLevel.Certainly;
     } else if ("2".equals(dqQuality)) {
@@ -210,7 +197,18 @@ public class CommonMapper {
       confidenceLevel = ConfidenceLevel.Apparently;
     } else if ("0".equals(dqQuality)) {
       confidenceLevel = ConfidenceLevel.Perhaps;
+    } else {
+      confidenceLevel = null;
+
+      Marker qualityContext = ConversionContext.getDetachedMarker("QUAY");
+      ConversionContext.addReference(qualityContext);
+      try {
+        logger.warn(ConversionContext.getContext(), "Unrecognized value for QUAL tag {}", dqQuality);
+      } finally {
+        ConversionContext.removeReference(qualityContext);
+      }
     }
+
     return confidenceLevel;
   }
 
@@ -249,10 +247,11 @@ public class CommonMapper {
   }
 
   /**
-   * Creates a GedcomX relationship from gedcom 5 objects.
-   * @param personId1
-   * @param personId2
-   * @param relationshipType
+   * Creates a GEDCOM X relationship.
+   * @param familyId  the GEDCOM 5.5 identifier associated with the family to which this relationship belongs
+   * @param personId1  the GEDCOM 5.5 identifier associated with the person 1
+   * @param personId2  the GEDCOM 5.5 identifier associated with the person 1
+   * @param relationshipType  the relationship type
    * @return relationship that was added
    */
   public static Relationship toRelationship(String familyId, String personId1, String personId2, RelationshipType relationshipType) {
@@ -300,34 +299,76 @@ public class CommonMapper {
       agent.getAddresses().add(gedxAddress);
 
       if(address.getName() != null) {
-        logger.warn(ConversionContext.getContext(), "Ignoring address name: {}", address.getName());
+        Marker addressContext = ConversionContext.getDetachedMarker("ADDR");
+        ConversionContext.addReference(addressContext);
+        try {
+          logger.warn(ConversionContext.getContext(), "Ignoring extension tag for address name: {}", address.getName());
+        }
+        finally {
+          ConversionContext.removeReference(addressContext);
+        }
       }
     }
 
     if (phone != null || fax != null) {
       agent.setPhones(new ArrayList<ResourceReference>());
       if (phone != null) {
-        ResourceReference phoneRef = new ResourceReference();
-        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
-        String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
-        phoneRef.setResource(URI.create(scheme + phone));
-        agent.getPhones().add(phoneRef);
+        try {
+          ResourceReference phoneRef = new ResourceReference();
+          boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
+          String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
+          phoneRef.setResource(URI.create(scheme + phone));
+          agent.getPhones().add(phoneRef);
+        }
+        catch (RuntimeException ex) {
+          Marker phoneContext = ConversionContext.getDetachedMarker("PHON");
+          ConversionContext.addReference(phoneContext);
+          try {
+            logger.warn(ConversionContext.getContext(), "Invalid value for PHON ({}) was ignored.", phone);
+          }
+          finally {
+            ConversionContext.removeReference(phoneContext);
+          }
+        }
       }
       if (fax != null) {
-        ResourceReference faxRef = new ResourceReference();
-        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
-        String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
-        faxRef.setResource(URI.create(scheme + fax));
-        agent.getPhones().add(faxRef);
+        try {
+          ResourceReference faxRef = new ResourceReference();
+          boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
+          String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
+          faxRef.setResource(URI.create(scheme + fax));
+          agent.getPhones().add(faxRef);
+        }
+        catch (RuntimeException ex) {
+          Marker faxContext = ConversionContext.getDetachedMarker("FAX");
+          ConversionContext.addReference(faxContext);
+          try {
+            logger.warn(ConversionContext.getContext(), "Invalid value for FAX ({}) was ignored.", fax);
+          }
+          finally {
+            ConversionContext.removeReference(faxContext);
+          }
+        }
       }
     }
 
     if (email != null) {
-      ResourceReference emailRef = new ResourceReference();
-      agent.setEmails(new ArrayList<ResourceReference>());
-      //TODO catch URI creation exceptions and log/warn
-      emailRef.setResource(URI.create("mailto:" + email));
-      agent.getEmails().add(emailRef);
+      try {
+        ResourceReference emailRef = new ResourceReference();
+        agent.setEmails(new ArrayList<ResourceReference>());
+        emailRef.setResource(URI.create("mailto:" + email));
+        agent.getEmails().add(emailRef);
+      }
+      catch (RuntimeException ex) {
+        Marker emailContext = ConversionContext.getDetachedMarker("EMAIL");
+        ConversionContext.addReference(emailContext);
+        try {
+          logger.warn(ConversionContext.getContext(), "Invalid value for EMAIL ({}) was ignored.", email);
+        }
+        finally {
+          ConversionContext.removeReference(emailContext);
+        }
+      }
     }
 
     if (www != null) {
