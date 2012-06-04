@@ -63,7 +63,7 @@ public class SourceDescriptionMapper {
       }
 
       if (dqSource.getText() != null) {
-        logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
+        logger.warn(ConversionContext.getContext(), "GEDCOM X does not currently support text extracted from a source.");
       }
 
       if (dqSource.getRepositoryRef() != null) {

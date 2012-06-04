@@ -85,7 +85,7 @@ public class FamilyMapper {
         Fact fact = FactMapper.toFact(eventFact, result);
         coupleRelationship.addFact(fact);
       } else {
-        logger.warn(ConversionContext.getContext(), "Did not convert {} because it could not associated it with a couple.  (See GEDCOM X issue 7.)", eventFact.getTag());
+        logger.warn(ConversionContext.getContext(), "The GEDCOM X converter only supports the {} fact in the presence of a couple relationship.", eventFact.getTag());
       }
 
       ConversionContext.removeReference(factContext);
@@ -96,7 +96,7 @@ public class FamilyMapper {
     } else {
       int size = dqFamily.getSourceCitations().size();
       if (size > 0) {
-        logger.warn(ConversionContext.getContext(), "Did not convert {} source citation(s) because it could not associated it with a couple.  (See GEDCOM X issue 7.)", size);
+        logger.warn(ConversionContext.getContext(), "The GEDCOM X converter only supports a source citation(s) in the presence of a couple relationship; {} source citation(s) ignored.", size);
       }
     }
 

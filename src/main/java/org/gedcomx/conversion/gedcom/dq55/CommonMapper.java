@@ -101,7 +101,7 @@ public class CommonMapper {
         }
 
         if (dqSource.getText() != null) {
-          logger.warn(ConversionContext.getContext(), "Did not process the text from the source. (See GEDCOM X issue 121.)");
+          logger.warn(ConversionContext.getContext(), "GEDCOM X does not currently support text extracted from a source.");
           // dqSource.getText(); // see GEDCOM X issue 121 // TODO: address when the associated issue is resolved; log for now
           // sourceDescriptionHasData = true;
         }
