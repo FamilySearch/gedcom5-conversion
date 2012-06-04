@@ -175,7 +175,7 @@ public class CommonMapper {
         break;
       }
       catch (ParseException e) {
-        // the parse pattern being tried did not match the string we were given; do nothing
+        // the parse pattern being tried did not match the string we were given; try the next one
       }
     }
 
