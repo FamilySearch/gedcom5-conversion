@@ -114,7 +114,9 @@ public class FamilyMapperTest {
     rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
     testFact(rel, FactType.Biological);
     rel = testRelationship(7, RelationshipType.ParentChild, "I1000", "I1005", 0);
+    assertNotNull(rel);
     rel = testRelationship(8, RelationshipType.ParentChild, "I1001", "I1005", 0);
+    assertNotNull(rel);
   }
 
   private void assertSize(List list, int count) {

@@ -59,5 +59,5 @@ public class ConversionContext {
   }
 
   private ConversionContext() { } // added to remove "major" sonar warning
-                                     // formatted to minimize impact on code coverage metrics
+                                  // formatted to minimize impact on code coverage metrics
 }
