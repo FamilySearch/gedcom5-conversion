@@ -68,7 +68,7 @@ public class SubmitterMapperTest {
       assertNull(address.getPostalCode());
       assertNull(address.getCountry());
     }
-    assertEquals(Arrays.toString(gedxPerson.getPhones().toArray()), "[data:,Phone: 935-555-1212, data:,Fax: 935-555-0101]");
+    assertEquals(Arrays.toString(gedxPerson.getPhones().toArray()), "[data:,Phone%3A%20935-555-1212, data:,Fax%3A%20935-555-0101]");
     assertEquals(Arrays.toString(gedxPerson.getEmails().toArray()), "[mailto:info@nospam.com]");
     assertEquals(gedxPerson.getHomepage().getValue(), "http://nospam.com/");
 

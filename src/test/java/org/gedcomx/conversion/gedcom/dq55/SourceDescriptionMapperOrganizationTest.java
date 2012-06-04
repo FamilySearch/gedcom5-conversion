@@ -6,12 +6,9 @@ import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.rdf.Description;
-import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.xml.bind.JAXBElement;
 import java.io.File;
 import java.net.URL;
 
@@ -33,7 +30,7 @@ public class SourceDescriptionMapperOrganizationTest {
     gedcom = modelParser.parseGedcom(gedcomFile);
     assertNotNull(gedcom);
     assertNotNull(gedcom.getRepositories());
-    assertEquals(gedcom.getRepositories().size(), 6);
+    assertEquals(gedcom.getRepositories().size(), 7);
   }
 
   @Test
@@ -101,10 +98,10 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Phone: ")) {
-        assertEquals(s, "data:,Phone: 866-000-0000");
-      } else if (s.startsWith("data:,Fax: ")) {
-        assertEquals(s, "data:,Fax: 866-111-1111");
+      if (s.startsWith("data:,Phone%3A%20")) {
+        assertEquals(s, "data:,Phone%3A%20866-000-0000");
+      } else if (s.startsWith("data:,Fax%3A%20")) {
+        assertEquals(s, "data:,Fax%3A%20866-111-1111");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -221,8 +218,8 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Phone: ")) {
-        assertEquals(s, "data:,Phone: (731) 642-8655, Extension #109");
+      if (s.startsWith("data:,Phone%3A%20")) {
+        assertEquals(s, "data:,Phone%3A%20(731)%20642-8655,%20Extension%20%23109");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -298,8 +295,8 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Fax: ")) {
-        assertEquals(s, "data:,Fax: 479-444-1777");
+      if (s.startsWith("data:,Fax%3A%20")) {
+        assertEquals(s, "data:,Fax%3A%20479-444-1777");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -352,9 +349,9 @@ public class SourceDescriptionMapperOrganizationTest {
 
       String s = phone.getResource().toString();
       if (s.startsWith("tel:")) {
-        assertEquals(s, "tel:+1 573.204-2331");
+        assertEquals(s, "tel:+1%20573.204-2331");
       } else if (s.startsWith("fax:")) {
-        assertEquals(s, "fax:+1 (573)204/2334");
+        assertEquals(s, "fax:+1%20(573)204/2334");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -406,6 +403,73 @@ public class SourceDescriptionMapperOrganizationTest {
     // null in this repository
     assertNull(gedxOrganization.getAddresses());
     assertNull(gedxOrganization.getEmails());
+    assertNull(gedxOrganization.getHomepage());
+
+    // Description that is the result of the CHAN tag with a bogus value
+    assertNotNull(result.getDescriptions());
+    assertEquals(result.getDescriptions().size(), 0);
+  }
+
+  @Test
+  public void testToOrganization7() throws Exception {
+    Repository dqRepository = gedcom.getRepositories().get(6);
+    TestConversionResult result = new TestConversionResult();
+    SourceDescriptionMapper mapper = new SourceDescriptionMapper();
+
+    mapper.toOrganization(dqRepository, result);
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+
+    // always null in GEDCOM 5.5 conversions
+    assertNull(gedxOrganization.getAbout());
+    assertNull(gedxOrganization.getAccounts());
+    assertNull(gedxOrganization.getExtensionAttributes());
+    assertNull(gedxOrganization.getExtensionElements());
+    assertNull(gedxOrganization.getType());
+    assertNull(gedxOrganization.getOpenid());
+
+    // REPO
+    assertEquals(gedxOrganization.getId(), "REPO9");
+
+    // NAME
+    assertNotNull(gedxOrganization.getName());
+    assertNull(gedxOrganization.getName().getDatatype());
+    assertNull(gedxOrganization.getName().getLang());
+    assertNull(gedxOrganization.getName().getExtensionAttributes());
+    assertEquals(gedxOrganization.getName().getValue(), "Utah State Archives");
+
+    // PHON and FAX
+    assertNotNull(gedxOrganization.getPhones());
+    assertEquals(gedxOrganization.getPhones().size(), 2);
+    for (ResourceReference phone : gedxOrganization.getPhones()) {
+      assertNull(phone.getExtensionAttributes());
+      assertNull(phone.getExtensionElements());
+      assertNotNull(phone.getResource());
+
+      String s = phone.getResource().toString();
+      if (s.startsWith("data:,Phone%3A%20")) {
+        assertEquals(s, "data:,Phone%3A%20801-533-3535%20%3C%3E");
+      } else if (s.startsWith("data:,Fax%3A%20")) {
+        assertEquals(s, "data:,Fax%3A%20%20801-533-3504%20%3C%3E");
+      } else {
+        fail("Unexpected phone: " + s);
+      }
+    }
+
+    // EMAIL
+    assertNull(gedxOrganization.getEmails());
+
+    // ADDR
+    assertNotNull(gedxOrganization.getAddresses());
+    assertEquals(gedxOrganization.getAddresses().size(), 1);
+    Address address = gedxOrganization.getAddresses().get(0);
+    assertEquals(address.getValue()
+      , "300 S Rio Grande St\n" +
+        "Salt Lake City, UT 84101-1106");
+
+    // null in this repository
     assertNull(gedxOrganization.getHomepage());
 
     // Description that is the result of the CHAN tag with a bogus value

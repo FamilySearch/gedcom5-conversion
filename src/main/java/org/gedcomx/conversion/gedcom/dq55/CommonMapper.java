@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
+import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -313,50 +314,26 @@ public class CommonMapper {
     if (phone != null || fax != null) {
       agent.setPhones(new ArrayList<ResourceReference>());
       if (phone != null) {
-        try {
-          ResourceReference phoneRef = new ResourceReference();
-          boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
-          String scheme = inGlobalFormat ? "tel:" : "data:,Phone: ";
-          phoneRef.setResource(URI.create(scheme + phone));
-          agent.getPhones().add(phoneRef);
-        }
-        catch (RuntimeException ex) {
-          Marker phoneContext = ConversionContext.getDetachedMarker("PHON");
-          ConversionContext.addReference(phoneContext);
-          try {
-            logger.warn(ConversionContext.getContext(), "Invalid value for PHON ({}) was ignored.", phone);
-          }
-          finally {
-            ConversionContext.removeReference(phoneContext);
-          }
-        }
+        ResourceReference phoneRef = new ResourceReference();
+        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
+        String scheme = inGlobalFormat ? "tel" : "data";
+        phoneRef.setResource(URI.create(UriBuilder.fromUri("").scheme(scheme).replacePath((inGlobalFormat ? "{arg1}" : ",Phone%3A%20{arg1}")).build(phone).toString()));
+        agent.getPhones().add(phoneRef);
       }
       if (fax != null) {
-        try {
-          ResourceReference faxRef = new ResourceReference();
-          boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
-          String scheme = inGlobalFormat ? "fax:" : "data:,Fax: ";
-          faxRef.setResource(URI.create(scheme + fax));
-          agent.getPhones().add(faxRef);
-        }
-        catch (RuntimeException ex) {
-          Marker faxContext = ConversionContext.getDetachedMarker("FAX");
-          ConversionContext.addReference(faxContext);
-          try {
-            logger.warn(ConversionContext.getContext(), "Invalid value for FAX ({}) was ignored.", fax);
-          }
-          finally {
-            ConversionContext.removeReference(faxContext);
-          }
-        }
+        ResourceReference faxRef = new ResourceReference();
+        boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
+        String scheme = inGlobalFormat ? "fax" : "data";
+        faxRef.setResource(URI.create(UriBuilder.fromUri("").scheme(scheme).replacePath((inGlobalFormat ? "{arg1}" : ",Fax%3A%20{arg1}")).build(fax).toString()));
+        agent.getPhones().add(faxRef);
       }
     }
 
     if (email != null) {
       try {
         ResourceReference emailRef = new ResourceReference();
+        emailRef.setResource(URI.create(java.net.URI.create("mailto:" + email).toString()));
         agent.setEmails(new ArrayList<ResourceReference>());
-        emailRef.setResource(URI.create("mailto:" + email));
         agent.getEmails().add(emailRef);
       }
       catch (RuntimeException ex) {
