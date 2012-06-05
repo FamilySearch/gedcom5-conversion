@@ -27,8 +27,9 @@ is based on the ZIP file format, you can open it up with your favorite unzip pro
 
 ## Developers
 
-This library is a [Maven](http://maven.apache.org/)-based project. It's built out on Cloudbees
-(release build, snapshot build). Here are the maven coordinates:
+This library is a [Maven](http://maven.apache.org/)-based project. It's built out on
+[Cloudbees](http://www.cloudbees.com/) ([release build](https://gedcom.ci.cloudbees.com/job/gedcom-to-gedcomx-converter-release/),
+[snapshot build](https://gedcom.ci.cloudbees.com/job/gedcom-to-gedcomx-converter/)). Here are the maven coordinates:
 
 ```xml
 <dependency>
