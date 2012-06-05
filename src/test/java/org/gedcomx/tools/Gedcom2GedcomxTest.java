@@ -40,7 +40,7 @@ public class Gedcom2GedcomxTest {
     assertTrue(new File(ouputFile).exists());
 //    listContents(ouputFile);
     JarFile jarFile = new JarFile(ouputFile);
-    assertEquals(jarFile.getManifest().getEntries().size(), 71);
+    assertEquals(jarFile.getManifest().getEntries().size(), 74);
 /*
 Following are a count of entries that are expected in the gedcom file:
 
@@ -58,11 +58,11 @@ Following are a count of entries that are expected in the gedcom file:
 0 @REPO14@ REPO
 0 @REPO15@ REPO
 
-13 individuals
+15 individuals
 --------------
-I1 I2 I8 I11 I14 I15 I117 I1000 I1001 I1002 I1003 I1004 I1005
+I1 I2 I8 I11 I14 I15 I117 I1000 I1001 I1002 I1003 I1004 I1005 I1006 I1007
 
-23 relationships
+24 relationships
 ----------------
 0 @F1@ FAM (5 relationships)
 1 HUSB @I1@
@@ -103,6 +103,10 @@ I1 I2 I8 I11 I14 I15 I117 I1000 I1001 I1002 I1003 I1004 I1005
 0 @F24@ FAM (0 relationships)
 1 CHIL @I1004@
 1 CHIL @I1005@
+
+0 @F25@ FAM (1 relationships)
+1 HUSB @I1006@
+1 WIFE @I1007@
  */
   }
 
