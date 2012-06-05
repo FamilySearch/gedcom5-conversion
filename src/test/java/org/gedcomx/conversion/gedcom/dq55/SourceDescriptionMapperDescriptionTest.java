@@ -4,6 +4,7 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Source;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
+import org.gedcomx.metadata.foaf.Organization;
 import org.gedcomx.metadata.rdf.Description;
 import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.gedcomx.types.ResourceType;
@@ -131,6 +132,16 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().size(), 1);
     assertEquals(gedxDecoratedSourceDescription.getIsPartOf().get(0).getValue(), "organizations/" + gedxSourceDescription.getId() + ".REPO");
     assertEquals(gedxDecoratedSourceDescription.getTitle().size(), 0);
+
+    assertNotNull(result.getOrganizations());
+    assertEquals(result.getOrganizations().size(), 1);
+    Organization gedxOrganization = result.getOrganizations().get(0);
+    assertNotNull(gedxOrganization);
+    assertEquals(gedxOrganization.getId(), gedxSourceDescription.getId() + ".REPO");
+    DublinCoreDescriptionDecorator gedxDecoratedOrganization = DublinCoreDescriptionDecorator.newInstance(gedxOrganization);
+    assertNotNull(gedxDecoratedOrganization.getDescription());
+    assertEquals(gedxDecoratedOrganization.getDescription().size(), 1);
+    assertEquals(gedxDecoratedOrganization.getDescription().get(0).getValue(), "__sour2_inline_2__");
   }
 
   @Test

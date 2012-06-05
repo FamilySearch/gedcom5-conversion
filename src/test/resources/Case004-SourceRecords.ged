@@ -25,6 +25,7 @@
 5 CONT vier ueren naer middag is voor ons Franciscus Julius schepen, gelast ons den
 5 CONT ...
 3 QUAY 3
+0 @NOTE1@ NOTE __note1_value__
 0 @SOUR1@ SOUR
 1 DATA
 2 EVEN BIRT, MARR, DEAT
@@ -53,6 +54,8 @@
 3 MEDI film
 0 @SOUR2@ SOUR
 1 REPO
+2 NOTE __sour2_inline_2__
+2 NOTE @NOTE1@
 2 CALN __callno__
 1 CALN __callno__specdeviation__
 1 MEDI electronic

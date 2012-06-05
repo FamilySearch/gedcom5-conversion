@@ -15,10 +15,7 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.GedcomTag;
-import org.folg.gedcom.model.Repository;
-import org.folg.gedcom.model.RepositoryRef;
-import org.folg.gedcom.model.Source;
+import org.folg.gedcom.model.*;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.foaf.Organization;
@@ -73,10 +70,17 @@ public class SourceDescriptionMapper {
           RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
           if (dqRepositoryRef.getRef() != null) {
             gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(dqRepositoryRef.getRef())));
+            // TODO: map NOTEs as another note associated with this SourceDescription
           } else {
             String inlineRepoId = dqSource.getId() + ".REPO";
             Organization gedxOrganization = new Organization();
             gedxOrganization.setId(inlineRepoId);
+            for (Note dqNote : dqRepositoryRef.getNotes()) {
+              DublinCoreDescriptionDecorator.newInstance(gedxOrganization).description(new RDFValue(dqNote.getValue()));
+            }
+            for (NoteRef dqNoteRef : dqRepositoryRef.getNoteRefs()) {
+              logger.warn(ConversionContext.getContext(), "Unable to associate a note ({}) with the inline-defined organization ({})", dqNoteRef.getRef(), inlineRepoId);
+            }
             result.addOrganization(gedxOrganization, null);
             gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(inlineRepoId)));
           }
