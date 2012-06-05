@@ -14,16 +14,34 @@ Someday, [we may get a GUI for this utility](https://github.com/FamilySearch/ged
 But for now, you're going to have to run it from the command line:
 
 1. [Install the Java Runtime Environment](http://java.com/en/download/index.jsp).
-2. [Download the latest version of the utility]() and save it on your filesystem (e.g. `/tmp/gedcom-converter.jar`).
-3.
+2. [Download the latest version of the utility](https://repository-gedcom.forge.cloudbees.com/release/org/gedcomx/gedcom5-conversion/0.1.0/gedcom5-conversion-0.1.0-full.jar) and save it on your filesystem (e.g. `/tmp/gedcom-converter.jar`).
+3. Go find a GEDCOM file and put it on your filesystem (e.g. `/tmp/my.ged`).
+4. Run the command:
+
+```
+$ java -jar /tmp/gedcom-converter.jar -i /tmp/my.ged -o /tmp/my.gedx
+```
+
+Assuming the above command is successful, the GEDCOM X file will be written to `/tmp/my.gedx`. Since the file
+is based on the ZIP file format, you can open it up with your favorite unzip program to see the contents.
 
 ## Developers
 
-How to use this library (Maven coordinates)
+This library is a [Maven](http://maven.apache.org/)-based project. It's built out on Cloudbees
+(release build, snapshot build). Here are the maven coordinates:
+
+```xml
+<dependency>
+  <groupId>org.gedcomx</groupId>
+  <artifactId>gedcom5-conversion</artifactId>
+  <version>${gedcom5-conversion.version}</version>
+</dependency>
+```
 
 ## Building From Source
 
-How to build from source...
+1. Clone the repo.
+2. `mvn clean install`
 
 ## Status
 
