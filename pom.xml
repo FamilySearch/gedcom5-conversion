@@ -11,13 +11,19 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <gedcomx.fileformat.version>0.9.0.BUILD-SNAPSHOT</gedcomx.fileformat.version>
-    <gedcom.version>1.1-SNAPSHOT</gedcom.version>
+    <gedcomx.fileformat.version>0.9.0</gedcomx.fileformat.version>
+    <gedcom.version>1.1</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
     <logback.version>1.0.3</logback.version>
   </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:FamilySearch/gedcomx5-conversion.git</connection>
+    <developerConnection>scm:git:git@github.com:FamilySearch/gedcomx5-conversion.git</developerConnection>
+    <url>https://github.com/FamilySearch/gedcomx5-conversion</url>
+  </scm>
 
   <dependencies>
     <dependency>
@@ -73,6 +79,11 @@
             </property>
           </systemProperties>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.2.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
