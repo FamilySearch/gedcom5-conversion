@@ -28,26 +28,39 @@ How to build from source...
 
 There are still some things to be done. Here are some high-level notes on the status of this conversion tool.
 
+### All Records
+
+The following are not currently converted on all types of records:
+
+* Notes (NOTE tag)
+* Multimedia (OBJE tag)
+* LDS Ordinances
+* ID's such as RIN, RFN, REFN and AFN tags
+* RESN tag
+* AGE tag is not supported on the event structures
+* Generic events (EVEN tag)
+
 ### Individual
 
-Here are the status notes for "Topic 1"...
+The following are not currently converted on an individual records:
+
+* Tags: ALIA ASSO
+* Generic facts (FACT tag)
 
 ### Family
 
-Here are the status notes for "Topic 2"...
+Families are converted into binary relationships (couple and parent-child). All tags are supported except the tags not supported on all records.
 
 ### Contributor
 
-Here are the status notes for "Topic 3"...
+All tags are supported except the tags not supported on all records.
 
 ### Source
 
-Etc. Etc. Etc.
+The following are not currently converted on an individual records:
+
+* Tags: TEXT
 
 ### Repository
 
-Etc. Etc. Etc.
-
-### Things Not Supported Yet
-
-Etc. Etc.
+All tags are supported except the tags not supported on all records.
