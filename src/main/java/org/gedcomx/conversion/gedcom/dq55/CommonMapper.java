@@ -78,7 +78,7 @@ public class CommonMapper {
         boolean sourceReferenceHasData = false;
         Description gedxSourceDescription = new Description();
         DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+        gedxSourceDescription.setId(dqSource.getRef()+"-"+Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();

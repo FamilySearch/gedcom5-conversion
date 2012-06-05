@@ -38,9 +38,72 @@ public class Gedcom2GedcomxTest {
     String[] args = new String[] {"-i", gedcomUrl.getPath(), "-o", ouputFile};
     Gedcom2Gedcomx.main(args);
     assertTrue(new File(ouputFile).exists());
-    JarFile jarFile = new JarFile(ouputFile);
-    assertEquals(jarFile.getManifest().getEntries().size(), 74);
 //    listContents(ouputFile);
+    JarFile jarFile = new JarFile(ouputFile);
+    assertEquals(jarFile.getManifest().getEntries().size(), 71);
+/*
+Following are a count of entries that are expected in the gedcom file:
+
+0 @SUB1@ SUBM
+
+31 Descriptions (1 on @F24@ not created)
+---------------
+0 @S1@ SOUR (7 refs)
+0 @S5@ SOUR (9 refs)
+0 @S13@ SOUR (2 refs)
+0 @S17@ SOUR (5 refs)
+0 @S80@ SOUR (4 refs)
+
+0 @REPO1@ REPO
+0 @REPO14@ REPO
+0 @REPO15@ REPO
+
+13 individuals
+--------------
+I1 I2 I8 I11 I14 I15 I117 I1000 I1001 I1002 I1003 I1004 I1005
+
+23 relationships
+----------------
+0 @F1@ FAM (5 relationships)
+1 HUSB @I1@
+1 WIFE @I11@
+1 CHIL @I2@
+1 CHIL @I8@
+
+0 @F2@ FAM (3 relationships)
+1 HUSB @I15@
+1 WIFE @I14@
+1 CHIL @I1@
+
+0 @F10@ FAM (1 relationships)
+1 HUSB @I117@
+1 WIFE @I14@
+
+0 @F20@ FAM (9 relationships)
+1 HUSB @I1000@
+1 WIFE @I1001@
+1 CHIL @I1002@
+1 CHIL @I1003@
+1 CHIL @I1004@
+1 CHIL @I1005@
+
+0 @F21@ FAM (3 relationships)
+1 HUSB @I1000@
+1 WIFE @I1001@
+1 CHIL @I1005@
+
+0 @F22@ FAM (1 relationships)
+1 HUSB @I1000@
+1 CHIL @I1005@
+
+0 @F23@ FAM (1 relationships)
+1 WIFE @I1001@
+1 CHIL @I1005@
+
+0 @F24@ FAM (0 relationships)
+1 CHIL @I1004@
+1 CHIL @I1005@
+ */
   }
 
   private static void listContents(String ouputFile) throws IOException {
