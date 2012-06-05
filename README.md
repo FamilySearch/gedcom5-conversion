@@ -28,18 +28,26 @@ How to build from source...
 
 There are still some things to be done. Here are some high-level notes on the status of this conversion tool.
 
-### Topic 1
+### Individual
 
 Here are the status notes for "Topic 1"...
 
-### Topic 2
+### Family
 
 Here are the status notes for "Topic 2"...
 
-### Topic 3
+### Contributor
 
 Here are the status notes for "Topic 3"...
 
-### Etc.
+### Source
 
 Etc. Etc. Etc.
+
+### Repository
+
+Etc. Etc. Etc.
+
+### Things Not Supported Yet
+
+Etc. Etc.
