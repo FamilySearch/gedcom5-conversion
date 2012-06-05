@@ -169,7 +169,15 @@ public class SourceDescriptionMapper {
     try {
       Organization gedxOrganization = new Organization();
 
-      CommonMapper.populateAgent(gedxOrganization, dqRepository.getId(), dqRepository.getName(), dqRepository.getAddress(), dqRepository.getPhone(), dqRepository.getFax(), dqRepository.getEmail(), dqRepository.getWww());
+      CommonMapper.populateAgent(gedxOrganization
+          , dqRepository.getId()
+          , dqRepository.getName()
+          , dqRepository.getAddress()
+          , dqRepository.getPhone()
+          , dqRepository.getFax()
+          , dqRepository.getEmail()
+          , dqRepository.getWww()
+        );
 
       int cntNotes = dqRepository.getNotes().size() + dqRepository.getNoteRefs().size();
       if (cntNotes > 0) {
