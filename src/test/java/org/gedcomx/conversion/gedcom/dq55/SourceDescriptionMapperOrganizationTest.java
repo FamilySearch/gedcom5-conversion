@@ -243,7 +243,7 @@ public class SourceDescriptionMapperOrganizationTest {
     SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
     targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("DC-modified"), targetFormat.format(date));
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -322,7 +322,7 @@ public class SourceDescriptionMapperOrganizationTest {
     SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
     targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("DC-modified"), targetFormat.format(date));
+    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test

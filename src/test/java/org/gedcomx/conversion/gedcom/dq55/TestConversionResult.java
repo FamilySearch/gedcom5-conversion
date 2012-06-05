@@ -96,6 +96,6 @@ public class TestConversionResult implements GedcomxConversionResult {
       entryAttributes.put(entryName, new HashMap<String, String>());
     }
 
-    entryAttributes.get(entryName).put("DC-modified", GedcomxTimeStampUtil.formatAsXmlUTC(lastModified));
+    entryAttributes.get(entryName).put("X-DC-modified", GedcomxTimeStampUtil.formatAsXmlUTC(lastModified));
   }
 }

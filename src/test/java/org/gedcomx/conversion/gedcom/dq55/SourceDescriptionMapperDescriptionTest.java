@@ -216,7 +216,7 @@ public class SourceDescriptionMapperDescriptionTest {
     SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
     targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), targetFormat.format(date));
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -253,7 +253,7 @@ public class SourceDescriptionMapperDescriptionTest {
     SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
     targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("DC-modified"), targetFormat.format(date));
+    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   private void assertMediaTypeToResourceTypeMappingUsingInlineRepo(int sourceIndex, String sourceId, ResourceType expectedResourceType) throws Exception {
