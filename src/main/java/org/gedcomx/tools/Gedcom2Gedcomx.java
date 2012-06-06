@@ -22,6 +22,8 @@ import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
@@ -35,6 +37,7 @@ import java.util.logging.LogManager;
  * Converts a GEDCOM 5.5 file to a GEDCOM X file
  */
 public class Gedcom2Gedcomx {
+  private static final Logger logger = LoggerFactory.getLogger(Gedcom2Gedcomx.class);
 
   @Option (name="-i", required=true, usage="GEDCOM 5.5 input file")
   private File gedcomIn;
@@ -42,21 +45,28 @@ public class Gedcom2Gedcomx {
   @Option(name="-o", required=false, usage="GEDCOM X output file")
   private File gedxOut;
 
-  @Option(name="-a", required=false, usage="GEDCOM 5.5 input files")
-  private File gedxFilesDir;
-
   private void doMain() throws SAXParseException, IOException {
     List<File> fileList = new ArrayList<File>();
-    if ((gedxFilesDir != null) && (gedxFilesDir.isDirectory()) && (gedxFilesDir.canRead()) && (gedxFilesDir.canWrite()) && (gedxFilesDir.canExecute())) {
-      fileList.addAll(Arrays.asList(gedxFilesDir.listFiles(new FileFilter() {
-        @Override
-        public boolean accept(File pathname) {
-          return pathname.getAbsolutePath().matches(".*\\.ged$");
-        }
-      })));
+
+    boolean gedcomInIsDirectory;
+    if ((gedcomIn != null) && (gedcomIn.isDirectory()) && (gedcomIn.canRead()) && (gedcomIn.canWrite()) && (gedcomIn.canExecute())) {
+      fileList.addAll(Arrays.asList(gedcomIn.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+              return pathname.getAbsolutePath().matches("(?i).*\\.ged$");
+            }
+          }))
+        );
+      gedcomInIsDirectory = true;
     }
-    if (gedcomIn != null) {
+    else {
       fileList.add(gedcomIn);
+      gedcomInIsDirectory = false;
+    }
+
+    boolean gedxOutIsDirectory = false;
+    if ((gedxOut != null) && (gedxOut.isDirectory()) && (gedcomInIsDirectory) && (gedxOut.canRead()) && (gedxOut.canWrite()) && (gedxOut.canExecute())) {
+      gedxOutIsDirectory = true;
     }
 
     for (File gedcom55File : fileList) {
@@ -64,12 +74,43 @@ public class Gedcom2Gedcomx {
       Gedcom gedcom = modelParser.parseGedcom(gedcom55File);
       gedcom.createIndexes();
 
-      if (gedxOut != null) {
+      String name = gedcom55File.getName();
+      int nameLength = name.length();
+
+      File derivedGedxOut;
+      if (gedcomInIsDirectory) {
+        String directoryPart;
+        if (gedxOutIsDirectory) {
+          directoryPart = gedxOut.getAbsolutePath() + File.separatorChar;
+        }
+        else {
+          directoryPart = gedcom55File.getAbsolutePath().substring(0, gedcom55File.getAbsolutePath().length() - nameLength);
+          if (gedxOut != null) {
+            logger.warn("Application output parameter (-o) ignored.");
+          }
+        }
+        derivedGedxOut = new File(directoryPart + name.substring(0, nameLength - 4) + ".gedx");
+      }
+      else if (gedxOut == null) {
+        String directoryPart = gedcom55File.getAbsolutePath().substring(0, gedcom55File.getAbsolutePath().length() - nameLength);
+        derivedGedxOut = new File(directoryPart + name.substring(0, nameLength - 4) + ".gedx");
+      }
+      else {
+        derivedGedxOut = gedxOut;
+      }
+
+      OutputStream outputStream;
+      try {
+        outputStream = new FileOutputStream(derivedGedxOut);
+      } catch (IOException ex) {
+        outputStream = null;
+        logger.error("Failed to create the output file: {}", outputStream);
+      }
+
+      if (outputStream != null) {
         GedcomMapper mapper = new GedcomMapper();
-        OutputStream outputStream = new FileOutputStream(gedxOut);
-        GedcomxOutputstreamConversionResult gedxResult = mapper.toGedcomx(gedcom,outputStream);
+        GedcomxOutputstreamConversionResult gedxResult = mapper.toGedcomx(gedcom, outputStream);
         gedxResult.finish(true);
-//        gedxResult.write(outputStream);
       }
     }
   }
