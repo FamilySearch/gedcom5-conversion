@@ -3,7 +3,7 @@
 
   <groupId>org.gedcomx</groupId>
   <artifactId>gedcom5-conversion</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.1</version>
   <packaging>jar</packaging>
 
   <name>gedcom5-conversion</name>
