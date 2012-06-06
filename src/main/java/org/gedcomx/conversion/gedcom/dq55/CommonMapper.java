@@ -201,12 +201,14 @@ public class CommonMapper {
     } else {
       confidenceLevel = null;
 
-      Marker qualityContext = ConversionContext.getDetachedMarker("QUAY");
-      ConversionContext.addReference(qualityContext);
-      try {
-        logger.warn(ConversionContext.getContext(), "Unrecognized value for QUAL tag {}", dqQuality);
-      } finally {
-        ConversionContext.removeReference(qualityContext);
+      if (dqQuality != null) {
+        Marker qualityContext = ConversionContext.getDetachedMarker("QUAY");
+        ConversionContext.addReference(qualityContext);
+        try {
+          logger.warn(ConversionContext.getContext(), "Unrecognized value for QUAL tag {}", dqQuality);
+        } finally {
+          ConversionContext.removeReference(qualityContext);
+        }
       }
     }
 

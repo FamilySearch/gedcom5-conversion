@@ -50,9 +50,13 @@ public class SourceReferenceMapperTest {
     gedcom = modelParser.parseGedcom(gedcomFile);
     assertNotNull(gedcom);
     assertNotNull(gedcom.getPeople());
+    assertEquals(gedcom.getPeople().size(), 5);
+    assertNotNull(gedcom.getFamilies());
+    assertEquals(gedcom.getFamilies().size(), 2);
     assertNotNull(gedcom.getSources());
+    assertEquals(gedcom.getSources().size(), 1);
     assertNotNull(gedcom.getRepositories());
-//    assertEquals(gedcom.getSources().size(), 20);
+    assertEquals(gedcom.getRepositories().size(), 1);
   }
 
   @Test
