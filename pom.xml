@@ -19,9 +19,9 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git@github.com:FamilySearch/gedcomx5-conversion.git</connection>
-    <developerConnection>scm:git:git@github.com:FamilySearch/gedcomx5-conversion.git</developerConnection>
-    <url>https://github.com/FamilySearch/gedcomx5-conversion</url>
+    <connection>scm:git:git@github.com:FamilySearch/gedcom5-conversion.git</connection>
+    <developerConnection>scm:git:git@github.com:FamilySearch/gedcom5-conversion.git</developerConnection>
+    <url>https://github.com/FamilySearch/gedcom5-conversion</url>
   </scm>
 
   <dependencies>
