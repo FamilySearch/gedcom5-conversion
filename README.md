@@ -14,7 +14,7 @@ Someday, [we may get a GUI for this utility](https://github.com/FamilySearch/ged
 But for now, you're going to have to run it from the command line:
 
 1. [Install the Java Runtime Environment](http://java.com/en/download/index.jsp).
-2. [Download the latest version of the utility](https://repository-gedcom.forge.cloudbees.com/release/org/gedcomx/gedcom5-conversion/0.1.0/gedcom5-conversion-0.1.0-full.jar) and save it on your filesystem (e.g. `/tmp/gedcom-converter.jar`).
+2. [Download the latest version of the utility](https://repository-gedcom.forge.cloudbees.com/release/org/gedcomx/gedcom5-conversion/0.1.1/gedcom5-conversion-0.1.1-full.jar) and save it on your filesystem (e.g. `/tmp/gedcom-converter.jar`).
 3. Go find a GEDCOM file and put it on your filesystem (e.g. `/tmp/my.ged`).
 4. Run the command:
 
