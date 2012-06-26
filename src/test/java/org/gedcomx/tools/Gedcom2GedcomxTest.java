@@ -40,7 +40,13 @@ public class Gedcom2GedcomxTest {
     assertTrue(new File(ouputFile).exists());
 //    listContents(ouputFile);
     JarFile jarFile = new JarFile(ouputFile);
-    assertEquals(jarFile.getManifest().getEntries().size(), 74);
+    int count = 0;
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+      count++;
+      entries.nextElement();
+    }
+    assertEquals(count, 75);
 /*
 Following are a count of entries that are expected in the gedcom file:
 

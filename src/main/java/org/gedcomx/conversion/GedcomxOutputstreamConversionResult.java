@@ -34,7 +34,11 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   private GedcomxOutputStream gedxOutputStream;
 
   public GedcomxOutputstreamConversionResult(OutputStream outputStream) throws IOException {
-    gedxOutputStream = new GedcomxOutputStream(outputStream);
+    this(new GedcomxOutputStream(outputStream));
+  }
+
+  public GedcomxOutputstreamConversionResult(GedcomxOutputStream gxout) {
+    this.gedxOutputStream = gxout;
   }
 
   public void finish(boolean closeStream) throws IOException {
