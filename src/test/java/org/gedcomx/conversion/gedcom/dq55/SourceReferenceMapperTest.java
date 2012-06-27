@@ -86,8 +86,6 @@ public class SourceReferenceMapperTest {
         assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
         generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
         assertNotNull(generatedId, "1");
-        assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
-        assertNull(gedxSourceReference.getDescription().getExtensionElements());
         assertNotNull(gedxSourceReference.getAttribution());
         assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Certainly);
         assertNull(gedxSourceReference.getAttribution().getModified());
@@ -146,8 +144,6 @@ public class SourceReferenceMapperTest {
         assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
         generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
         assertNotNull(generatedId, "2");
-        assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
-        assertNull(gedxSourceReference.getDescription().getExtensionElements());
         assertNotNull(gedxSourceReference.getAttribution());
         assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Possibly);
         assertNull(gedxSourceReference.getAttribution().getModified());
@@ -204,8 +200,6 @@ public class SourceReferenceMapperTest {
     assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
     generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
     assertNotNull(generatedId, "3");
-    assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
-    assertNull(gedxSourceReference.getDescription().getExtensionElements());
     assertNotNull(gedxSourceReference.getAttribution());
     assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Apparently);
     assertNull(gedxSourceReference.getAttribution().getModified());
@@ -261,8 +255,6 @@ public class SourceReferenceMapperTest {
     assertTrue(gedxSourceReference.getDescription().getResource().toString().startsWith("descriptions/"));
     generatedId = gedxSourceReference.getDescription().getResource().toString().substring("descriptions/".length());
     assertNotNull(generatedId, "4");
-    assertNull(gedxSourceReference.getDescription().getExtensionAttributes());
-    assertNull(gedxSourceReference.getDescription().getExtensionElements());
     assertNotNull(gedxSourceReference.getAttribution());
     assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Perhaps);
     assertNull(gedxSourceReference.getAttribution().getModified());

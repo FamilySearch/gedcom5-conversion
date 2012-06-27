@@ -15,22 +15,15 @@
  */
 package org.gedcomx.tools;
 
-import org.codehaus.jackson.map.AnnotationIntrospector;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
 import org.codehaus.jackson.smile.SmileFactory;
-import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.gedcomx.fileformat.*;
-import org.gedcomx.rt.GedcomJacksonModule;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
@@ -45,7 +38,6 @@ import java.util.jar.JarFile;
  * Converts a GEDCOM 5.5 file to a GEDCOM X file
  */
 public class Gedcom2Gedcomx {
-  private static final Logger logger = LoggerFactory.getLogger(Gedcom2Gedcomx.class);
 
   @Option ( name = "-i", aliases = {"--input"}, required = true, usage = "GEDCOM 5.5 input file" )
   private File gedcomIn;
@@ -62,7 +54,21 @@ public class Gedcom2Gedcomx {
   @Option ( name = "-bs", aliases = {"--bson"}, required = false, usage = "Use binary JSON instead of XML for serialization (experimental, used for proof-of-concept)" )
   private boolean bson;
 
+  @Option ( name = "-v", aliases = {"--verbose"}, required = false, usage = "Output all the warnings that are generated during the conversion." )
+  private boolean verbose;
+
+  @Option ( name = "-vv", aliases = {"--very-verbose"}, required = false, usage = "Output all the warnings and informational messages that are generated during the conversion." )
+  private boolean vverbose;
+
   private void doMain() throws SAXParseException, IOException {
+    if (verbose) {
+      System.setProperty("gedcom-log-level", "WARN");
+    }
+
+    if (vverbose) {
+      System.setProperty("gedcom-log-level", "INFO");
+    }
+
     List<File> fileList = new ArrayList<File>();
 
     final boolean gedxIn;
@@ -110,7 +116,7 @@ public class Gedcom2Gedcomx {
         else {
           directoryPart = inFile.getAbsolutePath().substring(0, inFile.getAbsolutePath().length() - nameLength);
           if (gedxOut != null) {
-            logger.warn("Application output parameter (-o) ignored.");
+            System.out.println("Application output parameter (-o) ignored.");
           }
         }
         derivedGedxOut = new File(directoryPart + name.substring(0, nameLength - 4) + ".gedx");
@@ -129,7 +135,7 @@ public class Gedcom2Gedcomx {
       }
       catch (IOException ex) {
         outputStream = null;
-        logger.error("Failed to create the output file: {}", outputStream);
+        System.err.println("Failed to create the output file: " + derivedGedxOut);
       }
 
       if (gedxIn) {
@@ -170,12 +176,7 @@ public class Gedcom2Gedcomx {
         serializer = new JacksonJsonSerialization();
       }
       else if (bson) {
-        ObjectMapper objectMapper = new ObjectMapper(new SmileFactory());
-        AnnotationIntrospector introspector = AnnotationIntrospector.pair(new JacksonAnnotationIntrospector(), new JaxbAnnotationIntrospector());
-        objectMapper.getSerializationConfig().withAnnotationIntrospector(introspector);
-        objectMapper.getDeserializationConfig().withAnnotationIntrospector(introspector);
-        objectMapper.registerModule(new GedcomJacksonModule());
-        serializer = new JacksonJsonSerialization(objectMapper);
+        serializer = new JacksonJsonSerialization(new SmileFactory());
       }
       else {
         serializer = new DefaultXMLSerialization();

@@ -88,8 +88,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getEmails());
     assertEquals(gedxOrganization.getEmails().size(), 1);
     ResourceReference email = gedxOrganization.getEmails().get(0);
-    assertNull(email.getExtensionAttributes());
-    assertNull(email.getExtensionElements());
     assertNotNull(email.getResource());
     assertEquals(email.getResource().toString(), "mailto:info@mycorporation.com");
 
@@ -97,8 +95,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getPhones());
     assertEquals(gedxOrganization.getPhones().size(), 2);
     for (ResourceReference phone : gedxOrganization.getPhones()) {
-      assertNull(phone.getExtensionAttributes());
-      assertNull(phone.getExtensionElements());
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
@@ -208,8 +204,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getEmails());
     assertEquals(gedxOrganization.getEmails().size(), 1);
     ResourceReference email = gedxOrganization.getEmails().get(0);
-    assertNull(email.getExtensionAttributes());
-    assertNull(email.getExtensionElements());
     assertNotNull(email.getResource());
     assertEquals(email.getResource().toString(), "mailto:henrycountyarchive@gmail.com");
 
@@ -217,8 +211,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getPhones());
     assertEquals(gedxOrganization.getPhones().size(), 1);
     for (ResourceReference phone : gedxOrganization.getPhones()) {
-      assertNull(phone.getExtensionAttributes());
-      assertNull(phone.getExtensionElements());
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
@@ -300,8 +292,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getPhones());
     assertEquals(gedxOrganization.getPhones().size(), 1);
     for (ResourceReference phone : gedxOrganization.getPhones()) {
-      assertNull(phone.getExtensionAttributes());
-      assertNull(phone.getExtensionElements());
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
@@ -359,8 +349,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getPhones());
     assertEquals(gedxOrganization.getPhones().size(), 2);
     for (ResourceReference phone : gedxOrganization.getPhones()) {
-      assertNull(phone.getExtensionAttributes());
-      assertNull(phone.getExtensionElements());
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
@@ -460,8 +448,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getPhones());
     assertEquals(gedxOrganization.getPhones().size(), 2);
     for (ResourceReference phone : gedxOrganization.getPhones()) {
-      assertNull(phone.getExtensionAttributes());
-      assertNull(phone.getExtensionElements());
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
