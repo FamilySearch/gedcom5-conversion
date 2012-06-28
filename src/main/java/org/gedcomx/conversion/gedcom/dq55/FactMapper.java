@@ -40,14 +40,14 @@ public class FactMapper {
     // (Individual)
     factMap.put("CAST", FactType.CasteName);  factMap.put("CASTE", FactType.CasteName);
     factMap.put("DSCR", FactType.PhysicalDescription);  factMap.put("PHY_DESCRIPTION", FactType.PhysicalDescription);
-    factMap.put("EDUC", FactType.ScholasticAchievement);  factMap.put("EDUCATION", FactType.ScholasticAchievement);
+    factMap.put("EDUC", FactType.Education);  factMap.put("EDUCATION", FactType.Education);
     factMap.put("IDNO", FactType.NationalId);  factMap.put("IDENT_NUMBER", FactType.NationalId);
-    factMap.put("NATI", FactType.NationalOrigin);  factMap.put("NATIONALITY", FactType.NationalOrigin);
+    factMap.put("NATI", FactType.Nationality);  factMap.put("NATIONALITY", FactType.Nationality);
     factMap.put("NCHI", FactType.CountOfChildren);  factMap.put("CHILDREN_COUNT", FactType.CountOfChildren);
     factMap.put("NMR", FactType.CountOfMarriages);  factMap.put("MARRIAGE_COUNT", FactType.CountOfMarriages);
     factMap.put("OCCU", FactType.Occupation);  factMap.put("OCCUPATION", FactType.Occupation);
-    factMap.put("PROP", FactType.Possessions);  factMap.put("PROPERTY", FactType.Possessions);
-    factMap.put("RELI", FactType.ReligiousAffiliation);  factMap.put("RELIGION", FactType.ReligiousAffiliation);
+    factMap.put("PROP", FactType.Property);  factMap.put("PROPERTY", FactType.Property);
+    factMap.put("RELI", FactType.Religion);  factMap.put("RELIGION", FactType.Religion);
     factMap.put("RESI", FactType.Residence);  factMap.put("RESIDENCE", FactType.Residence);
     factMap.put("SSN", FactType.SocialSecurityNumber);  factMap.put("SOC_SEC_NUMBER", FactType.SocialSecurityNumber);
     factMap.put("TITL", FactType.TitleOfNobility);  factMap.put("TITLE", FactType.TitleOfNobility);
@@ -72,7 +72,7 @@ public class FactMapper {
     factMap.put("DEAT", FactType.Death);  factMap.put("DEATH", FactType.Death);
     factMap.put("EMIG", FactType.Emigration);  factMap.put("EMIGRATION", FactType.Emigration);
     factMap.put("FCOM", FactType.FirstCommunion);  factMap.put("FIRST_COMMUNION", FactType.FirstCommunion);
-    factMap.put("GRAD", FactType.Graduation);  factMap.put("GRADUATION", FactType.Graduation);
+    factMap.put("GRAD", FactType.Education);  factMap.put("GRADUATION", FactType.Education);
     factMap.put("IMMI", FactType.Immigration);  factMap.put("IMMIGRATION", FactType.Immigration);
     factMap.put("ORDN", FactType.Ordination);  factMap.put("ORDINATION", FactType.Ordination);
     factMap.put("NATU", FactType.Naturalization);  factMap.put("NATURALIZATION", FactType.Naturalization);
@@ -141,8 +141,8 @@ public class FactMapper {
     factMap.put("_NAMS", FactType.Namesake);
     factMap.put("SOC_", FactType.SocialSecurityNumber);
     factMap.put("ENLIST", FactType.MilitaryService);
-    factMap.put("_DEG", FactType.ScholasticAchievement);
-    factMap.put("_DEGREE", FactType.ScholasticAchievement);
+    factMap.put("_DEG", FactType.Education);
+    factMap.put("_DEGREE", FactType.Education);
     factMap.put("EMPL", FactType.Occupation);
     factMap.put("_EMPLOY", FactType.Occupation);
 

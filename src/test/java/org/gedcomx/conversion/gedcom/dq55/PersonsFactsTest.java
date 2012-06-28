@@ -134,7 +134,7 @@ public class PersonsFactsTest {
     org.gedcomx.conclusion.Person gedxPerson = result.getPersons().get(0);
     boolean factFound = false;
     for(Fact fact : gedxPerson.getFacts()) {
-      if(fact.getKnownType().equals(FactType.ScholasticAchievement)) {
+      if(fact.getKnownType().equals(FactType.Education)) {
         factFound = true;
         assertEquals(fact.getPlace().getOriginal(), "San Francisco, San Francisco, California, United States");
         assertNull(fact.getDate());
@@ -264,8 +264,8 @@ public class PersonsFactsTest {
     checkFact(gedxPerson.getFacts(), FactType.Namesake, "Jacob's brother", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, null, "1978", "Nashville, Tennessee");
     checkFact(gedxPerson.getFacts(), FactType.Occupation, null, "1981", "Nashville, Tennessee");
-    checkFact(gedxPerson.getFacts(), FactType.ScholasticAchievement, null, "DEC 1973", "Bachelor of Arts, English");
-    checkFact(gedxPerson.getFacts(), FactType.ScholasticAchievement, null, "10 MAY 1980", "Masters in Education");
+    checkFact(gedxPerson.getFacts(), FactType.Education, null, "DEC 1973", "Bachelor of Arts, English");
+    checkFact(gedxPerson.getFacts(), FactType.Education, null, "10 MAY 1980", "Masters in Education");
     checkFact(gedxPerson.getFacts(), FactType.MilitaryService, null, "1881", null);
     //TODO Figure out why this is not working properly
 //    checkFact(gedxPerson.getFacts(), FactType.SocialSecurityNumber, "528-30-8888", null, null);
@@ -289,22 +289,22 @@ public class PersonsFactsTest {
     checkFact(gedxPerson.getFacts(), FactType.CasteName, null, null, "Brahmin");
     checkFact(gedxPerson.getFacts(), FactType.PhysicalDescription, "Age: 44", null, null);
     checkFact(gedxPerson.getFacts(), FactType.PhysicalDescription, "5'7\", 165#, medium complexion, brown eyes & hair", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.ScholasticAchievement, "B.A. In Sociology And Applied Criminal Justice", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.ScholasticAchievement, "Ryder College,", "1934-", "Trenton, NJ");
+    checkFact(gedxPerson.getFacts(), FactType.Education, "B.A. In Sociology And Applied Criminal Justice", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Education, "Ryder College,", "1934-", "Trenton, NJ");
     checkFact(gedxPerson.getFacts(), FactType.NationalId, "Glendale Az.", null, null);
     checkFact(gedxPerson.getFacts(), FactType.NationalId, "Whistler, Alabama now Prichard Al", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.NationalOrigin, "Chinese", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.NationalOrigin, "Swedish", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Nationality, "Chinese", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Nationality, "Swedish", null, null);
     checkFact(gedxPerson.getFacts(), FactType.CountOfChildren, "2", null, null);
     checkFact(gedxPerson.getFacts(), FactType.CountOfChildren, "5", null, null);
     checkFact(gedxPerson.getFacts(), FactType.CountOfMarriages, null, null, "4");
     checkFact(gedxPerson.getFacts(), FactType.CountOfMarriages, "3", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, "Teacher, Tabernacle Christian School", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, "Kruidenier", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.Possessions, null, "18 FEB 1768", "Bought 100 acres in Windham county, Connecticut for 84 pounds");
-    checkFact(gedxPerson.getFacts(), FactType.Possessions, "43 MAPPERLAY ROAD (THE LODGE HOUSE)", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.ReligiousAffiliation, "Quaker", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.ReligiousAffiliation, "Church of Christ", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Property, null, "18 FEB 1768", "Bought 100 acres in Windham county, Connecticut for 84 pounds");
+    checkFact(gedxPerson.getFacts(), FactType.Property, "43 MAPPERLAY ROAD (THE LODGE HOUSE)", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Religion, "Quaker", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Religion, "Church of Christ", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, "Russia, Oh, Dayton, Oh, West Milton, Oh", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, null, "ABT 1740", "Brocks Gap, VA");
     checkFact(gedxPerson.getFacts(), FactType.SocialSecurityNumber, "485-70-7507", null, null);
@@ -340,8 +340,8 @@ public class PersonsFactsTest {
     checkFact(gedxPerson.getFacts(), FactType.Emigration, null, "1886", "Came to Thomas County, Iowa in covered wagon");
     checkFact(gedxPerson.getFacts(), FactType.FirstCommunion, null, "7 MAY 1921", "Church of Good Shepard, Manhatten, N.Y.C.,NY");
     checkFact(gedxPerson.getFacts(), FactType.FirstCommunion, null, "7 MAY 1922", "Church of Good Shepard, Manhatten, N.Y.C.,NY");
-    checkFact(gedxPerson.getFacts(), FactType.Graduation, null, "5 JUN 1954", "Central Kitsap High  Silverdale Washington");
-    checkFact(gedxPerson.getFacts(), FactType.Graduation, null, "18 JUN 1954", "Central Kitsap High  Silverdale Washington");
+    checkFact(gedxPerson.getFacts(), FactType.Education, null, "5 JUN 1954", "Central Kitsap High  Silverdale Washington");
+    checkFact(gedxPerson.getFacts(), FactType.Education, null, "18 JUN 1954", "Central Kitsap High  Silverdale Washington");
     checkFact(gedxPerson.getFacts(), FactType.Immigration, null, "1724", "\"Francis\"");
     checkFact(gedxPerson.getFacts(), FactType.Immigration, null, "1734", "\"Francis\"");
     checkFact(gedxPerson.getFacts(), FactType.Ordination, null, "31 MAR 1744", "Canterbury, Windham Co., CT.");
