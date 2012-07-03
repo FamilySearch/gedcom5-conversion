@@ -18,6 +18,7 @@ package org.gedcomx.tools;
 import org.codehaus.jackson.smile.SmileFactory;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
+import org.gedcomx.conclusion.ConclusionModel;
 import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.gedcomx.fileformat.*;
@@ -39,7 +40,7 @@ import java.util.jar.JarFile;
  */
 public class Gedcom2Gedcomx {
 
-  @Option ( name = "-i", aliases = {"--input"}, required = true, usage = "GEDCOM 5.5 input file" )
+  @Option ( name = "-i", aliases = {"--input"}, required = false, usage = "GEDCOM 5.5 input file" )
   private File gedcomIn;
 
   @Option ( name = "-ix", aliases = {"--inputx"}, required = false, usage = "GEDCOM X input file (experimental, used for benchmarking)" )
@@ -54,19 +55,27 @@ public class Gedcom2Gedcomx {
   @Option ( name = "-bs", aliases = {"--bson"}, required = false, usage = "Use binary JSON instead of XML for serialization (experimental, used for proof-of-concept)" )
   private boolean bson;
 
+  @Option ( name = "-P", aliases = {"--pause"}, required = false, usage = "Pause before starting the conversion process (experimental, used for profiling)" )
+  private boolean pause;
+
   @Option ( name = "-v", aliases = {"--verbose"}, required = false, usage = "Output all the warnings that are generated during the conversion." )
   private boolean verbose;
 
   @Option ( name = "-vv", aliases = {"--very-verbose"}, required = false, usage = "Output all the warnings and informational messages that are generated during the conversion." )
   private boolean vverbose;
 
-  private void doMain() throws SAXParseException, IOException {
+  private void doMain(CmdLineParser parser) throws SAXParseException, IOException {
     if (verbose) {
       System.setProperty("gedcom-log-level", "WARN");
     }
 
     if (vverbose) {
       System.setProperty("gedcom-log-level", "INFO");
+    }
+
+    if (pause) {
+      System.out.print("Press any key to continue...");
+      System.in.read();
     }
 
     List<File> fileList = new ArrayList<File>();
@@ -78,9 +87,14 @@ public class Gedcom2Gedcomx {
       scanPattern = "(?i).*\\.gedx$";
       gedcomIn = gedcomxIn;
     }
-    else {
+    else if (gedcomIn != null) {
       gedxIn = false;
       scanPattern = "(?i).*\\.ged$";
+    }
+    else {
+      System.err.println("Input file(s) must be specified.");
+      parser.printUsage(System.err);
+      return;
     }
 
     boolean gedcomInIsDirectory;
@@ -156,8 +170,14 @@ public class Gedcom2Gedcomx {
     }
 
     for (GedcomxFileEntry entry : gxFile.getEntries()) {
-      Object resource = gxFile.readResource(entry);
-      out.addResource(entry.getContentType(), entry.getJarEntry().getName(), resource, null, entry.getAttributes());
+      if (!entry.getJarEntry().isDirectory() && !entry.getJarEntry().getName().endsWith("MANIFEST.MF")) {
+        Object resource = gxFile.readResource(entry);
+        String contentType = entry.getContentType();
+        if (contentType == null) {
+          contentType = ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE;
+        }
+        out.addResource(contentType, entry.getJarEntry().getName(), resource, null, entry.getAttributes());
+      }
     }
 
     out.close();
@@ -193,7 +213,7 @@ public class Gedcom2Gedcomx {
     CmdLineParser parser = new CmdLineParser(converter);
     try {
       parser.parseArgument(args);
-      converter.doMain();
+      converter.doMain(parser);
     }
     catch (CmdLineException e) {
       System.err.println(e.getMessage());
