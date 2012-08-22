@@ -74,9 +74,7 @@ public class SubmitterMapperTest {
 
     assertNull(gedxPerson.getFamilyName());
     assertNull(gedxPerson.getGivenName());
-    assertNull(gedxPerson.getAbout());
     assertNull(gedxPerson.getAccounts());
-    assertNull(gedxPerson.getKnownType());
     assertNull(gedxPerson.getOpenid());
   }
 }

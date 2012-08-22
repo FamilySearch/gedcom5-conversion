@@ -19,17 +19,16 @@ import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
 import org.gedcomx.common.Attribution;
+import org.gedcomx.common.LiteralValue;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.conclusion.SourceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.foaf.Address;
 import org.gedcomx.metadata.foaf.Agent;
-import org.gedcomx.metadata.rdf.Description;
-import org.gedcomx.metadata.rdf.RDFLiteral;
-import org.gedcomx.metadata.rdf.RDFValue;
+import org.gedcomx.metadata.source.CitationField;
+import org.gedcomx.metadata.source.SourceDescription;
+import org.gedcomx.metadata.source.SourceReference;
 import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
 import org.gedcomx.types.TypeReference;
@@ -76,30 +75,47 @@ public class CommonMapper {
       try {
         boolean sourceDescriptionHasData = false;
         boolean sourceReferenceHasData = false;
-        Description gedxSourceDescription = new Description();
-        DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
-        gedxSourceDescription.setId(dqSource.getRef()+"-"+Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+        SourceDescription gedxSourceDescription = new SourceDescription();
+
+        org.gedcomx.metadata.source.SourceCitation citation = new org.gedcomx.metadata.source.SourceCitation();
+        citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+        citation.setFields(new ArrayList<CitationField>());
+        citation.setValue("");
+
+        if (dqSource.getRef() != null) {
+          gedxSourceDescription.setId(dqSource.getRef() + "-" + Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+
+          SourceReference componentOf = new SourceReference();
+          componentOf.setSourceDescriptionURI(URI.create(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+          gedxSourceDescription.setComponentOf(componentOf);
+          sourceDescriptionHasData = true;
+
+          if (dqSource.getDate() != null) {
+            CitationField field = new CitationField();
+            field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date");
+            field.setValue(dqSource.getDate());
+            citation.getFields().add(field);
+            citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getDate() : dqSource.getDate()));
+          }
+
+          if (dqSource.getPage() != null) {
+            CitationField field = new CitationField();
+            field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page");
+            field.setValue(dqSource.getPage());
+            citation.getFields().add(field);
+            citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPage() : dqSource.getPage()));
+          }
+        } else if (dqSource.getValue() != null) {
+          gedxSourceDescription.setId("SOUR-" + Long.toHexString(SequentialIdentifierGenerator.getNextId()));
+
+          citation.setValue(dqSource.getValue());
+          citation.setCitationTemplate(null);
+          sourceDescriptionHasData = true;
+        }
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
-        gedxSourceReference.setDescription(new ResourceReference());
-        gedxSourceReference.getDescription().setResource(URI.create(entryName));
-
-        if (dqSource.getRef() != null) {
-          gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
-          sourceDescriptionHasData = true;
-
-          if (dqSource.getPage() != null) {
-            gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPage()));
-          }
-
-          if (dqSource.getDate() != null) {
-            gedxDecoratedSourceDescription.created(dqSource.getDate());
-          }
-        } else if (dqSource.getValue() != null) {
-          gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getValue()));
-          sourceDescriptionHasData = true;
-        }
+        gedxSourceReference.setSourceDescriptionURI(URI.create(entryName));
 
         if (dqSource.getText() != null) {
           logger.warn(ConversionContext.getContext(), "GEDCOM X does not currently support text extracted from a source.");
@@ -126,7 +142,8 @@ public class CommonMapper {
         }
 
         if (sourceDescriptionHasData) {
-          result.addDescription(gedxSourceDescription, null);
+          gedxSourceDescription.setCitation(citation);
+          result.addSourceDescription(gedxSourceDescription, null);
           sourceReferenceHasData = true;
         }
 
@@ -286,7 +303,7 @@ public class CommonMapper {
 
   public static void populateAgent(Agent agent, String id, String name, org.folg.gedcom.model.Address address, String phone, String fax, String email, String www) {
     agent.setId(id);
-    agent.setName(new RDFLiteral(name));
+    agent.setName(new LiteralValue(name));
 
     if(address != null) {
       agent.setAddresses(new ArrayList<Address>());
@@ -351,7 +368,7 @@ public class CommonMapper {
     }
 
     if (www != null) {
-      agent.setHomepage(new RDFLiteral(www));
+      agent.setHomepage(new LiteralValue(www));
     }
   }
 

@@ -409,7 +409,7 @@ public class PersonsNameTest {
     boolean found = false;
     for(NamePart part : nameForm.getParts()) {
       if(part.getKnownType().equals(type)) {
-        if(part.getText().equals(expected)) {
+        if(part.getValue().equals(expected)) {
           found = true;
           break;
         }

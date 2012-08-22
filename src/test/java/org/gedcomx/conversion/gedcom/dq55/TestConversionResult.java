@@ -8,7 +8,7 @@ import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.fileformat.GedcomxTimeStampUtil;
 import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.metadata.source.SourceDescription;
 
 import java.io.IOException;
 import java.util.*;
@@ -18,7 +18,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   private Map<String, Map<String, String>> entryAttributes = new HashMap<String, Map<String, String>>();
   private List<Person> persons = new ArrayList<Person>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
-  private List<Description> descriptions = new ArrayList<Description>();
+  private List<SourceDescription> descriptions = new ArrayList<SourceDescription>();
   private List<org.gedcomx.metadata.foaf.Person> contributors = new ArrayList<org.gedcomx.metadata.foaf.Person>();
   private List<Organization> organizations = new ArrayList<Organization>();
 
@@ -48,12 +48,12 @@ public class TestConversionResult implements GedcomxConversionResult {
     this.relationships.add(relationship);
   }
 
-  public List<Description> getDescriptions() {
+  public List<SourceDescription> getSourceDescriptions() {
     return descriptions;
   }
 
   @Override
-  public void addDescription(Description description, Date lastModified) throws IOException {
+  public void addSourceDescription(SourceDescription description, Date lastModified) throws IOException {
     if (lastModified != null) {
       handleLastModified(CommonMapper.getDescriptionEntryName(description.getId()), lastModified);
     }

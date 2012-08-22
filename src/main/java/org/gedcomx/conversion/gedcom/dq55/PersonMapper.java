@@ -17,8 +17,14 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
-import org.gedcomx.conclusion.*;
+import org.gedcomx.conclusion.Fact;
+import org.gedcomx.conclusion.Gender;
+import org.gedcomx.conclusion.Name;
+import org.gedcomx.conclusion.NameForm;
+import org.gedcomx.conclusion.NamePart;
+import org.gedcomx.conclusion.Person;
 import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.metadata.source.SourceReference;
 import org.gedcomx.types.GenderType;
 import org.gedcomx.types.NamePartType;
 import org.gedcomx.types.NameType;
@@ -386,7 +392,7 @@ public class PersonMapper {
       if(!piece.equals("")) {
         NamePart namePart = new NamePart();
         namePart.setKnownType(type);
-        namePart.setText(piece);
+        namePart.setValue(piece);
         nameParts.add(namePart);
       }
     }

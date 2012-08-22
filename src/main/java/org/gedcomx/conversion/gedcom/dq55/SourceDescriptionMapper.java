@@ -15,20 +15,25 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.*;
+import org.folg.gedcom.model.GedcomTag;
+import org.folg.gedcom.model.Note;
+import org.folg.gedcom.model.NoteRef;
+import org.folg.gedcom.model.Repository;
+import org.folg.gedcom.model.RepositoryRef;
+import org.folg.gedcom.model.Source;
+import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.TextValue;
+import org.gedcomx.common.URI;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.dc.DublinCoreDescriptionDecorator;
 import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.rdf.Description;
-import org.gedcomx.metadata.rdf.RDFLiteral;
-import org.gedcomx.metadata.rdf.RDFValue;
-import org.gedcomx.types.ResourceType;
-import org.gedcomx.types.TypeReference;
+import org.gedcomx.metadata.source.CitationField;
+import org.gedcomx.metadata.source.SourceDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,24 +44,42 @@ public class SourceDescriptionMapper {
     Marker sourceContext = ConversionContext.getDetachedMarker(String.format("@%s@ SOUR", dqSource.getId()));
     ConversionContext.addReference(sourceContext);
     try {
-      Description gedxSourceDescription = new Description();
-      DublinCoreDescriptionDecorator gedxDecoratedSourceDescription = DublinCoreDescriptionDecorator.newInstance(gedxSourceDescription);
+      SourceDescription gedxSourceDescription = new SourceDescription();
       gedxSourceDescription.setId(dqSource.getId());
 
+      if (dqSource.getAbbreviation() != null) {
+        gedxSourceDescription.setDisplayName(dqSource.getAbbreviation());
+      } else {
+        gedxSourceDescription.setDisplayName(dqSource.getTitle());
+      }
+
+      org.gedcomx.metadata.source.SourceCitation citation = new org.gedcomx.metadata.source.SourceCitation();
+      citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+      citation.setFields(new ArrayList<CitationField>());
+      citation.setValue("");
+
       if (dqSource.getAuthor() != null) {
-        gedxDecoratedSourceDescription.creator(new RDFValue(dqSource.getAuthor()));
+        CitationField field = new CitationField();
+        field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/author");
+        field.setValue(dqSource.getAuthor());
+        citation.getFields().add(field);
+        citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getAuthor() : dqSource.getAuthor()));
       }
 
       if (dqSource.getTitle() != null) {
-        gedxDecoratedSourceDescription.title(new RDFLiteral(dqSource.getTitle()));
-      }
-
-      if (dqSource.getAbbreviation() != null) {
-        gedxDecoratedSourceDescription.alternative(new RDFLiteral(dqSource.getAbbreviation()));
+        CitationField field = new CitationField();
+        field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title");
+        field.setValue(dqSource.getTitle());
+        citation.getFields().add(field);
+        citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getTitle() : dqSource.getTitle()));
       }
 
       if (dqSource.getPublicationFacts() != null) {
-        gedxDecoratedSourceDescription.description(new RDFValue(dqSource.getPublicationFacts()));
+        CitationField field = new CitationField();
+        field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/publication-facts");
+        field.setValue(dqSource.getPublicationFacts());
+        citation.getFields().add(field);
+        citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPublicationFacts() : dqSource.getPublicationFacts()));
       }
 
       if (dqSource.getText() != null) {
@@ -69,29 +92,30 @@ public class SourceDescriptionMapper {
         try {
           RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
           if (dqRepositoryRef.getRef() != null) {
-            gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(dqRepositoryRef.getRef())));
+            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationEntryName(dqRepositoryRef.getRef()))));
             // TODO: map NOTEs as another note associated with this SourceDescription
           } else {
             String inlineRepoId = dqSource.getId() + ".REPO";
             Organization gedxOrganization = new Organization();
             gedxOrganization.setId(inlineRepoId);
             for (Note dqNote : dqRepositoryRef.getNotes()) {
-              DublinCoreDescriptionDecorator.newInstance(gedxOrganization).description(new RDFValue(dqNote.getValue()));
+              org.gedcomx.common.Note gedxNote = new org.gedcomx.common.Note();
+              gedxNote.setText(new TextValue(dqNote.getValue()));
+              gedxOrganization.addExtensionElement(gedxNote);
             }
             for (NoteRef dqNoteRef : dqRepositoryRef.getNoteRefs()) {
               logger.warn(ConversionContext.getContext(), "Unable to associate a note ({}) with the inline-defined organization ({})", dqNoteRef.getRef(), inlineRepoId);
             }
             result.addOrganization(gedxOrganization, null);
-            gedxDecoratedSourceDescription.partOf(new RDFValue(CommonMapper.getOrganizationEntryName(inlineRepoId)));
+            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationEntryName(inlineRepoId))));
           }
 
           if (dqRepositoryRef.getCallNumber() != null) {
-            gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqRepositoryRef.getCallNumber()));
-          }
-
-          TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqRepositoryRef.getMediaType());
-          if (mediaTypeRef != null) {
-            gedxSourceDescription.setType(mediaTypeRef);
+            CitationField field = new CitationField();
+            field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number");
+            field.setValue(dqRepositoryRef.getCallNumber());
+            citation.getFields().add(field);
+            citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqRepositoryRef.getCallNumber() : dqRepositoryRef.getCallNumber()));
           }
         } finally {
           ConversionContext.removeReference(repoContext);
@@ -99,13 +123,19 @@ public class SourceDescriptionMapper {
       }
 
       if (dqSource.getCallNumber() != null) {
-        gedxDecoratedSourceDescription.identifier(new RDFLiteral(dqSource.getCallNumber()));
+        CitationField field = new CitationField();
+        field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number");
+        field.setValue(dqSource.getCallNumber());
+        citation.getFields().add(field);
+        citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getCallNumber() : dqSource.getCallNumber()));
       }
 
-      TypeReference<ResourceType> mediaTypeRef = mapToKnownResourceType(dqSource.getMediaType());
-      if (mediaTypeRef != null) {
-        gedxSourceDescription.setType(mediaTypeRef);
+      if (citation.getValue().length() > 0) {
+        citation.setValue(citation.getValue() + '.');
+        gedxSourceDescription.setCitation(citation);
       }
+
+      // dqSource.getMediaType();  // nothing equivalent in the GEDCOM X model
 
       int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();
       if (cntNotes > 0) {
@@ -161,7 +191,7 @@ public class SourceDescriptionMapper {
       //dqSource.getItalic(); // PAF extension elements; will not process
       //dqSource.getParen();  // PAF extension elements; will not process
 
-      result.addDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
+      result.addSourceDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
     } finally {
       ConversionContext.removeReference(sourceContext);
     }
@@ -210,49 +240,5 @@ public class SourceDescriptionMapper {
     } finally {
       ConversionContext.removeReference(repositoryContext);
     }
-  }
-
-  private TypeReference<ResourceType> mapToKnownResourceType(String mediaType) {
-    Marker mediaTypeContext = ConversionContext.getDetachedMarker("MEDI");
-    ConversionContext.addReference(mediaTypeContext);
-
-    TypeReference<ResourceType> resourceTypeRef;
-
-    if ("audio".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.Sound);
-    } else if ("book".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("card".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("electronic".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = null;
-    } else if ("fiche".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("film".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("magazine".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("manuscript".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("map".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("newspaper".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("photo".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.StillImage);
-    } else if ("tombstone".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.PhysicalObject);
-    } else if ("video".equalsIgnoreCase(mediaType)) {
-      resourceTypeRef = new TypeReference<ResourceType>(ResourceType.MovingImage);
-    } else {
-      if (mediaType != null) {
-        logger.warn(ConversionContext.getContext(), "Unrecognized media type value: {}", mediaType);
-      }
-      resourceTypeRef = null;
-    }
-
-    ConversionContext.removeReference(mediaTypeContext);
-
-    return resourceTypeRef;
   }
 }

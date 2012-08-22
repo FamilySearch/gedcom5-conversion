@@ -17,9 +17,9 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
+import org.gedcomx.common.LiteralValue;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.metadata.foaf.Person;
-import org.gedcomx.metadata.rdf.RDFLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -48,7 +48,7 @@ public class SubmitterMapper {
       );
 
     if (dqSubmitter.getLanguage() != null) {
-      gedxContributor.setLanguage(new RDFLiteral(dqSubmitter.getLanguage()));
+      gedxContributor.setLanguage(new LiteralValue(dqSubmitter.getLanguage()));
     }
 
     if (dqSubmitter.getRin() != null) {

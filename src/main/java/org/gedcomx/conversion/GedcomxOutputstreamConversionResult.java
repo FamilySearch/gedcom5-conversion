@@ -21,7 +21,7 @@ import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.gedcom.dq55.CommonMapper;
 import org.gedcomx.fileformat.GedcomxOutputStream;
 import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.rdf.Description;
+import org.gedcomx.metadata.source.SourceDescription;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -63,7 +63,7 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   }
 
   @Override
-  public void addDescription(Description description, Date lastModified) throws IOException {
+  public void addSourceDescription(SourceDescription description, Date lastModified) throws IOException {
     String entryName = CommonMapper.getDescriptionEntryName(description.getId());
     gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description, lastModified);
   }
@@ -95,7 +95,7 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
       }
 
       // Source Descriptions
-      for (Description description : getDescriptions()) {
+      for (Description description : getSourceDescriptions()) {
       }
     } finally {
       gedxOutputStream.close();

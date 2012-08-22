@@ -49,11 +49,8 @@ public class SourceDescriptionMapperOrganizationTest {
     Organization gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -63,7 +60,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "MyCorporation, Inc.");
 
     // ADDR
@@ -111,7 +107,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getHomepage());
     assertNull(gedxOrganization.getHomepage().getDatatype());
     assertNull(gedxOrganization.getHomepage().getLang());
-    assertNull(gedxOrganization.getHomepage().getExtensionAttributes());
     assertEquals(gedxOrganization.getHomepage().getValue(), "https://www.mycorporation.com/");
   }
 
@@ -128,11 +123,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -142,7 +134,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "York County Archive");
 
     // null in this repository
@@ -165,11 +156,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -179,7 +167,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "Henry County Archive");
 
     // ADDR
@@ -225,7 +212,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getHomepage());
     assertNull(gedxOrganization.getHomepage().getDatatype());
     assertNull(gedxOrganization.getHomepage().getLang());
-    assertNull(gedxOrganization.getHomepage().getExtensionAttributes());
     assertEquals(gedxOrganization.getHomepage().getValue(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
 
     // result of the CHAN tag
@@ -251,11 +237,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -265,7 +248,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "Washington County Archives");
 
     // ADDR
@@ -328,11 +310,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -342,7 +321,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
@@ -367,8 +345,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNull(gedxOrganization.getHomepage());
 
     // Description that is the result of the CHAN tag with a bogus value
-    assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 0);
+    assertNotNull(result.getSourceDescriptions());
+    assertEquals(result.getSourceDescriptions().size(), 0);
   }
 
   @Test
@@ -384,11 +362,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -398,7 +373,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
@@ -410,8 +384,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNull(gedxOrganization.getHomepage());
 
     // Description that is the result of the CHAN tag with a bogus value
-    assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 0);
+    assertNotNull(result.getSourceDescriptions());
+    assertEquals(result.getSourceDescriptions().size(), 0);
   }
 
   @Test
@@ -427,11 +401,8 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
-    assertNull(gedxOrganization.getAbout());
     assertNull(gedxOrganization.getAccounts());
-    assertNull(gedxOrganization.getExtensionAttributes());
     assertNull(gedxOrganization.getExtensionElements());
-    assertNull(gedxOrganization.getType());
     assertNull(gedxOrganization.getOpenid());
 
     // REPO
@@ -441,7 +412,6 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNotNull(gedxOrganization.getName());
     assertNull(gedxOrganization.getName().getDatatype());
     assertNull(gedxOrganization.getName().getLang());
-    assertNull(gedxOrganization.getName().getExtensionAttributes());
     assertEquals(gedxOrganization.getName().getValue(), "Utah State Archives");
 
     // PHON and FAX
@@ -475,7 +445,7 @@ public class SourceDescriptionMapperOrganizationTest {
     assertNull(gedxOrganization.getHomepage());
 
     // Description that is the result of the CHAN tag with a bogus value
-    assertNotNull(result.getDescriptions());
-    assertEquals(result.getDescriptions().size(), 0);
+    assertNotNull(result.getSourceDescriptions());
+    assertEquals(result.getSourceDescriptions().size(), 0);
   }
 }
