@@ -15,13 +15,13 @@
  */
 package org.gedcomx.conversion;
 
-import org.gedcomx.conclusion.ConclusionModel;
+import org.gedcomx.rt.CommonModels;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.gedcom.dq55.CommonMapper;
 import org.gedcomx.fileformat.GedcomxOutputStream;
-import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.source.SourceDescription;
+import org.gedcomx.contributor.Agent;
+import org.gedcomx.source.SourceDescription;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,33 +53,33 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
   @Override
   public void addPerson(Person person, Date lastModified) throws IOException {
     String entryName = CommonMapper.getPersonEntryName(person.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified);
+    gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE, entryName, person, lastModified);
   }
 
   @Override
   public void addRelationship(Relationship relationship, Date lastModified) throws IOException {
     String entryName = CommonMapper.getRelationshipEntryName(relationship.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, relationship, lastModified);
+    gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE, entryName, relationship, lastModified);
   }
 
   @Override
   public void addSourceDescription(SourceDescription description, Date lastModified) throws IOException {
     String entryName = CommonMapper.getDescriptionEntryName(description.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, description, lastModified);
+    gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE, entryName, description, lastModified);
   }
 
   @Override
-  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+  public void setDatasetContributor(org.gedcomx.contributor.Agent person, Date lastModified) throws IOException {
     String entryName = CommonMapper.getContributorEntryName(person.getId());
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("DC-creator", Boolean.TRUE.toString());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, person, lastModified, attributes);
+    gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE, entryName, person, lastModified, attributes);
   }
 
   @Override
-  public void addOrganization(Organization organization, Date lastModified) throws IOException {
+  public void addOrganization(Agent organization, Date lastModified) throws IOException {
     String entryName = CommonMapper.getOrganizationEntryName(organization.getId());
-    gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE, entryName, organization, lastModified);
+    gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE, entryName, organization, lastModified);
   }
 
 /*
@@ -89,7 +89,7 @@ public class GedcomxOutputstreamConversionResult implements GedcomxConversionRes
       // Persons
       for (Person person : getPersons()) {
         String entryName = CommonMapper.getPersonEntryName(person.getId());
-        gedxOutputStream.addResource(ConclusionModel.GEDCOMX_CONCLUSION_V1_XML_MEDIA_TYPE
+        gedxOutputStream.addResource(CommonModels.GEDCOMX_XML_MEDIA_TYPE
           , entryName
           , person);
       }

@@ -7,8 +7,8 @@ import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.fileformat.GedcomxTimeStampUtil;
-import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.source.SourceDescription;
+import org.gedcomx.contributor.Agent;
+import org.gedcomx.source.SourceDescription;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,8 +19,8 @@ public class TestConversionResult implements GedcomxConversionResult {
   private List<Person> persons = new ArrayList<Person>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
   private List<SourceDescription> descriptions = new ArrayList<SourceDescription>();
-  private List<org.gedcomx.metadata.foaf.Person> contributors = new ArrayList<org.gedcomx.metadata.foaf.Person>();
-  private List<Organization> organizations = new ArrayList<Organization>();
+  private List<org.gedcomx.contributor.Agent> contributors = new ArrayList<org.gedcomx.contributor.Agent>();
+  private List<Agent> organizations = new ArrayList<Agent>();
 
   public List<Person> getPersons() {
     return persons;
@@ -61,12 +61,12 @@ public class TestConversionResult implements GedcomxConversionResult {
     this.descriptions.add(description);
   }
 
-  public List<org.gedcomx.metadata.foaf.Person> getContributors() {
+  public List<org.gedcomx.contributor.Agent> getContributors() {
     return contributors;
   }
 
   @Override
-  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException {
+  public void setDatasetContributor(org.gedcomx.contributor.Agent person, Date lastModified) throws IOException {
     if (lastModified != null) {
       handleLastModified(CommonMapper.getOrganizationEntryName(person.getId()), lastModified);
     }
@@ -74,12 +74,12 @@ public class TestConversionResult implements GedcomxConversionResult {
     this.contributors.add(person);
   }
 
-  public List<Organization> getOrganizations() {
+  public List<Agent> getOrganizations() {
     return organizations;
   }
 
   @Override
-  public void addOrganization(Organization organization, Date lastModified) throws IOException {
+  public void addOrganization(Agent organization, Date lastModified) throws IOException {
     if (lastModified != null) {
       handleLastModified(CommonMapper.getOrganizationEntryName(organization.getId()), lastModified);
     }

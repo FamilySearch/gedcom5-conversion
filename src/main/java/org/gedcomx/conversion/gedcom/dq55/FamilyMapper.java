@@ -153,11 +153,11 @@ public class FamilyMapper {
           relationshipType = relationshipType.toLowerCase().trim();
           if (relationshipType.equalsIgnoreCase("adopted")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.Adopted);
+            fact.setKnownType(FactType.Adoption);
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("birth")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.Biological);
+            fact.setKnownType(FactType.BiologicalLineage);
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("foster")) {
             Fact fact = new Fact();

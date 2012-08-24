@@ -19,19 +19,17 @@ import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
 import org.gedcomx.common.Attribution;
-import org.gedcomx.common.LiteralValue;
 import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.foaf.Address;
-import org.gedcomx.metadata.foaf.Agent;
-import org.gedcomx.metadata.source.CitationField;
-import org.gedcomx.metadata.source.SourceDescription;
-import org.gedcomx.metadata.source.SourceReference;
+import org.gedcomx.contributor.Address;
+import org.gedcomx.contributor.Agent;
+import org.gedcomx.source.CitationField;
+import org.gedcomx.source.SourceDescription;
+import org.gedcomx.source.SourceReference;
 import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
-import org.gedcomx.types.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -77,7 +75,7 @@ public class CommonMapper {
         boolean sourceReferenceHasData = false;
         SourceDescription gedxSourceDescription = new SourceDescription();
 
-        org.gedcomx.metadata.source.SourceCitation citation = new org.gedcomx.metadata.source.SourceCitation();
+        org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
         citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
         citation.setFields(new ArrayList<CitationField>());
         citation.setValue("");
@@ -92,7 +90,7 @@ public class CommonMapper {
 
           if (dqSource.getDate() != null) {
             CitationField field = new CitationField();
-            field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date");
+            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date"));
             field.setValue(dqSource.getDate());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getDate() : dqSource.getDate()));
@@ -100,7 +98,7 @@ public class CommonMapper {
 
           if (dqSource.getPage() != null) {
             CitationField field = new CitationField();
-            field.setName("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page");
+            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page"));
             field.setValue(dqSource.getPage());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPage() : dqSource.getPage()));
@@ -126,7 +124,7 @@ public class CommonMapper {
         ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
         if (gedxConfidenceLevel != null) {
           Attribution attribution = new Attribution();
-          attribution.setConfidence(new TypeReference<ConfidenceLevel>(gedxConfidenceLevel));
+          attribution.setKnownConfidenceLevel(gedxConfidenceLevel);
           gedxSourceReference.setAttribution(attribution);
           sourceReferenceHasData = true;
         }
@@ -303,7 +301,7 @@ public class CommonMapper {
 
   public static void populateAgent(Agent agent, String id, String name, org.folg.gedcom.model.Address address, String phone, String fax, String email, String www) {
     agent.setId(id);
-    agent.setName(new LiteralValue(name));
+    agent.setName(name);
 
     if(address != null) {
       agent.setAddresses(new ArrayList<Address>());
@@ -368,7 +366,7 @@ public class CommonMapper {
     }
 
     if (www != null) {
-      agent.setHomepage(new LiteralValue(www));
+      agent.setHomepage(new ResourceReference(URI.create(www)));
     }
   }
 

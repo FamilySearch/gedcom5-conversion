@@ -4,8 +4,8 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Source;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.Note;
-import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.source.SourceDescription;
+import org.gedcomx.contributor.Agent;
+import org.gedcomx.source.SourceDescription;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -120,7 +120,7 @@ public class SourceDescriptionMapperDescriptionTest {
 
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
     assertEquals(gedxOrganization.getId(), gedxSourceDescription.getId() + ".REPO");
     assertNotNull(gedxOrganization.findExtensionsOfType(Note.class));

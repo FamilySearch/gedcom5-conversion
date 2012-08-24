@@ -102,17 +102,17 @@ public class FamilyMapperTest {
 
     testRelationship(0, RelationshipType.Couple, "I1000", "I1001", 0);
     rel = testRelationship(1, RelationshipType.ParentChild, "I1000", "I1002", 1);
-    testFactExistance(rel, FactType.Adopted);
+    testFactExistance(rel, FactType.Adoption);
     rel = testRelationship(2, RelationshipType.ParentChild, "I1001", "I1002", 1);
-    testFactExistance(rel, FactType.Adopted);
+    testFactExistance(rel, FactType.Adoption);
     rel = testRelationship(3, RelationshipType.ParentChild, "I1000", "I1003", 1);
     testFactExistance(rel, FactType.Foster);
     rel = testRelationship(4, RelationshipType.ParentChild, "I1001", "I1003", 1);
     testFactExistance(rel, FactType.Foster);
     rel = testRelationship(5, RelationshipType.ParentChild, "I1000", "I1004", 1);
-    testFactExistance(rel, FactType.Biological);
+    testFactExistance(rel, FactType.BiologicalLineage);
     rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
-    testFactExistance(rel, FactType.Biological);
+    testFactExistance(rel, FactType.BiologicalLineage);
     rel = testRelationship(7, RelationshipType.ParentChild, "I1000", "I1005", 0);
     assertNotNull(rel);
     rel = testRelationship(8, RelationshipType.ParentChild, "I1001", "I1005", 0);
@@ -130,14 +130,14 @@ public class FamilyMapperTest {
     assertEquals(result.getRelationships().size(), 1);
 
     rel = testRelationship(0, RelationshipType.Couple, "I1006", "I1007", 17);
-    PersonsFactsTest.checkFact(rel.getFacts(), FactType.CountOfChildren, "5", null, null);
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.NumberOfChildren, "5", null, null);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Annulment, null, "31 MAR 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Engagement, null, "1 JAN 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.DivorceFiling, null, "1 APR 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Divorce, null, "2 APR 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageBanns, null, "1 DEC 1931", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageLicense, null, "3 MAY 1932", "San Francisco, California, United States");
-    PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageSettlement, null, "4 JUL 1932", "San Francisco, California, United States");
+    PersonsFactsTest.checkFact(rel.getFacts(), FactType.MarriageContract, null, "4 JUL 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Residence, null, "5 NOV 1932", "San Francisco, California, United States");
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.CommonLawMarriage, null, null, null);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Divorce, null, "2 APR 1900", "San Francisco, California, United States");

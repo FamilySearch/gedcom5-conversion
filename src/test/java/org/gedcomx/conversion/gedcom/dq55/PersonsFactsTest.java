@@ -203,7 +203,7 @@ public class PersonsFactsTest {
     org.gedcomx.conclusion.Person gedxPerson = result.getPersons().get(0);
     boolean factFound = false;
     for(Fact fact : gedxPerson.getFacts()) {
-      if(fact.getKnownType().equals(FactType.Stillborn)) {
+      if(fact.getKnownType().equals(FactType.Stillbirth)) {
         factFound = true;
         assertNull(fact.getPlace());
         assertNull(fact.getDate());
@@ -224,18 +224,18 @@ public class PersonsFactsTest {
     assertEquals(result.getPersons().size(), 1);
 
     org.gedcomx.conclusion.Person gedxPerson = result.getPersons().get(0);
-    assertEquals(gedxPerson.getFacts().size(), 39);
-    checkFact(gedxPerson.getFacts(), FactType.Citizenship, null, "1853", null);
+    assertEquals(gedxPerson.getFacts().size(), 38);
+    checkFact(gedxPerson.getFacts(), FactType.Nationality, null, "1853", null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, "88 Brookside Drive, Toronto", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Excommunication, null, "17 JAN 1850", "GEORGIA FAMILY PLANTATION");
     checkFact(gedxPerson.getFacts(), FactType.Excommunication, null, "31 DEC 1911", "Church of Chrisi Blue Bayou, disorderly conduct");
     checkFact(gedxPerson.getFacts(), FactType.Funeral, null, "1 MAR 1766", "Mexico");
     checkFact(gedxPerson.getFacts(), FactType.Funeral, null, "1 JAN 1911", "Canada");
-    checkFact(gedxPerson.getFacts(), FactType.Illness, "Dysentery", "1 JUL 1853", "Oregon Trail");
-    checkFact(gedxPerson.getFacts(), FactType.Illness, "Typhus", "13 JUN 1821", "England");
+    checkFact(gedxPerson.getFacts(), FactType.Medical, "Dysentery", "1 JUL 1853", "Oregon Trail");
+    checkFact(gedxPerson.getFacts(), FactType.Medical, "Typhus", "13 JUN 1821", "England");
     checkFact(gedxPerson.getFacts(), FactType.Blessing, null, "31 May 1928", "Bakersfield, Kern, California");
     checkFact(gedxPerson.getFacts(), FactType.Blessing, null, "1 JUN 1922", "Johannesburg, South Africa");
-    checkFact(gedxPerson.getFacts(), FactType.Interment, null, "3 DEC 1867", null);
+    checkFact(gedxPerson.getFacts(), FactType.Burial, null, "3 DEC 1867", null);
     checkFact(gedxPerson.getFacts(), FactType.Living, null, null, null);
     checkFact(gedxPerson.getFacts(), FactType.MilitaryService, "Corporal In The Militia, 1707", null, null);
     checkFact(gedxPerson.getFacts(), FactType.MilitaryService, null, "from 15 JUN 1949 until 1 JUL 1971", null);
@@ -252,16 +252,16 @@ public class PersonsFactsTest {
     //TODO Figure out why these are not working properly
 //    checkFact(gedxPerson.getFacts(), FactType.Mission, null, "6 JUL 1930", "Southern States");
 //    checkFact(gedxPerson.getFacts(), FactType.Mission, null, "7 JUL 1934", "Utah");
-    checkFact(gedxPerson.getFacts(), FactType.Move, null, "1886", "Albany, Gentry Co, MO");
-    checkFact(gedxPerson.getFacts(), FactType.Ordinance, "no", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.MoveTo, null, "1886", "Albany, Gentry Co, MO");
+    checkFact(gedxPerson.getFacts(), FactType.Ordination, "no", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Ordination, null, "1886", null);
-    checkFact(gedxPerson.getFacts(), FactType.Race, "German", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.Stillborn, "death", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.Stillborn, null, null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Ethnicity, "German", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Stillbirth, "death", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.Stillbirth, null, null, null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, "Colorado", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Baptism, null, "8 AUG 1770", "All Saints Church, Fulham, London");
     checkFact(gedxPerson.getFacts(), FactType.Baptism, null, "12 NOV 1797", null);
-    checkFact(gedxPerson.getFacts(), FactType.Namesake, "Jacob's brother", null, null);
+//    checkFact(gedxPerson.getFacts(), FactType.Namesake, "Jacob's brother", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, null, "1978", "Nashville, Tennessee");
     checkFact(gedxPerson.getFacts(), FactType.Occupation, null, "1981", "Nashville, Tennessee");
     checkFact(gedxPerson.getFacts(), FactType.Education, null, "DEC 1973", "Bachelor of Arts, English");
@@ -284,9 +284,9 @@ public class PersonsFactsTest {
     assertEquals(result.getPersons().size(), 1);
 
     org.gedcomx.conclusion.Person gedxPerson = result.getPersons().get(0);
-    assertEquals(gedxPerson.getFacts().size(), 66);
-    checkFact(gedxPerson.getFacts(), FactType.CasteName, null, "1850", "Newbury, Ma.");
-    checkFact(gedxPerson.getFacts(), FactType.CasteName, null, null, "Brahmin");
+    assertEquals(gedxPerson.getFacts().size(), 65);
+    checkFact(gedxPerson.getFacts(), FactType.Caste, null, "1850", "Newbury, Ma.");
+    checkFact(gedxPerson.getFacts(), FactType.Caste, null, null, "Brahmin");
     checkFact(gedxPerson.getFacts(), FactType.PhysicalDescription, "Age: 44", null, null);
     checkFact(gedxPerson.getFacts(), FactType.PhysicalDescription, "5'7\", 165#, medium complexion, brown eyes & hair", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Education, "B.A. In Sociology And Applied Criminal Justice", null, null);
@@ -295,10 +295,10 @@ public class PersonsFactsTest {
     checkFact(gedxPerson.getFacts(), FactType.NationalId, "Whistler, Alabama now Prichard Al", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Nationality, "Chinese", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Nationality, "Swedish", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.CountOfChildren, "2", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.CountOfChildren, "5", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.CountOfMarriages, null, null, "4");
-    checkFact(gedxPerson.getFacts(), FactType.CountOfMarriages, "3", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.NumberOfChildren, "2", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.NumberOfChildren, "5", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.NumberOfMarriages, null, null, "4");
+    checkFact(gedxPerson.getFacts(), FactType.NumberOfMarriages, "3", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, "Teacher, Tabernacle Christian School", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Occupation, "Kruidenier", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Property, null, "18 FEB 1768", "Bought 100 acres in Windham county, Connecticut for 84 pounds");
@@ -307,8 +307,8 @@ public class PersonsFactsTest {
     checkFact(gedxPerson.getFacts(), FactType.Religion, "Church of Christ", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, "Russia, Oh, Dayton, Oh, West Milton, Oh", null, null);
     checkFact(gedxPerson.getFacts(), FactType.Residence, null, "ABT 1740", "Brocks Gap, VA");
-    checkFact(gedxPerson.getFacts(), FactType.SocialSecurityNumber, "485-70-7507", null, null);
-    checkFact(gedxPerson.getFacts(), FactType.SocialSecurityNumber, null, null, "094-28-1549");
+    checkFact(gedxPerson.getFacts(), FactType.NationalId, "485-70-7507", null, null);
+    checkFact(gedxPerson.getFacts(), FactType.NationalId, null, null, "094-28-1549");
     //TODO: TITL is getting mapped into name, not a title fact, since real gedcoms are using TITL for name prefixes and suffixes, not titles of nobility
 //    checkFact(gedxPerson.getFacts(), FactType.TitleOfNobility, "Jr", null, null);
 //    checkFact(gedxPerson.getFacts(), FactType.TitleOfNobility, "Rev.", null, null);

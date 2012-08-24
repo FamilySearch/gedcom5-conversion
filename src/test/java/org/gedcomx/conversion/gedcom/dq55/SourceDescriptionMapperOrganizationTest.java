@@ -4,8 +4,8 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.ResourceReference;
-import org.gedcomx.metadata.foaf.Address;
-import org.gedcomx.metadata.foaf.Organization;
+import org.gedcomx.contributor.Address;
+import org.gedcomx.contributor.Agent;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -46,7 +46,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     assertNull(gedxOrganization.getAccounts());
@@ -57,16 +57,12 @@ public class SourceDescriptionMapperOrganizationTest {
     assertEquals(gedxOrganization.getId(), "REPO3");
 
     // NAME
-    assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "MyCorporation, Inc.");
+    assertEquals(gedxOrganization.getName(), "MyCorporation, Inc.");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
     assertEquals(gedxOrganization.getAddresses().size(), 1);
     for (Address address : gedxOrganization.getAddresses()) {
-      assertNull(address.getId());
       assertEquals(address.getValue()
         , "5000 MyCorpCampus Dr\n" +
           "Hometown, ZZ  99999\n" +
@@ -105,9 +101,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // WWW
     assertNotNull(gedxOrganization.getHomepage());
-    assertNull(gedxOrganization.getHomepage().getDatatype());
-    assertNull(gedxOrganization.getHomepage().getLang());
-    assertEquals(gedxOrganization.getHomepage().getValue(), "https://www.mycorporation.com/");
+    assertEquals(gedxOrganization.getHomepage().getResource().toString(), "https://www.mycorporation.com/");
   }
 
   @Test
@@ -119,7 +113,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -132,9 +126,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "York County Archive");
+    assertEquals(gedxOrganization.getName(), "York County Archive");
 
     // null in this repository
     assertNull(gedxOrganization.getAddresses());
@@ -152,7 +144,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -165,15 +157,12 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "Henry County Archive");
+    assertEquals(gedxOrganization.getName(), "Henry County Archive");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
     assertEquals(gedxOrganization.getAddresses().size(), 1);
     for (Address address : gedxOrganization.getAddresses()) {
-      assertNull(address.getId());
       assertEquals(address.getValue()
         , "55 Jones Bend Rd Ext\n" +
           "Paris, TN  38242\n" +
@@ -210,9 +199,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // WWW
     assertNotNull(gedxOrganization.getHomepage());
-    assertNull(gedxOrganization.getHomepage().getDatatype());
-    assertNull(gedxOrganization.getHomepage().getLang());
-    assertEquals(gedxOrganization.getHomepage().getValue(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
+    assertEquals(gedxOrganization.getHomepage().getResource().toString(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
 
     // result of the CHAN tag
     SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
@@ -233,7 +220,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -246,15 +233,12 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "Washington County Archives");
+    assertEquals(gedxOrganization.getName(), "Washington County Archives");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
     assertEquals(gedxOrganization.getAddresses().size(), 1);
     for (Address address : gedxOrganization.getAddresses()) {
-      assertNull(address.getId());
       assertEquals(address.getValue()
         , "208 N College Ave\n" +
           "Fayetteville, AR  72701-4202");
@@ -306,7 +290,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -319,9 +303,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());
@@ -358,7 +340,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -371,9 +353,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNull(gedxOrganization.getPhones());
@@ -397,7 +377,7 @@ public class SourceDescriptionMapperOrganizationTest {
     mapper.toOrganization(dqRepository, result);
     assertNotNull(result.getOrganizations());
     assertEquals(result.getOrganizations().size(), 1);
-    Organization gedxOrganization = result.getOrganizations().get(0);
+    Agent gedxOrganization = result.getOrganizations().get(0);
     assertNotNull(gedxOrganization);
 
     // always null in GEDCOM 5.5 conversions
@@ -410,9 +390,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertNull(gedxOrganization.getName().getDatatype());
-    assertNull(gedxOrganization.getName().getLang());
-    assertEquals(gedxOrganization.getName().getValue(), "Utah State Archives");
+    assertEquals(gedxOrganization.getName(), "Utah State Archives");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());

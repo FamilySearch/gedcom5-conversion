@@ -17,8 +17,8 @@ package org.gedcomx.conversion;
 
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.metadata.foaf.Organization;
-import org.gedcomx.metadata.source.SourceDescription;
+import org.gedcomx.contributor.Agent;
+import org.gedcomx.source.SourceDescription;
 
 import java.io.IOException;
 import java.util.Date;
@@ -31,7 +31,7 @@ public interface GedcomxConversionResult {
 
   void addSourceDescription(SourceDescription description, Date lastModified) throws IOException;
 
-  public void setDatasetContributor(org.gedcomx.metadata.foaf.Person person, Date lastModified) throws IOException;
+  public void setDatasetContributor(Agent person, Date lastModified) throws IOException;
 
-  void addOrganization(Organization organization, Date lastModified) throws IOException;
+  void addOrganization(Agent organization, Date lastModified) throws IOException;
 }

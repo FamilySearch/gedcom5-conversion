@@ -4,8 +4,8 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.metadata.foaf.Address;
-import org.gedcomx.metadata.foaf.Person;
+import org.gedcomx.contributor.Address;
+import org.gedcomx.contributor.Agent;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -50,12 +50,10 @@ public class SubmitterMapperTest {
     mapper.toContributor(dqSubmitter, result);
     assertNotNull(result.getContributors());
     assertEquals(result.getContributors().size(), 1);
-    Person gedxPerson = result.getContributors().get(0);
+    Agent gedxPerson = result.getContributors().get(0);
     assertEquals(gedxPerson.getId(), "SUBM1");
-    assertEquals(gedxPerson.getName().getValue(), "Henri Herkimer Hofmeir");
-    assertEquals(gedxPerson.getLanguage().getValue(), "English");
+    assertEquals(gedxPerson.getName(), "Henri Herkimer Hofmeir");
     for (Address address : gedxPerson.getAddresses()) {
-      assertNull(address.getId());
       assertEquals(address.getValue()
         , "1 Genealogist Way\n" +
           "Hometown, ZZ  99999\n" +
@@ -70,10 +68,8 @@ public class SubmitterMapperTest {
     }
     assertEquals(Arrays.toString(gedxPerson.getPhones().toArray()), "[data:,Phone%3A%20935-555-1212, data:,Fax%3A%20935-555-0101]");
     assertEquals(Arrays.toString(gedxPerson.getEmails().toArray()), "[mailto:info@nospam.com]");
-    assertEquals(gedxPerson.getHomepage().getValue(), "http://nospam.com/");
+    assertEquals(gedxPerson.getHomepage().getResource().toString(), "http://nospam.com/");
 
-    assertNull(gedxPerson.getFamilyName());
-    assertNull(gedxPerson.getGivenName());
     assertNull(gedxPerson.getAccounts());
     assertNull(gedxPerson.getOpenid());
   }

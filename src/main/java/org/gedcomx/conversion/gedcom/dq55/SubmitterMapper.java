@@ -17,9 +17,8 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
-import org.gedcomx.common.LiteralValue;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.foaf.Person;
+import org.gedcomx.contributor.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -35,7 +34,7 @@ public class SubmitterMapper {
     Marker submitterContext = ConversionContext.getDetachedMarker(String.format("@%s@ SUBM", dqSubmitter.getId()));
     ConversionContext.addReference(submitterContext);
 
-    Person gedxContributor = new Person();
+    Agent gedxContributor = new Agent();
 
     CommonMapper.populateAgent(gedxContributor
         , dqSubmitter.getId()
@@ -48,7 +47,7 @@ public class SubmitterMapper {
       );
 
     if (dqSubmitter.getLanguage() != null) {
-      gedxContributor.setLanguage(new LiteralValue(dqSubmitter.getLanguage()));
+      logger.warn(ConversionContext.getContext(), "LANG ({}) was ignored.", dqSubmitter.getRin());
     }
 
     if (dqSubmitter.getRin() != null) {

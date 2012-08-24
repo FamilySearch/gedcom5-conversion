@@ -24,7 +24,7 @@ import org.gedcomx.conclusion.NameForm;
 import org.gedcomx.conclusion.NamePart;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.metadata.source.SourceReference;
+import org.gedcomx.source.SourceReference;
 import org.gedcomx.types.GenderType;
 import org.gedcomx.types.NamePartType;
 import org.gedcomx.types.NameType;
