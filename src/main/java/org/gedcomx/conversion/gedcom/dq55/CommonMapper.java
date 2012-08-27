@@ -76,7 +76,7 @@ public class CommonMapper {
         SourceDescription gedxSourceDescription = new SourceDescription();
 
         org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
-        citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+        citation.setCitationTemplate(new ResourceReference(URI.create("gedcom5:source-template")));
         citation.setFields(new ArrayList<CitationField>());
         citation.setValue("");
 
@@ -90,7 +90,7 @@ public class CommonMapper {
 
           if (dqSource.getDate() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date"));
+            field.setName(URI.create("gedcom5:source-template/date"));
             field.setValue(dqSource.getDate());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getDate() : dqSource.getDate()));
@@ -98,7 +98,7 @@ public class CommonMapper {
 
           if (dqSource.getPage() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page"));
+            field.setName(URI.create("gedcom5:source-template/page"));
             field.setValue(dqSource.getPage());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPage() : dqSource.getPage()));

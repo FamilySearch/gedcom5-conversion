@@ -100,12 +100,12 @@ public class SourceReferenceMapperTest {
     assertEquals(gedxSourceDescription.getId(), generatedId);
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "31 Jan 1820, FHL INTL Film 1226427, Geboorten, 1820, No. 143");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "gedcom5:source-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 2);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:source-template/date");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "31 Jan 1820");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "gedcom5:source-template/page");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getValue(), "FHL INTL Film 1226427, Geboorten, 1820, No. 143");
     assertNull(gedxSourceDescription.getAbout());
     assertNull(gedxSourceDescription.getMediator());

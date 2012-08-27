@@ -54,13 +54,13 @@ public class SourceDescriptionMapper {
       }
 
       org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
-      citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+      citation.setCitationTemplate(new ResourceReference(URI.create("gedcom5:source-template")));
       citation.setFields(new ArrayList<CitationField>());
       citation.setValue("");
 
       if (dqSource.getAuthor() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/author"));
+        field.setName(URI.create("gedcom5:source-template/author"));
         field.setValue(dqSource.getAuthor());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getAuthor() : dqSource.getAuthor()));
@@ -68,7 +68,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getTitle() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title"));
+        field.setName(URI.create("gedcom5:source-template/title"));
         field.setValue(dqSource.getTitle());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getTitle() : dqSource.getTitle()));
@@ -76,7 +76,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getPublicationFacts() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/publication-facts"));
+        field.setName(URI.create("gedcom5:source-template/publication-facts"));
         field.setValue(dqSource.getPublicationFacts());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPublicationFacts() : dqSource.getPublicationFacts()));
@@ -112,7 +112,7 @@ public class SourceDescriptionMapper {
 
           if (dqRepositoryRef.getCallNumber() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number"));
+            field.setName(URI.create("gedcom5:source-template/call-number"));
             field.setValue(dqRepositoryRef.getCallNumber());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqRepositoryRef.getCallNumber() : dqRepositoryRef.getCallNumber()));
@@ -124,7 +124,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getCallNumber() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number"));
+        field.setName(URI.create("gedcom5:source-template/call-number"));
         field.setValue(dqSource.getCallNumber());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getCallNumber() : dqSource.getCallNumber()));
