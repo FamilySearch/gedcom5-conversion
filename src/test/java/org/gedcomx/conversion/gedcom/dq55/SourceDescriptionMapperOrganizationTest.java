@@ -57,7 +57,7 @@ public class SourceDescriptionMapperOrganizationTest {
     assertEquals(gedxOrganization.getId(), "REPO3");
 
     // NAME
-    assertEquals(gedxOrganization.getName(), "MyCorporation, Inc.");
+    assertEquals(gedxOrganization.getName().getValue(), "MyCorporation, Inc.");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -126,7 +126,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "York County Archive");
+    assertEquals(gedxOrganization.getName().getValue(), "York County Archive");
 
     // null in this repository
     assertNull(gedxOrganization.getAddresses());
@@ -157,7 +157,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Henry County Archive");
+    assertEquals(gedxOrganization.getName().getValue(), "Henry County Archive");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -233,7 +233,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Washington County Archives");
+    assertEquals(gedxOrganization.getName().getValue(), "Washington County Archives");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -303,7 +303,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());
@@ -353,7 +353,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNull(gedxOrganization.getPhones());
@@ -390,7 +390,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Utah State Archives");
+    assertEquals(gedxOrganization.getName().getValue(), "Utah State Archives");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());

@@ -65,8 +65,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "organizations/REPO1");
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "Civil Registration");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNotNull(gedxSourceDescription.getTitles());
+    assertEquals(gedxSourceDescription.getTitles().size(), 1);
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "Civil Registration");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
 //    assertNotNull(gedxSourceDescription.getNotes());
@@ -112,8 +113,8 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), CommonMapper.getOrganizationEntryName(gedxSourceDescription.getId() + ".REPO"));
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertNull(gedxSourceDescription.getDisplayName());
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNull(gedxSourceDescription.getTitle());
+    assertNull(gedxSourceDescription.getTitles());
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -125,7 +126,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxOrganization.getId(), gedxSourceDescription.getId() + ".REPO");
     assertNotNull(gedxOrganization.findExtensionsOfType(Note.class));
     assertEquals(gedxOrganization.findExtensionsOfType(Note.class).size(), 1);
-    assertEquals(gedxOrganization.findExtensionsOfType(Note.class).get(0).getText().getValue(), "__sour2_inline_2__");
+    assertEquals(gedxOrganization.findExtensionsOfType(Note.class).get(0).getText(), "__sour2_inline_2__");
   }
 
   @Test
@@ -151,8 +152,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "organizations/REPO1");
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour18_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNotNull(gedxSourceDescription.getTitles());
+    assertEquals(gedxSourceDescription.getTitles().size(), 1);
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour18_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -181,8 +183,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour19_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNotNull(gedxSourceDescription.getTitles());
+    assertEquals(gedxSourceDescription.getTitles().size(), 1);
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour19_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -219,8 +222,9 @@ public class SourceDescriptionMapperDescriptionTest {
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour20_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNotNull(gedxSourceDescription.getTitles());
+    assertEquals(gedxSourceDescription.getTitles().size(), 1);
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour20_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());

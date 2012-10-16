@@ -209,7 +209,7 @@ public class FactMapper {
         }
 
         if(factValue != null) {
-          gedxFact.setOriginal(factValue);
+          gedxFact.setValue(factValue);
         }
 
         // add source references to the fact

@@ -157,7 +157,7 @@ public class FamilyMapper {
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("birth")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.BiologicalLineage);
+            fact.setKnownType(FactType.Birth);
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("foster")) {
             Fact fact = new Fact();

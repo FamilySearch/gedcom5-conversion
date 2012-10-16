@@ -18,8 +18,8 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
-import org.gedcomx.common.Attribution;
 import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.TextValue;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -28,7 +28,6 @@ import org.gedcomx.contributor.Agent;
 import org.gedcomx.source.CitationField;
 import org.gedcomx.source.SourceDescription;
 import org.gedcomx.source.SourceReference;
-import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +83,7 @@ public class CommonMapper {
           gedxSourceDescription.setId(dqSource.getRef() + "-" + Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
           SourceReference componentOf = new SourceReference();
-          componentOf.setSourceDescriptionURI(URI.create(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+          componentOf.setDescriptionRef(URI.create(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
           gedxSourceDescription.setComponentOf(componentOf);
           sourceDescriptionHasData = true;
 
@@ -113,7 +112,7 @@ public class CommonMapper {
 
         String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
-        gedxSourceReference.setSourceDescriptionURI(URI.create(entryName));
+        gedxSourceReference.setDescriptionRef(URI.create(entryName));
 
         if (dqSource.getText() != null) {
           logger.warn(ConversionContext.getContext(), "GEDCOM X does not currently support text extracted from a source.");
@@ -121,12 +120,8 @@ public class CommonMapper {
           // sourceDescriptionHasData = true;
         }
 
-        ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
-        if (gedxConfidenceLevel != null) {
-          Attribution attribution = new Attribution();
-          attribution.setKnownConfidenceLevel(gedxConfidenceLevel);
-          gedxSourceReference.setAttribution(attribution);
-          sourceReferenceHasData = true;
+        if (dqSource.getQuality() != null) {
+          logger.warn(ConversionContext.getContext(), "Did not process source quality rating.");
         }
 
         int cntNotes = dqSource.getNotes().size() + dqSource.getNoteRefs().size();
@@ -140,7 +135,7 @@ public class CommonMapper {
         }
 
         if (sourceDescriptionHasData) {
-          gedxSourceDescription.setCitation(citation);
+          gedxSourceDescription.setCitations(Arrays.asList(citation));
           result.addSourceDescription(gedxSourceDescription, null);
           sourceReferenceHasData = true;
         }
@@ -200,34 +195,6 @@ public class CommonMapper {
     }
 
     return extractedDate;
-  }
-
-  public static ConfidenceLevel toConfidenceLevel(String dqQuality) {
-    ConfidenceLevel confidenceLevel;
-
-    if ("3".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Certainly;
-    } else if ("2".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Possibly;
-    } else if ("1".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Apparently;
-    } else if ("0".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Perhaps;
-    } else {
-      confidenceLevel = null;
-
-      if (dqQuality != null) {
-        Marker qualityContext = ConversionContext.getDetachedMarker("QUAY");
-        ConversionContext.addReference(qualityContext);
-        try {
-          logger.warn(ConversionContext.getContext(), "Unrecognized value for QUAL tag {}", dqQuality);
-        } finally {
-          ConversionContext.removeReference(qualityContext);
-        }
-      }
-    }
-
-    return confidenceLevel;
   }
 
   public static java.util.Date parseDateString (String parsePattern, String value) throws ParseException {
@@ -301,7 +268,7 @@ public class CommonMapper {
 
   public static void populateAgent(Agent agent, String id, String name, org.folg.gedcom.model.Address address, String phone, String fax, String email, String www) {
     agent.setId(id);
-    agent.setName(name);
+    agent.setNames(Arrays.asList(new TextValue(name)));
 
     if(address != null) {
       agent.setAddresses(new ArrayList<Address>());

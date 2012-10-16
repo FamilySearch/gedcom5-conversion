@@ -110,9 +110,9 @@ public class FamilyMapperTest {
     rel = testRelationship(4, RelationshipType.ParentChild, "I1001", "I1003", 1);
     testFactExistance(rel, FactType.Foster);
     rel = testRelationship(5, RelationshipType.ParentChild, "I1000", "I1004", 1);
-    testFactExistance(rel, FactType.BiologicalLineage);
+    testFactExistance(rel, FactType.Birth);
     rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
-    testFactExistance(rel, FactType.BiologicalLineage);
+    testFactExistance(rel, FactType.Birth);
     rel = testRelationship(7, RelationshipType.ParentChild, "I1000", "I1005", 0);
     assertNotNull(rel);
     rel = testRelationship(8, RelationshipType.ParentChild, "I1001", "I1005", 0);

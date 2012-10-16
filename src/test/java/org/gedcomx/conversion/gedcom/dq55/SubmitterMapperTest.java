@@ -52,7 +52,7 @@ public class SubmitterMapperTest {
     assertEquals(result.getContributors().size(), 1);
     Agent gedxPerson = result.getContributors().get(0);
     assertEquals(gedxPerson.getId(), "SUBM1");
-    assertEquals(gedxPerson.getName(), "Henri Herkimer Hofmeir");
+    assertEquals(gedxPerson.getName().getValue(), "Henri Herkimer Hofmeir");
     for (Address address : gedxPerson.getAddresses()) {
       assertEquals(address.getValue()
         , "1 Genealogist Way\n" +

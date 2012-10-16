@@ -34,6 +34,7 @@ import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -232,38 +233,35 @@ public class PersonMapper {
     Name gedxName = new Name();
     //gedxName.setId(); // no equivalent; probably system dependent anyway
 
-    gedxName.setPrimaryForm(new NameForm());
-    gedxName.getPrimaryForm().setFullText(getNameValue(dqName));
+    gedxName.setNameForms(Arrays.asList(new NameForm()));
+    gedxName.getNameForms().get(0).setFullText(getNameValue(dqName));
     List<NamePart> parts = getNameParts(dqName);
     if (parts != null) {
-      gedxName.getPrimaryForm().setParts(parts);
+      gedxName.getNameForms().get(0).setParts(parts);
     }
     nameList.add(gedxName);
 
     if (dqName.getNickname() != null) {
       Name gedxNickname = new Name();
       gedxNickname.setKnownType(NameType.Nickname);
-      NameForm nickname = new NameForm();
-      nickname.setFullText(dqName.getNickname());
-      gedxNickname.setPrimaryForm(nickname);
+      gedxNickname.setNameForms(Arrays.asList(new NameForm()));
+      gedxNickname.getNameForms().get(0).setFullText(dqName.getNickname());
       nameList.add(gedxNickname);
     }
 
     if (dqName.getMarriedName() != null) {
       Name gedxMarriedName = new Name();
       gedxMarriedName.setKnownType(NameType.MarriedName);
-      NameForm marriedName = new NameForm();
-      marriedName.setFullText(dqName.getMarriedName());
-      gedxMarriedName.setPrimaryForm(marriedName);
+      gedxMarriedName.setNameForms(Arrays.asList(new NameForm()));
+      gedxMarriedName.getNameForms().get(0).setFullText(dqName.getMarriedName());
       nameList.add(gedxMarriedName);
     }
 
     if (dqName.getAka() != null) {
       Name gedxAka = new Name();
       gedxAka.setKnownType(NameType.AlsoKnownAs);
-      NameForm alias = new NameForm();
-      alias.setFullText(dqName.getMarriedName());
-      gedxAka.setPrimaryForm(alias);
+      gedxAka.setNameForms(Arrays.asList(new NameForm()));
+      gedxAka.getNameForms().get(0).setFullText(dqName.getAka());
       nameList.add(gedxAka);
     }
 

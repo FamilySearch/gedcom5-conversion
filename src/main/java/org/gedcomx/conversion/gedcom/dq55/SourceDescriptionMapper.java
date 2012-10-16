@@ -34,6 +34,7 @@ import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -48,9 +49,9 @@ public class SourceDescriptionMapper {
       gedxSourceDescription.setId(dqSource.getId());
 
       if (dqSource.getAbbreviation() != null) {
-        gedxSourceDescription.setDisplayName(dqSource.getAbbreviation());
-      } else {
-        gedxSourceDescription.setDisplayName(dqSource.getTitle());
+        gedxSourceDescription.setTitles(Arrays.asList(new TextValue(dqSource.getAbbreviation())));
+      } else if (dqSource.getTitle() != null) {
+        gedxSourceDescription.setTitles(Arrays.asList(new TextValue(dqSource.getTitle())));
       }
 
       org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
@@ -100,7 +101,7 @@ public class SourceDescriptionMapper {
             gedxOrganization.setId(inlineRepoId);
             for (Note dqNote : dqRepositoryRef.getNotes()) {
               org.gedcomx.common.Note gedxNote = new org.gedcomx.common.Note();
-              gedxNote.setText(new TextValue(dqNote.getValue()));
+              gedxNote.setText(dqNote.getValue());
               gedxOrganization.addExtensionElement(gedxNote);
             }
             for (NoteRef dqNoteRef : dqRepositoryRef.getNoteRefs()) {
@@ -132,7 +133,7 @@ public class SourceDescriptionMapper {
 
       if (citation.getValue().length() > 0) {
         citation.setValue(citation.getValue() + '.');
-        gedxSourceDescription.setCitation(citation);
+        gedxSourceDescription.setCitations(Arrays.asList(citation));
       }
 
       // dqSource.getMediaType();  // nothing equivalent in the GEDCOM X model
