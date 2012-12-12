@@ -18,10 +18,10 @@ package org.gedcomx.tools;
 import org.codehaus.jackson.smile.SmileFactory;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.rt.CommonModels;
 import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.gedcomx.fileformat.*;
+import org.gedcomx.rt.GedcomxConstants;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -174,7 +174,7 @@ public class Gedcom2Gedcomx {
         Object resource = gxFile.readResource(entry);
         String contentType = entry.getContentType();
         if (contentType == null) {
-          contentType = CommonModels.GEDCOMX_XML_MEDIA_TYPE;
+          contentType = GedcomxConstants.GEDCOMX_XML_MEDIA_TYPE;
         }
         out.addResource(contentType, entry.getJarEntry().getName(), resource, null, entry.getAttributes());
       }
