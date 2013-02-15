@@ -63,7 +63,9 @@ public class CommonMapper {
    * @return GedcomX SourceReferences
    */
   public static List<SourceReference> toSourcesAndSourceReferences(List<SourceCitation> dqSources, GedcomxConversionResult result) throws IOException {
-    List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources.size());
+    List<SourceReference> sourceReferences = new ArrayList<SourceReference>(dqSources == null ? 0 : dqSources.size());
+    if (dqSources == null)
+      return sourceReferences;
 
     int index = 0;
     for (org.folg.gedcom.model.SourceCitation dqSource : dqSources) {

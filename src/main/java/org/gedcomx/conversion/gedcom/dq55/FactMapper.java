@@ -156,6 +156,8 @@ public class FactMapper {
   }
 
   static Fact toFact(EventFact dqFact, GedcomxConversionResult result) throws IOException {
+    if (dqFact == null)
+      return null;
     //dqFact.getType();
     if(dqFact.getTag() == null) {
       logger.warn(ConversionContext.getContext(), "Empty tag encountered");

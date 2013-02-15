@@ -42,6 +42,8 @@ public class SourceDescriptionMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
   public void toSourceDescription(Source dqSource, GedcomxConversionResult result) throws IOException {
+    if (dqSource == null)
+      return;
     Marker sourceContext = ConversionContext.getDetachedMarker(String.format("@%s@ SOUR", dqSource.getId()));
     ConversionContext.addReference(sourceContext);
     try {
@@ -199,6 +201,8 @@ public class SourceDescriptionMapper {
   }
 
   public void toOrganization(Repository dqRepository, GedcomxConversionResult result) throws IOException {
+    if (dqRepository == null)
+      return;
     Marker repositoryContext = ConversionContext.getDetachedMarker(String.format("@%s@ REPO", dqRepository.getId()));
     ConversionContext.addReference(repositoryContext);
     try {

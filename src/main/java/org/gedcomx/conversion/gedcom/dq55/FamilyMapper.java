@@ -35,6 +35,8 @@ public class FamilyMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
   public void toRelationship(Family dqFamily, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
+    if (dqFamily == null)
+      return;
     String familyId = dqFamily.getId();
     Marker familyContext = ConversionContext.getDetachedMarker(String.format("@%s@ FAM", familyId));
     ConversionContext.addReference(familyContext);

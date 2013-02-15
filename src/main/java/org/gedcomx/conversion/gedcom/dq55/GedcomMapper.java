@@ -46,24 +46,32 @@ public class GedcomMapper {
   }
 
   void toPersons(List<Person> dqPersons, GedcomxConversionResult result) throws IOException {
+    if (dqPersons == null)
+      return;
     for (Person person : dqPersons) {
       personMapper.toPerson(person, result);
     }
   }
 
   private void toRelationships(List<Family> dqFamilies, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
+    if (dqFamilies == null)
+      return;
     for (Family family : dqFamilies) {
       familyMapper.toRelationship(family, dqGedcom, result);
     }
   }
 
   private void toSourceDescriptions(List<Source> dqSources, GedcomxConversionResult result) throws IOException {
+    if (dqSources == null)
+      return;
     for (Source dqSource : dqSources) {
       sourceDescriptionMapper.toSourceDescription(dqSource, result);
     }
   }
 
   private void toOrganizations(List<Repository> dqRepositories, GedcomxConversionResult result) throws IOException {
+    if (dqRepositories == null)
+      return;
     for (Repository dqRepository : dqRepositories) {
       sourceDescriptionMapper.toOrganization(dqRepository, result);
     }
