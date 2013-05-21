@@ -81,15 +81,11 @@ public class SourceReferenceMapperTest {
         assertEquals(gedxFact.getSources().size(), 1);
         SourceReference gedxSourceReference = gedxFact.getSources().get(0);
         assertNotNull(gedxSourceReference);
-        assertNotNull(gedxSourceReference.getSourceDescription());
-        assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("descriptions/"));
-        generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring("descriptions/".length());
+        assertNotNull(gedxSourceReference.getDescriptionRef());
+        assertTrue(gedxSourceReference.getDescriptionRef().toString().startsWith("#"));
+        generatedId = gedxSourceReference.getDescriptionRef().toString().substring(1);
         assertNotNull(generatedId, "1");
-        assertNotNull(gedxSourceReference.getAttribution());
-        assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Certainly);
-        assertNull(gedxSourceReference.getAttribution().getModified());
-        assertNull(gedxSourceReference.getAttribution().getChangeMessage());
-        assertNull(gedxSourceReference.getAttribution().getContributor());
+        assertNull(gedxSourceReference.getAttribution());
         assertNull(gedxSourceReference.getExtensionElements());
       }
     }
@@ -100,19 +96,18 @@ public class SourceReferenceMapperTest {
     assertEquals(gedxSourceDescription.getId(), generatedId);
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "31 Jan 1820, FHL INTL Film 1226427, Geboorten, 1820, No. 143");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 2);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/date");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "31 Jan 1820");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "gedcom5:citation-template/page");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getValue(), "FHL INTL Film 1226427, Geboorten, 1820, No. 143");
     assertNull(gedxSourceDescription.getAbout());
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
-    assertEquals(gedxSourceDescription.getComponentOf().getSourceDescription().getResource().toURI().toString(), "descriptions/SOUR1");
-    assertNull(gedxSourceDescription.getDisplayName());
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertEquals(gedxSourceDescription.getComponentOf().getDescriptionRef().toURI().toString(), "#SOUR1");
+    assertNull(gedxSourceDescription.getTitle());
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -141,16 +136,11 @@ public class SourceReferenceMapperTest {
         assertEquals(gedxFact.getSources().size(), 1);
         SourceReference gedxSourceReference = gedxFact.getSources().get(0);
         assertNotNull(gedxSourceReference);
-        assertNotNull(gedxSourceReference.getSourceDescription());
-        assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("descriptions/"));
-        generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring("descriptions/".length());
+        assertNotNull(gedxSourceReference.getDescriptionRef());
+        assertTrue(gedxSourceReference.getDescriptionRef().toString().startsWith("#"));
+        generatedId = gedxSourceReference.getDescriptionRef().toString().substring(1);
         assertEquals(generatedId, "SOUR-2");
-        assertNotNull(gedxSourceReference.getAttribution());
-        assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Possibly);
-        assertNull(gedxSourceReference.getAttribution().getModified());
-        assertNull(gedxSourceReference.getAttribution().getChangeMessage());
-        assertNull(gedxSourceReference.getAttribution().getContributor());
-        assertNull(gedxSourceReference.getExtensionElements());
+        assertNull(gedxSourceReference.getAttribution());
       }
     }
     assertNotNull(result.getSourceDescriptions());
@@ -167,8 +157,7 @@ public class SourceReferenceMapperTest {
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertNull(gedxSourceDescription.getDisplayName());
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNull(gedxSourceDescription.getTitles());
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -197,15 +186,11 @@ public class SourceReferenceMapperTest {
     assertEquals(gedxFact.getSources().size(), 1);
     SourceReference gedxSourceReference = gedxFact.getSources().get(0);
     assertNotNull(gedxSourceReference);
-    assertNotNull(gedxSourceReference.getSourceDescription());
-    assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("descriptions/"));
-    generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring("descriptions/".length());
+    assertNotNull(gedxSourceReference.getDescriptionRef());
+    assertTrue(gedxSourceReference.getDescriptionRef().toString().startsWith("#"));
+    generatedId = gedxSourceReference.getDescriptionRef().toString().substring(1);
     assertNotNull(generatedId, "3");
-    assertNotNull(gedxSourceReference.getAttribution());
-    assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Apparently);
-    assertNull(gedxSourceReference.getAttribution().getModified());
-    assertNull(gedxSourceReference.getAttribution().getChangeMessage());
-    assertNull(gedxSourceReference.getAttribution().getContributor());
+    assertNull(gedxSourceReference.getAttribution());
     assertNull(gedxSourceReference.getExtensionElements());
 
     assertNotNull(result.getSourceDescriptions());
@@ -222,8 +207,7 @@ public class SourceReferenceMapperTest {
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertNull(gedxSourceDescription.getDisplayName());
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNull(gedxSourceDescription.getTitles());
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -252,15 +236,11 @@ public class SourceReferenceMapperTest {
     assertEquals(gedxFact.getSources().size(), 1);
     SourceReference gedxSourceReference = gedxFact.getSources().get(0);
     assertNotNull(gedxSourceReference);
-    assertNotNull(gedxSourceReference.getSourceDescription());
-    assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("descriptions/"));
-    generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring("descriptions/".length());
+    assertNotNull(gedxSourceReference.getDescriptionRef());
+    assertTrue(gedxSourceReference.getDescriptionRef().toString().startsWith("#"));
+    generatedId = gedxSourceReference.getDescriptionRef().toString().substring(1);
     assertNotNull(generatedId, "4");
-    assertNotNull(gedxSourceReference.getAttribution());
-    assertEquals(gedxSourceReference.getAttribution().getKnownConfidenceLevel(), ConfidenceLevel.Perhaps);
-    assertNull(gedxSourceReference.getAttribution().getModified());
-    assertNull(gedxSourceReference.getAttribution().getChangeMessage());
-    assertNull(gedxSourceReference.getAttribution().getContributor());
+    assertNull(gedxSourceReference.getAttribution());
     assertNull(gedxSourceReference.getExtensionElements());
 
     assertNotNull(result.getSourceDescriptions());
@@ -292,8 +272,8 @@ public class SourceReferenceMapperTest {
 //    SourceReference gedxSourceReference = gedxFact.getSources().get(0);
 //    assertNotNull(gedxSourceReference);
 //    assertNotNull(gedxSourceReference.getSourceDescription());
-//    assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("descriptions/"));
-//    generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring("descriptions/".length());
+//    assertTrue(gedxSourceReference.getSourceDescription().getResource().toString().startsWith("#"));
+//    generatedId = gedxSourceReference.getSourceDescription().getResource().toString().substring(1);
 //    assertNotNull(generatedId, "5");
 //    assertNull(gedxSourceReference.getAttribution());
 //    assertNull(gedxSourceReference.getExtensionElements());

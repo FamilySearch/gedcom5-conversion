@@ -20,7 +20,7 @@ import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
-import org.gedcomx.conclusion.Place;
+import org.gedcomx.conclusion.PlaceReference;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.types.FactType;
 import org.slf4j.Logger;
@@ -203,13 +203,13 @@ public class FactMapper {
         }
 
         if(factPlace != null) {
-          Place place = new Place();
+          PlaceReference place = new PlaceReference();
           place.setOriginal(factPlace);
           gedxFact.setPlace(place);
         }
 
         if(factValue != null) {
-          gedxFact.setOriginal(factValue);
+          gedxFact.setValue(factValue);
         }
 
         // add source references to the fact

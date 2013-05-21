@@ -25,7 +25,7 @@ import org.gedcomx.common.ResourceReference;
 import org.gedcomx.common.TextValue;
 import org.gedcomx.common.URI;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.contributor.Agent;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.source.CitationField;
 import org.gedcomx.source.SourceDescription;
 import org.slf4j.Logger;
@@ -34,6 +34,7 @@ import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -48,19 +49,20 @@ public class SourceDescriptionMapper {
       gedxSourceDescription.setId(dqSource.getId());
 
       if (dqSource.getAbbreviation() != null) {
-        gedxSourceDescription.setDisplayName(dqSource.getAbbreviation());
-      } else {
-        gedxSourceDescription.setDisplayName(dqSource.getTitle());
+        gedxSourceDescription.setTitles(Arrays.asList(new TextValue(dqSource.getAbbreviation())));
+      }
+      else if (dqSource.getTitle() != null) {
+        gedxSourceDescription.setTitles(Arrays.asList(new TextValue(dqSource.getTitle())));
       }
 
       org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
-      citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+      citation.setCitationTemplate(new ResourceReference(URI.create("gedcom5:citation-template")));
       citation.setFields(new ArrayList<CitationField>());
       citation.setValue("");
 
       if (dqSource.getAuthor() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/author"));
+        field.setName(URI.create("gedcom5:citation-template/author"));
         field.setValue(dqSource.getAuthor());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getAuthor() : dqSource.getAuthor()));
@@ -68,7 +70,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getTitle() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title"));
+        field.setName(URI.create("gedcom5:citation-template/title"));
         field.setValue(dqSource.getTitle());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getTitle() : dqSource.getTitle()));
@@ -76,7 +78,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getPublicationFacts() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/publication-facts"));
+        field.setName(URI.create("gedcom5:citation-template/publication-facts"));
         field.setValue(dqSource.getPublicationFacts());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPublicationFacts() : dqSource.getPublicationFacts()));
@@ -92,39 +94,41 @@ public class SourceDescriptionMapper {
         try {
           RepositoryRef dqRepositoryRef = dqSource.getRepositoryRef();
           if (dqRepositoryRef.getRef() != null) {
-            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationEntryName(dqRepositoryRef.getRef()))));
+            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationReference(dqRepositoryRef.getRef()))));
             // TODO: map NOTEs as another note associated with this SourceDescription
-          } else {
+          }
+          else {
             String inlineRepoId = dqSource.getId() + ".REPO";
             Agent gedxOrganization = new Agent();
             gedxOrganization.setId(inlineRepoId);
             for (Note dqNote : dqRepositoryRef.getNotes()) {
               org.gedcomx.common.Note gedxNote = new org.gedcomx.common.Note();
-              gedxNote.setText(new TextValue(dqNote.getValue()));
+              gedxNote.setText(dqNote.getValue());
               gedxOrganization.addExtensionElement(gedxNote);
             }
             for (NoteRef dqNoteRef : dqRepositoryRef.getNoteRefs()) {
               logger.warn(ConversionContext.getContext(), "Unable to associate a note ({}) with the inline-defined organization ({})", dqNoteRef.getRef(), inlineRepoId);
             }
-            result.addOrganization(gedxOrganization, null);
-            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationEntryName(inlineRepoId))));
+            result.addOrganization(gedxOrganization);
+            gedxSourceDescription.setMediator(new ResourceReference(URI.create(CommonMapper.getOrganizationReference(inlineRepoId))));
           }
 
           if (dqRepositoryRef.getCallNumber() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number"));
+            field.setName(URI.create("gedcom5:citation-template/call-number"));
             field.setValue(dqRepositoryRef.getCallNumber());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqRepositoryRef.getCallNumber() : dqRepositoryRef.getCallNumber()));
           }
-        } finally {
+        }
+        finally {
           ConversionContext.removeReference(repoContext);
         }
       }
 
       if (dqSource.getCallNumber() != null) {
         CitationField field = new CitationField();
-        field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number"));
+        field.setName(URI.create("gedcom5:citation-template/call-number"));
         field.setValue(dqSource.getCallNumber());
         citation.getFields().add(field);
         citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getCallNumber() : dqSource.getCallNumber()));
@@ -132,7 +136,7 @@ public class SourceDescriptionMapper {
 
       if (citation.getValue().length() > 0) {
         citation.setValue(citation.getValue() + '.');
-        gedxSourceDescription.setCitation(citation);
+        gedxSourceDescription.setCitations(Arrays.asList(citation));
       }
 
       // dqSource.getMediaType();  // nothing equivalent in the GEDCOM X model
@@ -181,7 +185,7 @@ public class SourceDescriptionMapper {
 
       if (dqSource.getExtensions().size() > 0) {
         for (String extensionCategory : dqSource.getExtensions().keySet()) {
-          for (GedcomTag tag : ((List<GedcomTag>)dqSource.getExtension(extensionCategory))) {
+          for (GedcomTag tag : ((List<GedcomTag>) dqSource.getExtension(extensionCategory))) {
             logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
             // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
           }
@@ -191,8 +195,9 @@ public class SourceDescriptionMapper {
       //dqSource.getItalic(); // PAF extension elements; will not process
       //dqSource.getParen();  // PAF extension elements; will not process
 
-      result.addSourceDescription(gedxSourceDescription, CommonMapper.toDate(dqSource.getChange()));
-    } finally {
+      result.addSourceDescription(gedxSourceDescription);
+    }
+    finally {
       ConversionContext.removeReference(sourceContext);
     }
   }
@@ -204,14 +209,14 @@ public class SourceDescriptionMapper {
       Agent gedxOrganization = new Agent();
 
       CommonMapper.populateAgent(gedxOrganization
-          , dqRepository.getId()
-          , dqRepository.getName()
-          , dqRepository.getAddress()
-          , dqRepository.getPhone()
-          , dqRepository.getFax()
-          , dqRepository.getEmail()
-          , dqRepository.getWww()
-        );
+        , dqRepository.getId()
+        , dqRepository.getName()
+        , dqRepository.getAddress()
+        , dqRepository.getPhone()
+        , dqRepository.getFax()
+        , dqRepository.getEmail()
+        , dqRepository.getWww()
+      );
 
       int cntNotes = dqRepository.getNotes().size() + dqRepository.getNoteRefs().size();
       if (cntNotes > 0) {
@@ -228,7 +233,7 @@ public class SourceDescriptionMapper {
 
       if (dqRepository.getExtensions().size() > 0) {
         for (String extensionCategory : dqRepository.getExtensions().keySet()) {
-          for (GedcomTag tag : ((List<GedcomTag>)dqRepository.getExtension(extensionCategory))) {
+          for (GedcomTag tag : ((List<GedcomTag>) dqRepository.getExtension(extensionCategory))) {
             logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
           }
         }
@@ -236,8 +241,9 @@ public class SourceDescriptionMapper {
 
       //dqRepository.getAllNotes(); // notes not handled via this method; see getNotes and getNoteRefs
 
-      result.addOrganization(gedxOrganization, CommonMapper.toDate(dqRepository.getChange()));
-    } finally {
+      result.addOrganization(gedxOrganization);
+    }
+    finally {
       ConversionContext.removeReference(repositoryContext);
     }
   }

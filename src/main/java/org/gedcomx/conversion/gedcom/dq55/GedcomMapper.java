@@ -16,11 +16,10 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.*;
+import org.gedcomx.conversion.DefaultGedcomxConversionResult;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 public class GedcomMapper {
@@ -30,11 +29,11 @@ public class GedcomMapper {
   private final SubmitterMapper submitterMapper = new SubmitterMapper();
   private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
 
-  public GedcomxOutputstreamConversionResult toGedcomx(Gedcom dqGedcom, OutputStream outputStream) throws IOException {
-    return toGedcomx(dqGedcom, new GedcomxOutputstreamConversionResult(outputStream));
+  public GedcomxConversionResult toGedcomx(Gedcom dqGedcom) throws IOException {
+    return toGedcomx(dqGedcom, new DefaultGedcomxConversionResult());
   }
 
-  public GedcomxOutputstreamConversionResult toGedcomx(Gedcom dqGedcom, GedcomxOutputstreamConversionResult result) throws IOException {
+  public GedcomxConversionResult toGedcomx(Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
     toPersons(dqGedcom.getPeople(), result);
     toRelationships(dqGedcom.getFamilies(), dqGedcom, result);
     toSourceDescriptions(dqGedcom.getSources(), result);

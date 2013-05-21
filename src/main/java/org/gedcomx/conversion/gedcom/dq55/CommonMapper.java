@@ -18,13 +18,13 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Change;
 import org.folg.gedcom.model.DateTime;
 import org.folg.gedcom.model.SourceCitation;
-import org.gedcomx.common.Attribution;
+import org.gedcomx.agent.Address;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.TextValue;
 import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.contributor.Address;
-import org.gedcomx.contributor.Agent;
 import org.gedcomx.source.CitationField;
 import org.gedcomx.source.SourceDescription;
 import org.gedcomx.source.SourceReference;
@@ -76,7 +76,7 @@ public class CommonMapper {
         SourceDescription gedxSourceDescription = new SourceDescription();
 
         org.gedcomx.source.SourceCitation citation = new org.gedcomx.source.SourceCitation();
-        citation.setCitationTemplate(new ResourceReference(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping")));
+        citation.setCitationTemplate(new ResourceReference(URI.create("gedcom5:citation-template")));
         citation.setFields(new ArrayList<CitationField>());
         citation.setValue("");
 
@@ -84,13 +84,13 @@ public class CommonMapper {
           gedxSourceDescription.setId(dqSource.getRef() + "-" + Long.toHexString(SequentialIdentifierGenerator.getNextId()));
 
           SourceReference componentOf = new SourceReference();
-          componentOf.setSourceDescriptionURI(URI.create(CommonMapper.getDescriptionEntryName(dqSource.getRef())));
+          componentOf.setDescriptionRef(URI.create(CommonMapper.getSourceDescriptionReference(dqSource.getRef())));
           gedxSourceDescription.setComponentOf(componentOf);
           sourceDescriptionHasData = true;
 
           if (dqSource.getDate() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/date"));
+            field.setName(URI.create("gedcom5:citation-template/date"));
             field.setValue(dqSource.getDate());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getDate() : dqSource.getDate()));
@@ -98,7 +98,7 @@ public class CommonMapper {
 
           if (dqSource.getPage() != null) {
             CitationField field = new CitationField();
-            field.setName(URI.create("http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/page"));
+            field.setName(URI.create("gedcom5:citation-template/page"));
             field.setValue(dqSource.getPage());
             citation.getFields().add(field);
             citation.setValue(citation.getValue() + (citation.getValue().length() > 0 ? ", " + dqSource.getPage() : dqSource.getPage()));
@@ -111,9 +111,9 @@ public class CommonMapper {
           sourceDescriptionHasData = true;
         }
 
-        String entryName = CommonMapper.getDescriptionEntryName(gedxSourceDescription.getId());
+        String entryName = CommonMapper.getSourceDescriptionReference(gedxSourceDescription.getId());
         SourceReference gedxSourceReference = new SourceReference();
-        gedxSourceReference.setSourceDescriptionURI(URI.create(entryName));
+        gedxSourceReference.setDescriptionRef(URI.create(entryName));
 
         if (dqSource.getText() != null) {
           logger.warn(ConversionContext.getContext(), "GEDCOM X does not currently support text extracted from a source.");
@@ -123,9 +123,7 @@ public class CommonMapper {
 
         ConfidenceLevel gedxConfidenceLevel = toConfidenceLevel(dqSource.getQuality());
         if (gedxConfidenceLevel != null) {
-          Attribution attribution = new Attribution();
-          attribution.setKnownConfidenceLevel(gedxConfidenceLevel);
-          gedxSourceReference.setAttribution(attribution);
+          //todo: confidence level on source reference?
           sourceReferenceHasData = true;
         }
 
@@ -140,8 +138,8 @@ public class CommonMapper {
         }
 
         if (sourceDescriptionHasData) {
-          gedxSourceDescription.setCitation(citation);
-          result.addSourceDescription(gedxSourceDescription, null);
+          gedxSourceDescription.setCitations(Arrays.asList(citation));
+          result.addSourceDescription(gedxSourceDescription);
           sourceReferenceHasData = true;
         }
 
@@ -206,13 +204,13 @@ public class CommonMapper {
     ConfidenceLevel confidenceLevel;
 
     if ("3".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Certainly;
+      confidenceLevel = ConfidenceLevel.High;
     } else if ("2".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Possibly;
+      confidenceLevel = ConfidenceLevel.Medium;
     } else if ("1".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Apparently;
+      confidenceLevel = ConfidenceLevel.Low;
     } else if ("0".equals(dqQuality)) {
-      confidenceLevel = ConfidenceLevel.Perhaps;
+      confidenceLevel = ConfidenceLevel.Low;
     } else {
       confidenceLevel = null;
 
@@ -240,28 +238,28 @@ public class CommonMapper {
    * @param gedxPersonId to be saved in zip file
    * @return entry name in the zip file for the given resource
    */
-  public static String getPersonEntryName(String gedxPersonId) {
-    return "persons/" + gedxPersonId;
+  public static String getPersonReference(String gedxPersonId) {
+    return "#" + gedxPersonId;
   }
 
-  public static String getRelationshipEntryName(String id) {
-    return "relationships/" + id;
+  public static String getRelationshipReference(String id) {
+    return "#" + id;
   }
 
   /**
    * @param gedxDescriptionId resource to be saved in zip file
    * @return entry name in the zip file for the given resource
    */
-  public static String getDescriptionEntryName(String gedxDescriptionId) {
-    return "descriptions/" + gedxDescriptionId;
+  public static String getSourceDescriptionReference(String gedxDescriptionId) {
+    return "#" + gedxDescriptionId;
   }
 
-  public static String getContributorEntryName(String id) {
-    return "contributors/" + id;
+  public static String getContributorReference(String id) {
+    return "#" + id;
   }
 
-  public static String getOrganizationEntryName(String id) {
-    return "organizations/" + id;
+  public static String getOrganizationReference(String id) {
+    return "#" + id;
   }
 
   /**
@@ -290,7 +288,7 @@ public class CommonMapper {
    */
   public static ResourceReference toReference(String gedxPersonId) {
     ResourceReference reference = new ResourceReference();
-    reference.setResource( new URI(getPersonEntryName(gedxPersonId)));
+    reference.setResource( new URI(getPersonReference(gedxPersonId)));
     return reference;
   }
 
@@ -301,7 +299,7 @@ public class CommonMapper {
 
   public static void populateAgent(Agent agent, String id, String name, org.folg.gedcom.model.Address address, String phone, String fax, String email, String www) {
     agent.setId(id);
-    agent.setName(name);
+    agent.setNames(Arrays.asList(new TextValue(name)));
 
     if(address != null) {
       agent.setAddresses(new ArrayList<Address>());

@@ -10,7 +10,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <gedcomx.fileformat.version>0.10.0-SNAPSHOT</gedcomx.fileformat.version>
+    <gedcomx.fileformat.version>0.10.0</gedcomx.fileformat.version>
     <gedcom.version>1.1</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -4,8 +4,8 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.ResourceReference;
-import org.gedcomx.contributor.Address;
-import org.gedcomx.contributor.Agent;
+import org.gedcomx.agent.Address;
+import org.gedcomx.agent.Agent;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -57,7 +57,7 @@ public class SourceDescriptionMapperOrganizationTest {
     assertEquals(gedxOrganization.getId(), "REPO3");
 
     // NAME
-    assertEquals(gedxOrganization.getName(), "MyCorporation, Inc.");
+    assertEquals(gedxOrganization.getName().getValue(), "MyCorporation, Inc.");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -126,7 +126,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "York County Archive");
+    assertEquals(gedxOrganization.getName().getValue(), "York County Archive");
 
     // null in this repository
     assertNull(gedxOrganization.getAddresses());
@@ -157,7 +157,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Henry County Archive");
+    assertEquals(gedxOrganization.getName().getValue(), "Henry County Archive");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -200,15 +200,6 @@ public class SourceDescriptionMapperOrganizationTest {
     // WWW
     assertNotNull(gedxOrganization.getHomepage());
     assertEquals(gedxOrganization.getHomepage().getResource().toString(), "http://www.rootsweb.ancestry.com/~tnhenry2/");
-
-    // result of the CHAN tag
-    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
-    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
-    Date date  = localFormat.parse("11 Nov 2011 11:11:11.111");
-    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
-    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -233,7 +224,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Washington County Archives");
+    assertEquals(gedxOrganization.getName().getValue(), "Washington County Archives");
 
     // ADDR
     assertNotNull(gedxOrganization.getAddresses());
@@ -270,15 +261,6 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // WWW
     assertNull(gedxOrganization.getHomepage());
-
-    // result of the CHAN tag
-    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
-    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
-    Date date  = localFormat.parse("11 Nov 2011 00:00:00.000");
-    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
-    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("organizations/" + gedxOrganization.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -303,7 +285,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());
@@ -353,7 +335,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Cape Girardeau County Archive Center");
+    assertEquals(gedxOrganization.getName().getValue(), "Cape Girardeau County Archive Center");
 
     // PHON and FAX
     assertNull(gedxOrganization.getPhones());
@@ -390,7 +372,7 @@ public class SourceDescriptionMapperOrganizationTest {
 
     // NAME
     assertNotNull(gedxOrganization.getName());
-    assertEquals(gedxOrganization.getName(), "Utah State Archives");
+    assertEquals(gedxOrganization.getName().getValue(), "Utah State Archives");
 
     // PHON and FAX
     assertNotNull(gedxOrganization.getPhones());

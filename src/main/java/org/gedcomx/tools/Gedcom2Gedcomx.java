@@ -18,20 +18,17 @@ package org.gedcomx.tools;
 import org.codehaus.jackson.smile.SmileFactory;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.rt.CommonModels;
-import org.gedcomx.conversion.GedcomxOutputstreamConversionResult;
+import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.gedcomx.fileformat.*;
+import org.gedcomx.rt.GedcomxConstants;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXParseException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarFile;
 
 
@@ -174,7 +171,7 @@ public class Gedcom2Gedcomx {
         Object resource = gxFile.readResource(entry);
         String contentType = entry.getContentType();
         if (contentType == null) {
-          contentType = CommonModels.GEDCOMX_XML_MEDIA_TYPE;
+          contentType = GedcomxConstants.GEDCOMX_XML_MEDIA_TYPE;
         }
         out.addResource(contentType, entry.getJarEntry().getName(), resource, null, entry.getAttributes());
       }
@@ -202,9 +199,18 @@ public class Gedcom2Gedcomx {
         serializer = new DefaultXMLSerialization();
       }
 
-      GedcomxOutputstreamConversionResult result = new GedcomxOutputstreamConversionResult(new GedcomxOutputStream(outputStream, serializer));
-      mapper.toGedcomx(gedcom, result);
-      result.finish(true);
+      GedcomxConversionResult result = mapper.toGedcomx(gedcom);
+      GedcomxOutputStream output = new GedcomxOutputStream(outputStream, serializer);
+
+      output.addAttribute("User-Agent", "Gedcom To Gedcomx Java Conversion Utility/1.0");
+      output.addAttribute("X-DC-conformsTo", "http://gedcomx.org/file/v1");
+      output.addAttribute("X-DC-created", GedcomxTimeStampUtil.formatAsXmlUTC(new Date()));
+      if (result.getDatasetContributor() != null && result.getDatasetContributor().getId() != null) {
+        output.addAttribute("X-DC-creator", "tree.xml#" + result.getDatasetContributor().getId());
+      }
+
+      output.addResource("tree.xml", result.getDataset(), null);
+      output.close();
     }
   }
 

@@ -15,23 +15,29 @@
  */
 package org.gedcomx.conversion;
 
+import org.gedcomx.Gedcomx;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.contributor.Agent;
 import org.gedcomx.source.SourceDescription;
 
 import java.io.IOException;
-import java.util.Date;
 
 
 public interface GedcomxConversionResult {
-  void addPerson(Person person, Date lastModified) throws IOException;
 
-  void addRelationship(Relationship relationship, Date lastModified) throws IOException;
+  Gedcomx getDataset();
 
-  void addSourceDescription(SourceDescription description, Date lastModified) throws IOException;
+  Agent getDatasetContributor();
 
-  public void setDatasetContributor(Agent person, Date lastModified) throws IOException;
+  void setDatasetContributor(Agent person) throws IOException;
 
-  void addOrganization(Agent organization, Date lastModified) throws IOException;
+  void addPerson(Person person) throws IOException;
+
+  void addRelationship(Relationship relationship) throws IOException;
+
+  void addSourceDescription(SourceDescription description) throws IOException;
+
+  void addOrganization(Agent organization) throws IOException;
+
 }

@@ -4,8 +4,8 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.contributor.Address;
-import org.gedcomx.contributor.Agent;
+import org.gedcomx.agent.Address;
+import org.gedcomx.agent.Agent;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -52,7 +52,7 @@ public class SubmitterMapperTest {
     assertEquals(result.getContributors().size(), 1);
     Agent gedxPerson = result.getContributors().get(0);
     assertEquals(gedxPerson.getId(), "SUBM1");
-    assertEquals(gedxPerson.getName(), "Henri Herkimer Hofmeir");
+    assertEquals(gedxPerson.getName().getValue(), "Henri Herkimer Hofmeir");
     for (Address address : gedxPerson.getAddresses()) {
       assertEquals(address.getValue()
         , "1 Genealogist Way\n" +

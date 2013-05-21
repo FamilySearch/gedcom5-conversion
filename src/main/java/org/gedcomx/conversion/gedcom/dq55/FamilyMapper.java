@@ -45,11 +45,11 @@ public class FamilyMapper {
     String wifeId = wives.size() > 0 ? wives.get(0).getRef() : null;
     Relationship coupleRelationship = null;
 
-    Date lastModified = CommonMapper.toDate(dqFamily.getChange());
+    Date lastModified = CommonMapper.toDate(dqFamily.getChange()); //todo: set the timestamp on the attribution?
 
     if ( husbandId != null && wifeId != null) {
       coupleRelationship = CommonMapper.toRelationship(familyId, husbandId, wifeId, RelationshipType.Couple);
-      result.addRelationship(coupleRelationship, lastModified);
+      result.addRelationship(coupleRelationship);
     }
 
     for (ChildRef child : dqFamily.getChildRefs()) {
@@ -67,12 +67,12 @@ public class FamilyMapper {
       if (husbandId != null) {
         Relationship gedxRelationship = CommonMapper.toRelationship(familyId, husbandId, childId, RelationshipType.ParentChild);
         addFacts(gedxRelationship, familyId, childToFamilyLinks);
-        result.addRelationship(gedxRelationship, lastModified);
+        result.addRelationship(gedxRelationship);
       }
       if (wifeId != null) {
         Relationship gedxRelationship = CommonMapper.toRelationship(familyId, wifeId, childId, RelationshipType.ParentChild);
         addFacts(gedxRelationship, familyId, childToFamilyLinks);
-        result.addRelationship(gedxRelationship, lastModified);
+        result.addRelationship(gedxRelationship);
       }
     }
 
@@ -153,15 +153,15 @@ public class FamilyMapper {
           relationshipType = relationshipType.toLowerCase().trim();
           if (relationshipType.equalsIgnoreCase("adopted")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.Adoption);
+            fact.setKnownType(FactType.AdoptiveParent);
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("birth")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.BiologicalLineage);
+            fact.setKnownType(FactType.BiologicalParent);
             gedxRelationship.addFact(fact);
           } else if (relationshipType.equalsIgnoreCase("foster")) {
             Fact fact = new Fact();
-            fact.setKnownType(FactType.Foster);
+            fact.setKnownType(FactType.FosterParent);
             gedxRelationship.addFact(fact);
           } else {
             logger.warn(ConversionContext.getContext(), "Information designating this relationship as \"{}\" was dropped.", ref.getRelationshipType());

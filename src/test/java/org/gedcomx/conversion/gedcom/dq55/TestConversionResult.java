@@ -3,35 +3,45 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import org.gedcomx.Gedcomx;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.fileformat.GedcomxTimeStampUtil;
-import org.gedcomx.contributor.Agent;
 import org.gedcomx.source.SourceDescription;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class TestConversionResult implements GedcomxConversionResult {
+
   private Map<String, Map<String, String>> entryAttributes = new HashMap<String, Map<String, String>>();
   private List<Person> persons = new ArrayList<Person>();
   private List<Relationship> relationships = new ArrayList<Relationship>();
   private List<SourceDescription> descriptions = new ArrayList<SourceDescription>();
-  private List<org.gedcomx.contributor.Agent> contributors = new ArrayList<org.gedcomx.contributor.Agent>();
+  private List<org.gedcomx.agent.Agent> contributors = new ArrayList<org.gedcomx.agent.Agent>();
   private List<Agent> organizations = new ArrayList<Agent>();
+
+  @Override
+  public Gedcomx getDataset() {
+    return null;
+  }
+
+  @Override
+  public Agent getDatasetContributor() {
+    return null;
+  }
 
   public List<Person> getPersons() {
     return persons;
   }
 
   @Override
-  public void addPerson(Person person, Date lastModified) throws IOException {
-    if (lastModified != null) {
-      handleLastModified(CommonMapper.getPersonEntryName(person.getId()), lastModified);
-    }
-
+  public void addPerson(Person person) throws IOException {
     this.persons.add(person);
   }
 
@@ -40,11 +50,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addRelationship(Relationship relationship, Date lastModified) throws IOException {
-    if (lastModified != null) {
-      handleLastModified(CommonMapper.getRelationshipEntryName(relationship.getId()), lastModified);
-    }
-
+  public void addRelationship(Relationship relationship) throws IOException {
     this.relationships.add(relationship);
   }
 
@@ -53,24 +59,16 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addSourceDescription(SourceDescription description, Date lastModified) throws IOException {
-    if (lastModified != null) {
-      handleLastModified(CommonMapper.getDescriptionEntryName(description.getId()), lastModified);
-    }
-
+  public void addSourceDescription(SourceDescription description) throws IOException {
     this.descriptions.add(description);
   }
 
-  public List<org.gedcomx.contributor.Agent> getContributors() {
+  public List<org.gedcomx.agent.Agent> getContributors() {
     return contributors;
   }
 
   @Override
-  public void setDatasetContributor(org.gedcomx.contributor.Agent person, Date lastModified) throws IOException {
-    if (lastModified != null) {
-      handleLastModified(CommonMapper.getOrganizationEntryName(person.getId()), lastModified);
-    }
-
+  public void setDatasetContributor(org.gedcomx.agent.Agent person) throws IOException {
     this.contributors.add(person);
   }
 
@@ -79,11 +77,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   }
 
   @Override
-  public void addOrganization(Agent organization, Date lastModified) throws IOException {
-    if (lastModified != null) {
-      handleLastModified(CommonMapper.getOrganizationEntryName(organization.getId()), lastModified);
-    }
-
+  public void addOrganization(Agent organization) throws IOException {
     this.organizations.add(organization);
   }
 
@@ -91,11 +85,4 @@ public class TestConversionResult implements GedcomxConversionResult {
     return entryAttributes.get(entryName);
   }
 
-  private void handleLastModified(String entryName, Date lastModified) {
-    if (!entryAttributes.containsKey(entryName)) {
-      entryAttributes.put(entryName, new HashMap<String, String>());
-    }
-
-    entryAttributes.get(entryName).put("X-DC-modified", GedcomxTimeStampUtil.formatAsXmlUTC(lastModified));
-  }
 }

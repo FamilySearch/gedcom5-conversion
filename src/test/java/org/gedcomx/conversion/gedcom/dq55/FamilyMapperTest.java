@@ -102,17 +102,17 @@ public class FamilyMapperTest {
 
     testRelationship(0, RelationshipType.Couple, "I1000", "I1001", 0);
     rel = testRelationship(1, RelationshipType.ParentChild, "I1000", "I1002", 1);
-    testFactExistance(rel, FactType.Adoption);
+    testFactExistance(rel, FactType.AdoptiveParent);
     rel = testRelationship(2, RelationshipType.ParentChild, "I1001", "I1002", 1);
-    testFactExistance(rel, FactType.Adoption);
+    testFactExistance(rel, FactType.AdoptiveParent);
     rel = testRelationship(3, RelationshipType.ParentChild, "I1000", "I1003", 1);
-    testFactExistance(rel, FactType.Foster);
+    testFactExistance(rel, FactType.FosterParent);
     rel = testRelationship(4, RelationshipType.ParentChild, "I1001", "I1003", 1);
-    testFactExistance(rel, FactType.Foster);
+    testFactExistance(rel, FactType.FosterParent);
     rel = testRelationship(5, RelationshipType.ParentChild, "I1000", "I1004", 1);
-    testFactExistance(rel, FactType.BiologicalLineage);
+    testFactExistance(rel, FactType.BiologicalParent);
     rel = testRelationship(6, RelationshipType.ParentChild, "I1001", "I1004", 1);
-    testFactExistance(rel, FactType.BiologicalLineage);
+    testFactExistance(rel, FactType.BiologicalParent);
     rel = testRelationship(7, RelationshipType.ParentChild, "I1000", "I1005", 0);
     assertNotNull(rel);
     rel = testRelationship(8, RelationshipType.ParentChild, "I1001", "I1005", 0);
@@ -166,8 +166,8 @@ public class FamilyMapperTest {
     assertEquals(relationship.getKnownType(), relationshipType);
     ResourceReference person1 = relationship.getPerson1();
     ResourceReference person2 = relationship.getPerson2();
-    assertEquals(person1.getResource().toString(), CommonMapper.getPersonEntryName(person1Id));
-    assertEquals(person2.getResource().toString(), CommonMapper.getPersonEntryName(person2Id));
+    assertEquals(person1.getResource().toString(), CommonMapper.getPersonReference(person1Id));
+    assertEquals(person2.getResource().toString(), CommonMapper.getPersonReference(person2Id));
 
     if (factCount > 0) {
       assertNotNull(relationship.getFacts());

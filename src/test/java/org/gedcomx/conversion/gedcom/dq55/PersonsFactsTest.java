@@ -48,13 +48,13 @@ public class PersonsFactsTest {
       if(fact.getKnownType().equals(FactType.Birth)) {
         assertEquals(fact.getDate().getOriginal(), "3 May 1875");
         assertEquals(fact.getPlace().getOriginal(), "Gent, Oost-Vlaanderen, Belgium");
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
         birthFound = true;
       }
       else if(fact.getKnownType().equals(FactType.Death)) {
         assertEquals(fact.getDate().getOriginal(), "18 Apr 1947");
         assertEquals(fact.getPlace().getOriginal(), "San Francisco, California, United States");
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
         deathFound = true;
       }
     }
@@ -115,7 +115,7 @@ public class PersonsFactsTest {
         factFound = true;
         assertEquals(fact.getDate().getOriginal(), "1887");
         assertNull(fact.getPlace());
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
       }
     }
     assertTrue(factFound);
@@ -138,7 +138,7 @@ public class PersonsFactsTest {
         factFound = true;
         assertEquals(fact.getPlace().getOriginal(), "San Francisco, San Francisco, California, United States");
         assertNull(fact.getDate());
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
       }
     }
     assertTrue(factFound);
@@ -159,7 +159,7 @@ public class PersonsFactsTest {
     for(Fact fact : gedxPerson.getFacts()) {
       if(fact.getKnownType().equals(FactType.Occupation)) {
         factFound = true;
-        assertEquals(fact.getOriginal(), "Dressmaker");
+        assertEquals(fact.getValue(), "Dressmaker");
         assertNull(fact.getPlace());
         assertNull(fact.getDate());
       }
@@ -184,7 +184,7 @@ public class PersonsFactsTest {
         factFound = true;
         assertNull(fact.getPlace());
         assertNull(fact.getDate());
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
       }
     }
     assertTrue(factFound);
@@ -207,7 +207,7 @@ public class PersonsFactsTest {
         factFound = true;
         assertNull(fact.getPlace());
         assertNull(fact.getDate());
-        assertNull(fact.getOriginal());
+        assertNull(fact.getValue());
       }
     }
     assertTrue(factFound);
@@ -360,11 +360,11 @@ public class PersonsFactsTest {
     for(Fact fact : facts) {
       if(fact.getKnownType().equals(factType)) {
         if(value == null) {
-          if(fact.getOriginal() != null)
+          if(fact.getValue() != null)
             continue;
         }
         else {
-          if(!value.equals(fact.getOriginal())) {
+          if(!value.equals(fact.getValue())) {
             continue;
           }
         }

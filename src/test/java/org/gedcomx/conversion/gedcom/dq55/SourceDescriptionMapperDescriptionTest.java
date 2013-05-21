@@ -4,7 +4,7 @@ import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Source;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.common.Note;
-import org.gedcomx.contributor.Agent;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.source.SourceDescription;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -50,23 +50,22 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getId(), "SOUR1");
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "Brugge (West Vlaanderen). Burgerlijke Stand, Registers van de Burgerlijke Stand, 1796-1900, Salt Lake City, Utah : Filmed by the Genealogical Society of Utah, 1981-1995, https://www.familysearch.org/search/catalog/show?uri=http%3A%2F%2Fcatalog-search-api%3A8080%2Fwww-catalogapi-webservice%2Fitem%2F21034.");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 4);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/author");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/author");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "Brugge (West Vlaanderen). Burgerlijke Stand");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "gedcom5:citation-template/title");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getValue(), "Registers van de Burgerlijke Stand, 1796-1900");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(2).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/publication-facts");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(2).getName().toURI().toString(), "gedcom5:citation-template/publication-facts");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(2).getValue(), "Salt Lake City, Utah : Filmed by the Genealogical Society of Utah, 1981-1995");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(3).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(3).getName().toURI().toString(), "gedcom5:citation-template/call-number");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(3).getValue(), "https://www.familysearch.org/search/catalog/show?uri=http%3A%2F%2Fcatalog-search-api%3A8080%2Fwww-catalogapi-webservice%2Fitem%2F21034");
     assertNull(gedxSourceDescription.getAbout());
-    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "organizations/REPO1");
+    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "#REPO1");
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "Civil Registration");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "Civil Registration");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
 //    assertNotNull(gedxSourceDescription.getNotes());
@@ -101,19 +100,18 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getId(), "SOUR2");
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "__callno__, __callno__specdeviation__.");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 2);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/call-number");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "__callno__");
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/call-number");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getName().toURI().toString(), "gedcom5:citation-template/call-number");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(1).getValue(), "__callno__specdeviation__");
     assertNull(gedxSourceDescription.getAbout());
-    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), CommonMapper.getOrganizationEntryName(gedxSourceDescription.getId() + ".REPO"));
+    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), CommonMapper.getOrganizationReference(gedxSourceDescription.getId() + ".REPO"));
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertNull(gedxSourceDescription.getDisplayName());
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertNull(gedxSourceDescription.getTitles());
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -125,7 +123,7 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxOrganization.getId(), gedxSourceDescription.getId() + ".REPO");
     assertNotNull(gedxOrganization.findExtensionsOfType(Note.class));
     assertEquals(gedxOrganization.findExtensionsOfType(Note.class).size(), 1);
-    assertEquals(gedxOrganization.findExtensionsOfType(Note.class).get(0).getText().getValue(), "__sour2_inline_2__");
+    assertEquals(gedxOrganization.findExtensionsOfType(Note.class).get(0).getText(), "__sour2_inline_2__");
   }
 
   @Test
@@ -142,17 +140,16 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getId(), "SOUR18");
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "__sour18_titl__.");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 1);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/title");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "__sour18_titl__");
     assertNull(gedxSourceDescription.getAbout());
-    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "organizations/REPO1");
+    assertEquals(gedxSourceDescription.getMediator().getResource().toURI().toString(), "#REPO1");
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour18_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour18_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
@@ -172,28 +169,19 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getId(), "SOUR19");
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "__sour19_titl__.");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toURI().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 1);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/title");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "__sour19_titl__");
     assertNull(gedxSourceDescription.getAbout());
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour19_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour19_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
-    // result of the CHAN tag
-    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
-    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
-    Date date  = localFormat.parse("11 Nov 2011 11:11:11.111");
-    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
-    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 
   @Test
@@ -210,27 +198,19 @@ public class SourceDescriptionMapperDescriptionTest {
     assertEquals(gedxSourceDescription.getId(), "SOUR20");
     assertNotNull(gedxSourceDescription.getCitation());
     assertEquals(gedxSourceDescription.getCitation().getValue(), "__sour20_titl__.");
-    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping");
+    assertEquals(gedxSourceDescription.getCitation().getCitationTemplate().getResource().toString(), "gedcom5:citation-template");
     assertNotNull(gedxSourceDescription.getCitation().getFields());
     assertEquals(gedxSourceDescription.getCitation().getFields().size(), 1);
-    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "http://gedcomx.org/gedcom5-conversion-v1-SOUR-mapping/title");
+    assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getName().toURI().toString(), "gedcom5:citation-template/title");
     assertEquals(gedxSourceDescription.getCitation().getFields().get(0).getValue(), "__sour20_titl__");
     assertNull(gedxSourceDescription.getAbout());
     assertNull(gedxSourceDescription.getMediator());
     assertNull(gedxSourceDescription.getSources());
     assertNull(gedxSourceDescription.getComponentOf());
-    assertEquals(gedxSourceDescription.getDisplayName(), "__sour20_titl__");
-    assertNull(gedxSourceDescription.getAlternateNames());
+    assertEquals(gedxSourceDescription.getTitle().getValue(), "__sour20_titl__");
     assertNull(gedxSourceDescription.getAttribution());
     assertNull(gedxSourceDescription.getNotes());
     assertNull(gedxSourceDescription.getExtensionElements());
     // result of the CHAN tag
-    SimpleDateFormat localFormat = (SimpleDateFormat)DateFormat.getDateTimeInstance();
-    localFormat.applyPattern("d MMM yy HH:mm:ss.SSS");
-    Date date  = localFormat.parse("11 Nov 2011 00:00:00.000");
-    SimpleDateFormat targetFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
-    targetFormat.applyPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    targetFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    assertEquals(result.getEntryAttributes("descriptions/" + gedxSourceDescription.getId()).get("X-DC-modified"), targetFormat.format(date));
   }
 }

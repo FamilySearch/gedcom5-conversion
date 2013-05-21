@@ -43,7 +43,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -65,7 +65,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -87,7 +87,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -109,7 +109,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -131,7 +131,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -153,7 +153,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "Johnson");
     checkNamePartDoesNotExist(nameForm, NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -175,7 +175,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -197,7 +197,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson Jr.");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -219,7 +219,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "Johnson John");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -241,7 +241,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Johnson");
     checkNamePartDoesNotExist(nameForm, NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
@@ -263,7 +263,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartDoesNotExist(nameForm, NamePartType.Surname);
@@ -285,7 +285,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertNull(nameForm.getFullText());
     checkNamePartEquals(nameForm, "npfx", NamePartType.Prefix);
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
@@ -307,7 +307,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartDoesNotExist(nameForm, NamePartType.Surname);
@@ -329,7 +329,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John Jr.");
     checkNamePartDoesNotExist(nameForm, NamePartType.Surname);
     checkNamePartDoesNotExist(nameForm, NamePartType.Prefix);
@@ -350,7 +350,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "John");
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartDoesNotExist(nameForm, NamePartType.Surname);
@@ -372,7 +372,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertNull(nameForm.getFullText());
     checkNamePartEquals(nameForm, "A", NamePartType.Given);
     checkNamePartEquals(nameForm, "B", NamePartType.Given);
@@ -396,7 +396,7 @@ public class PersonsNameTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     assertNotNull(person.getNames());
     assertEquals(person.getNames().size(), 1);
-    NameForm nameForm = person.getNames().get(0).getPrimaryForm();
+    NameForm nameForm = person.getNames().get(0).getNameForms().get(0);
     assertEquals(nameForm.getFullText(), "npfx John spfx Johnson nsfx");
     checkNamePartEquals(nameForm, "npfx", NamePartType.Prefix);
     checkNamePartEquals(nameForm, "John", NamePartType.Given);

@@ -46,7 +46,7 @@ public class Gedcom2GedcomxTest {
       count++;
       entries.nextElement();
     }
-    assertEquals(count, 75);
+    assertEquals(count, 2);
 /*
 Following are a count of entries that are expected in the gedcom file:
 

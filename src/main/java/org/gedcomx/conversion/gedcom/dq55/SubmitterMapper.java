@@ -17,8 +17,8 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.Submitter;
+import org.gedcomx.agent.Agent;
 import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.contributor.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -67,7 +67,7 @@ public class SubmitterMapper {
       }
     }
 
-    result.setDatasetContributor(gedxContributor, CommonMapper.toDate(dqSubmitter.getChange()));
+    result.setDatasetContributor(gedxContributor);
 
     ConversionContext.removeReference(submitterContext);
   }

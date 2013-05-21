@@ -34,6 +34,7 @@ import org.slf4j.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class PersonMapper {
 
       //////////////////////////////////////////////////////////////////////
       // Add the person to the conversion results
-      java.util.Date lastModified = CommonMapper.toDate(dqPerson.getChange());
+      java.util.Date lastModified = CommonMapper.toDate(dqPerson.getChange()); //todo: set the timestamp on the attribution?
 
 
       //////////////////////////////////////////////////////////////////////
@@ -169,7 +170,7 @@ public class PersonMapper {
       }
 
 
-      result.addPerson(gedxPerson, lastModified);
+      result.addPerson(gedxPerson);
     } finally {
       ConversionContext.removeReference(personContext);
     }
@@ -232,12 +233,14 @@ public class PersonMapper {
     Name gedxName = new Name();
     //gedxName.setId(); // no equivalent; probably system dependent anyway
 
-    gedxName.setPrimaryForm(new NameForm());
-    gedxName.getPrimaryForm().setFullText(getNameValue(dqName));
+    gedxName.setNameForms(new ArrayList<NameForm>());
+    NameForm primaryForm = new NameForm();
+    primaryForm.setFullText(getNameValue(dqName));
     List<NamePart> parts = getNameParts(dqName);
     if (parts != null) {
-      gedxName.getPrimaryForm().setParts(parts);
+      primaryForm.setParts(parts);
     }
+    gedxName.getNameForms().add(primaryForm);
     nameList.add(gedxName);
 
     if (dqName.getNickname() != null) {
@@ -245,7 +248,7 @@ public class PersonMapper {
       gedxNickname.setKnownType(NameType.Nickname);
       NameForm nickname = new NameForm();
       nickname.setFullText(dqName.getNickname());
-      gedxNickname.setPrimaryForm(nickname);
+      gedxNickname.setNameForms(Arrays.asList(nickname));
       nameList.add(gedxNickname);
     }
 
@@ -254,7 +257,7 @@ public class PersonMapper {
       gedxMarriedName.setKnownType(NameType.MarriedName);
       NameForm marriedName = new NameForm();
       marriedName.setFullText(dqName.getMarriedName());
-      gedxMarriedName.setPrimaryForm(marriedName);
+      gedxMarriedName.setNameForms(Arrays.asList(marriedName));
       nameList.add(gedxMarriedName);
     }
 
@@ -263,7 +266,7 @@ public class PersonMapper {
       gedxAka.setKnownType(NameType.AlsoKnownAs);
       NameForm alias = new NameForm();
       alias.setFullText(dqName.getMarriedName());
-      gedxAka.setPrimaryForm(alias);
+      gedxAka.setNameForms(Arrays.asList(alias));
       nameList.add(gedxAka);
     }
 
