@@ -3,23 +3,16 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Repository;
 import org.folg.gedcom.parser.ModelParser;
-import org.gedcomx.common.ResourceReference;
 import org.gedcomx.agent.Address;
 import org.gedcomx.agent.Agent;
+import org.gedcomx.common.ResourceReference;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.fail;
+import static org.testng.Assert.*;
 
 
 public class SourceDescriptionMapperOrganizationTest {
@@ -90,10 +83,10 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Phone%3A%20")) {
-        assertEquals(s, "data:,Phone%3A%20866-000-0000");
-      } else if (s.startsWith("data:,Fax%3A%20")) {
-        assertEquals(s, "data:,Fax%3A%20866-111-1111");
+      if (s.startsWith("data:,Phone:%20")) {
+        assertEquals(s, "data:,Phone:%20866-000-0000");
+      } else if (s.startsWith("data:,Fax:%20")) {
+        assertEquals(s, "data:,Fax:%20866-111-1111");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -190,8 +183,8 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Phone%3A%20")) {
-        assertEquals(s, "data:,Phone%3A%20(731)%20642-8655,%20Extension%20%23109");
+      if (s.startsWith("data:,Phone:%20")) {
+        assertEquals(s, "data:,Phone:%20(731)%20642-8655,%20Extension%20%23109");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -252,8 +245,8 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Fax%3A%20")) {
-        assertEquals(s, "data:,Fax%3A%20479-444-1777");
+      if (s.startsWith("data:,Fax:%20")) {
+        assertEquals(s, "data:,Fax:%20479-444-1777");
       } else {
         fail("Unexpected phone: " + s);
       }
@@ -381,10 +374,10 @@ public class SourceDescriptionMapperOrganizationTest {
       assertNotNull(phone.getResource());
 
       String s = phone.getResource().toString();
-      if (s.startsWith("data:,Phone%3A%20")) {
-        assertEquals(s, "data:,Phone%3A%20801-533-3535%20%3C%3E");
-      } else if (s.startsWith("data:,Fax%3A%20")) {
-        assertEquals(s, "data:,Fax%3A%20%20801-533-3504%20%3C%3E");
+      if (s.startsWith("data:,Phone:%20")) {
+        assertEquals(s, "data:,Phone:%20801-533-3535%20%3C%3E");
+      } else if (s.startsWith("data:,Fax:%20")) {
+        assertEquals(s, "data:,Fax:%20%20801-533-3504%20%3C%3E");
       } else {
         fail("Unexpected phone: " + s);
       }

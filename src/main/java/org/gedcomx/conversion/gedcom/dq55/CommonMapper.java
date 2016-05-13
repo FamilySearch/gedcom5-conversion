@@ -36,6 +36,7 @@ import org.slf4j.Marker;
 
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -332,14 +333,24 @@ public class CommonMapper {
         ResourceReference phoneRef = new ResourceReference();
         boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(phone);
         String scheme = inGlobalFormat ? "tel" : "data";
-        phoneRef.setResource(URI.create(UriBuilder.fromUri("").scheme(scheme).replacePath((inGlobalFormat ? "{arg1}" : ",Phone%3A%20{arg1}")).build(phone).toString()));
+        try {
+          phoneRef.setResource(URI.create(new java.net.URI(scheme, (inGlobalFormat ? phone : ",Phone: " + phone), null)));
+        }
+        catch (URISyntaxException e) {
+          throw new RuntimeException(e);
+        }
         agent.getPhones().add(phoneRef);
       }
       if (fax != null) {
         ResourceReference faxRef = new ResourceReference();
         boolean inGlobalFormat = CommonMapper.inCanonicalGlobalFormat(fax);
         String scheme = inGlobalFormat ? "fax" : "data";
-        faxRef.setResource(URI.create(UriBuilder.fromUri("").scheme(scheme).replacePath((inGlobalFormat ? "{arg1}" : ",Fax%3A%20{arg1}")).build(fax).toString()));
+        try {
+          faxRef.setResource(URI.create(new java.net.URI(scheme, (inGlobalFormat ? fax : ",Fax: " + fax), null)));
+        }
+        catch (URISyntaxException e) {
+          throw new RuntimeException();
+        }
         agent.getPhones().add(faxRef);
       }
     }

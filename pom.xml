@@ -6,12 +6,13 @@
   <version>1.0.1.M1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>gedcom5-conversion</name>
-  <url>http://maven.apache.org</url>
+  <name>GEDCOM 5.x to GEDCOM X Conversion</name>
+  <description>Utilities for converting from GEDCOM 5.x to GEDCOM X</description>
+  <url>https://github.com/FamilySearch/gedcom5-conversion</url>
 
   <properties>
-    <gedcomx.fileformat.version>1.0.0.M1</gedcomx.fileformat.version>
-    <gedcom.version>1.1</gedcom.version>
+    <gedcomx.fileformat.version>1.0.170.M1</gedcomx.fileformat.version>
+    <gedcom.version>1.3.0</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
@@ -24,6 +25,20 @@
     <url>https://github.com/FamilySearch/gedcom5-conversion</url>
   </scm>
 
+  <licenses>
+    <license>
+      <name>Th Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Ryan Heaton</name>
+      <url>https://github.com/stoicflame</url>
+    </developer>
+  </developers>
+
   <dependencies>
     <dependency>
       <groupId>org.gedcomx</groupId>
@@ -31,7 +46,7 @@
       <version>${gedcomx.fileformat.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.folg.gedcom</groupId>
+      <groupId>org.familysearch.gedcom</groupId>
       <artifactId>gedcom</artifactId>
       <version>${gedcom.version}</version>
     </dependency>
@@ -85,22 +100,26 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.2.2</version>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+          <releaseProfiles>release</releaseProfiles>
+          <goals>deploy</goals>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.google.code.maven-license-plugin</groupId>
@@ -150,121 +169,68 @@
   </build>
 
   <distributionManagement>
-    <repository>
-      <id>gedcomx-release-repo</id>
-      <name>GEDCOM X Release Repository</name>
-      <url>https://repository-gedcom.forge.cloudbees.com/release/</url>
-    </repository>
     <snapshotRepository>
-      <id>gedcomx-snapshot-repo</id>
-      <name>GEDCOM X Snapshot Repository</name>
-      <url>https://repository-gedcom.forge.cloudbees.com/snapshot/</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
   </distributionManagement>
 
   <profiles>
     <profile>
-      <id>jenkins</id>
-      <activation>
-        <property>
-          <name>BUILD_NUMBER</name>
-        </property>
-      </activation>
+      <id>release</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>cobertura-maven-plugin</artifactId>
-            <version>2.5.1</version>
-            <configuration>
-              <formats>
-                <format>xml</format>
-                <format>html</format>
-              </formats>
-              <instrumentation>
-                <ignores>
-                  <ignore>com.*</ignore>
-                  <ignore>net.*</ignore>
-                  <ignore>org.apache.*</ignore>
-                </ignores>
-              </instrumentation>
-            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.1</version>
             <executions>
               <execution>
-                <phase>package</phase>
+                <id>attach-javadocs</id>
                 <goals>
-                  <goal>cobertura</goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>2.5</version>
-            <configuration>
-              <targetJdk>1.6</targetJdk>
-              <formats>
-                <format>xml</format>
-                <format>html</format>
-              </formats>
-              <excludes>
-                <exclude>**/package-info.java</exclude>
-              </excludes>
-            </configuration>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
             <executions>
               <execution>
+                <id>attach-sources</id>
                 <phase>package</phase>
                 <goals>
-                  <goal>pmd</goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>findbugs-maven-plugin</artifactId>
-            <version>2.4.0</version>
-            <configuration>
-              <findbugsXmlOutput>true</findbugsXmlOutput>
-            </configuration>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>pgp-maven-plugin</artifactId>
+            <version>1.1</version>
             <executions>
               <execution>
-                <phase>package</phase>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
                 <goals>
-                  <goal>findbugs</goal>
+                  <goal>sign</goal>
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <secretkey>keyfile:${env.PGP_SECRET_KEYFILE}</secretkey>
+              <passphrase>literal:</passphrase>
+            </configuration>
           </plugin>
         </plugins>
       </build>
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>findbugs-maven-plugin</artifactId>
-            <configuration>
-              <xmlOutput>true</xmlOutput>
-              <findbugsXmlOutput>true</findbugsXmlOutput>
-              <threshold>Normal</threshold>
-              <debug>false</debug>
-              <relaxed>true</relaxed>
-              <!--<excludeFilterFile>./findbugs-exclude-filter.xml</excludeFilterFile>-->
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>cobertura-maven-plugin</artifactId>
-            <configuration>
-              <formats>
-                <format>xml</format>
-                <format>html</format>
-              </formats>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
     </profile>
   </profiles>
 
