@@ -12,7 +12,7 @@
 
   <properties>
     <gedcomx.fileformat.version>1.0.170.M1</gedcomx.fileformat.version>
-    <gedcom.version>1.3.0</gedcom.version>
+    <gedcom.version>1.6.0</gedcom.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
