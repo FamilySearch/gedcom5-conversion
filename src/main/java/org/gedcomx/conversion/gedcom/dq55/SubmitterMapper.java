@@ -31,6 +31,10 @@ public class SubmitterMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
   public void toContributor(Submitter dqSubmitter, GedcomxConversionResult result) throws IOException {
+    if (dqSubmitter == null) {
+      return;
+    }
+
     Marker submitterContext = ConversionContext.getDetachedMarker(String.format("@%s@ SUBM", dqSubmitter.getId()));
     ConversionContext.addReference(submitterContext);
 
