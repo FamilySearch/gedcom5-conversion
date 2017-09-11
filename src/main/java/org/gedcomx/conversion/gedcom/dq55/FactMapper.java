@@ -18,6 +18,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
+import org.folg.gedcom.model.LdsOrdinance;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.PlaceReference;
@@ -30,10 +31,15 @@ import org.slf4j.Marker;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.familysearch.platform.ordinances.Ordinance;
+import org.familysearch.platform.ordinances.OrdinanceType;
 
 public class FactMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
-  static final HashMap<String, FactType> factMap = new HashMap<String, FactType>();
+  static final Map<String, FactType> factMap = new HashMap<String, FactType>();
+  static final Map<String, OrdinanceType> ordinanceMap = new HashMap<String, OrdinanceType>();
 
   static {
     // Attributes (Short and long tag names, from the standard)
@@ -153,6 +159,14 @@ public class FactMapper {
     factMap.put("SEPA", FactType.Separation);
     factMap.put("_SEPARATED", FactType.Separation);
     factMap.put("_SEPR", FactType.Separation);
+
+    // Ordinances
+    ordinanceMap.put("BAPL", OrdinanceType.Baptism);
+    ordinanceMap.put("CONL", OrdinanceType.Confirmation);
+    ordinanceMap.put("WAC", OrdinanceType.Initiatory);
+    ordinanceMap.put("ENDL", OrdinanceType.Endowment);
+    ordinanceMap.put("SLGS", OrdinanceType.SealingToSpouse);
+    ordinanceMap.put("SLGC", OrdinanceType.SealingChildToParents);
   }
 
   static Fact toFact(EventFact dqFact, GedcomxConversionResult result) throws IOException {
@@ -271,5 +285,27 @@ public class FactMapper {
     }
 
     return null;
+  }
+
+  static Ordinance toOrdinance(LdsOrdinance dqOrdinance) throws IOException {
+    String type = dqOrdinance.getTag();
+    if (type == null) {
+      return null;
+    }
+    Ordinance ordinance = new Ordinance();
+    ordinance.setKnownType(getType(type));
+    if (dqOrdinance.getDate() != null) {
+      Date ordinanceDate = new Date();
+      ordinanceDate.setOriginal(dqOrdinance.getDate());
+      ordinance.setPerformedDate(ordinanceDate);
+    }
+    if (dqOrdinance.getTemple() != null) {
+      ordinance.setTempleCode(dqOrdinance.getTemple());
+    }
+    return ordinance;
+  }
+
+  private static OrdinanceType getType(String value) {
+    return ordinanceMap.get(value);
   }
 }

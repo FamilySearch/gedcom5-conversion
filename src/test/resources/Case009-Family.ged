@@ -401,9 +401,6 @@
   2 TYPE MyRefnType
 1 RIN 34567
 1 JUNK
-1 SLGS
-  2 DATE 1 Jan 2012
-  2 TEMP SLAKE
 
 0 @F2@ FAM
 1 _UID 3ABB19B4E5CC824987E15550564EC939F136
@@ -536,6 +533,29 @@
 1 _SEPR
   2 DATE DEC 1898
 1 NCHI 5
+
+0 @F26@ FAM
+1 _UID BB15CF6289BA0B488B206FF9222E7CFB714B
+1 HUSB @I1@
+1 WIFE @I11@
+1 MARR
+  2 DATE 10 Feb 1896
+  2 PLAC San Francisco, San Francisco, California, United States
+  2 SOUR @S13@
+  3 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+  3 DATA
+  4 DATE 12 Feb 1896
+1 SOUR @S13@
+  2 PAGE The San Francisco call., February 12, 1896, Page 15, Image 15
+1 NOTE Several of the children were omitted to reduce the size of the file
+1 REFN 12345
+1 REFN 23456
+  2 TYPE MyRefnType
+1 RIN 34567
+1 JUNK
+1 SLGS
+  2 DATE 1 Jan 2012
+  2 TEMP SLAKE
 
 0 @S1@ SOUR
   1 REPO @REPO1@

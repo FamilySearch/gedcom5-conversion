@@ -31,6 +31,8 @@ import java.io.*;
 import java.util.*;
 import java.util.jar.JarFile;
 
+import org.familysearch.platform.ordinances.Ordinance;
+
 
 /**
  * Converts a GEDCOM 5.5 file to a GEDCOM X file
@@ -189,14 +191,19 @@ public class Gedcom2Gedcomx {
       GedcomMapper mapper = new GedcomMapper();
       GedcomxEntrySerializer serializer;
 
+      String outputFileName;
+
       if (json) {
-        serializer = new JacksonJsonSerialization();
+        serializer = new JacksonJsonSerialization(Ordinance.class);
+        outputFileName = "tree.json";
       }
       else if (bson) {
         serializer = new JacksonJsonSerialization(new SmileFactory());
+        outputFileName = "tree.bson";
       }
       else {
-        serializer = new DefaultXMLSerialization();
+        serializer = new DefaultXMLSerialization(Ordinance.class);
+        outputFileName = "tree.xml";
       }
 
       GedcomxConversionResult result = mapper.toGedcomx(gedcom);
@@ -206,10 +213,10 @@ public class Gedcom2Gedcomx {
       output.addAttribute("X-DC-conformsTo", "http://gedcomx.org/file/v1");
       output.addAttribute("X-DC-created", GedcomxTimeStampUtil.formatAsXmlUTC(new Date()));
       if (result.getDatasetContributor() != null && result.getDatasetContributor().getId() != null) {
-        output.addAttribute("X-DC-creator", "tree.xml#" + result.getDatasetContributor().getId());
+        output.addAttribute("X-DC-creator", outputFileName + "#" + result.getDatasetContributor().getId());
       }
 
-      output.addResource("tree.xml", result.getDataset(), null);
+      output.addResource(outputFileName, result.getDataset(), null);
       output.close();
     }
   }

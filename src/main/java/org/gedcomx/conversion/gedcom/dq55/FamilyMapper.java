@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.familysearch.platform.ordinances.Ordinance;
+
 
 public class FamilyMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
@@ -98,6 +100,24 @@ public class FamilyMapper {
       if (size > 0) {
         logger.warn(ConversionContext.getContext(), "The GEDCOM X converter only supports a source citation(s) in the presence of a couple relationship; {} source citation(s) ignored.", size);
       }
+    }
+
+    index = 0;
+    for (LdsOrdinance ldsOrdinance : dqFamily.getLdsOrdinances()) {
+      Marker ordinanceContext = ConversionContext.getDetachedMarker(ldsOrdinance.getTag() + '.' + (++index));
+      ConversionContext.addReference(ordinanceContext);
+
+      if (coupleRelationship != null) {
+        Ordinance ordinance = FactMapper.toOrdinance(ldsOrdinance);
+        if(ordinance != null) {
+          coupleRelationship.addExtensionElement(ordinance);
+        }
+      }
+      else {
+        logger.warn(ConversionContext.getContext(), "The GEDCOM X converter only supports the {} ordinance in the presence of a couple relationship.", ldsOrdinance.getTag());
+      }
+
+      ConversionContext.removeReference(ordinanceContext);
     }
 
     int cntLdsOrdinances = dqFamily.getLdsOrdinances().size();
