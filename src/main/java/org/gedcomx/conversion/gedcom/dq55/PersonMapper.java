@@ -17,6 +17,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
+import org.folg.gedcom.model.LdsOrdinance;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Gender;
 import org.gedcomx.conclusion.Name;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.familysearch.platform.ordinances.Ordinance;
 
 
 public class PersonMapper {
@@ -83,6 +86,10 @@ public class PersonMapper {
 
       processFacts(gedxPerson, dqPerson.getEventsFacts(), result);
 
+      //////////////////////////////////////////////////////////////////////
+      // Process ordinances
+
+      processOrdinances(gedxPerson, dqPerson.getLdsOrdinances());
 
       //////////////////////////////////////////////////////////////////////
       // Process sources
@@ -115,11 +122,6 @@ public class PersonMapper {
 
       if (dqPerson.getDescendantInterestSubmitterRef() != null) {
         logger.warn(ConversionContext.getContext(), "Descendant interest ignored: {}.", dqPerson.getDescendantInterestSubmitterRef());
-      }
-
-      int cntLdsOrdinances = dqPerson.getLdsOrdinances().size();
-      if (cntLdsOrdinances > 0) {
-        logger.warn(ConversionContext.getContext(), "Did not process information for {} LDS ordinances.", cntLdsOrdinances);
       }
 
       if (dqPerson.getAddress() != null) {
@@ -200,6 +202,27 @@ public class PersonMapper {
         }
       } finally {
         ConversionContext.removeReference(factContext);
+      }
+    }
+  }
+
+  private void processOrdinances(Person gedxPerson, List<LdsOrdinance> ordinances) throws IOException {
+    if(ordinances == null) {
+      return;
+    }
+
+    int index = 0;
+    for(LdsOrdinance ordinance : ordinances) {
+      Marker ordinanceContext = ConversionContext.getDetachedMarker(ordinance.getTag() + '.' + (++index));
+      ConversionContext.addReference(ordinanceContext);
+      try {
+        Ordinance ordinanceExtention = FactMapper.toOrdinance(ordinance);
+
+        if(ordinanceExtention != null) {
+          gedxPerson.addExtensionElement(ordinanceExtention);
+        }
+      } finally {
+        ConversionContext.removeReference(ordinanceContext);
       }
     }
   }

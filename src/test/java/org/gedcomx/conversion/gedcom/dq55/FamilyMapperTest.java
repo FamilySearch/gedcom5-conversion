@@ -16,6 +16,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import org.familysearch.platform.ordinances.Ordinance;
+import org.familysearch.platform.ordinances.OrdinanceType;
+
 import static org.testng.Assert.*;
 
 
@@ -144,6 +147,24 @@ public class FamilyMapperTest {
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1896", null);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1897", null);
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1898", null);
+  }
+
+  @Test
+  public void testSealingToSpouse() throws Exception {
+    FamilyMapper mapper = new FamilyMapper();
+    Family dqFamily = gedcom.getFamilies().get(9);
+
+    mapper.toRelationship(dqFamily, gedcom, result);
+
+    Relationship relationship = result.getRelationships().get(0);
+    assertEquals(relationship.getPerson1().getResource().toString(), "#I1");
+    assertEquals(relationship.getPerson2().getResource().toString(), "#I11");
+
+    List<Object> extensionElements = relationship.getExtensionElements();
+    Ordinance ordinance = (Ordinance) extensionElements.get(0);
+    assertEquals(ordinance.getPerformedDate().getOriginal(), "1 Jan 2012");
+    assertEquals(ordinance.getTempleCode(), "SLAKE");
+    assertEquals(ordinance.getKnownType(), OrdinanceType.SealingToSpouse);
   }
 
   private void assertSize(List list, int count) {
