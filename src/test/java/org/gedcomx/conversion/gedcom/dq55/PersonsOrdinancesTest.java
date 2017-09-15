@@ -44,9 +44,8 @@ public class PersonsOrdinancesTest {
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
     List<Object> extensionElements = person.getExtensionElements();
     validateOrdinanceExists(extensionElements, OrdinanceType.Baptism, "16 Feb 1985", "TOKYO");
-    validateOrdinanceExists(extensionElements, OrdinanceType.Confirmation, "16 Feb 1985", null);
-    //TODO: Enable the next line when initiatory is supported in GEDCOM library.
-//    validateOrdinanceExists(extensionElements, OrdinanceType.Initiatory, "12 Apr 1985", null);
+    validateOrdinanceExists(extensionElements, OrdinanceType.Confirmation, "16 Feb 1985", "SUVA");
+    validateOrdinanceExists(extensionElements, OrdinanceType.Initiatory, "12 Apr 1985", "ABA");
     validateOrdinanceExists(extensionElements, OrdinanceType.Endowment, "3 May 1985", "TOKYO");
     validateOrdinanceExists(extensionElements, OrdinanceType.SealingChildToParents, "12 Jul 1985", "TOKYO");
   }

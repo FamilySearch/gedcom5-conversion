@@ -120,11 +120,6 @@ public class FamilyMapper {
       ConversionContext.removeReference(ordinanceContext);
     }
 
-    int cntLdsOrdinances = dqFamily.getLdsOrdinances().size();
-    if (cntLdsOrdinances > 0) {
-      logger.warn(ConversionContext.getContext(), "Did not convert information for {} LDS ordinances.", cntLdsOrdinances);
-    }
-
     int cntNotes = dqFamily.getNotes().size() + dqFamily.getNoteRefs().size();
     if (cntNotes > 0) {
       logger.warn(ConversionContext.getContext(), "Did not process {} notes or references to notes.", cntNotes);
