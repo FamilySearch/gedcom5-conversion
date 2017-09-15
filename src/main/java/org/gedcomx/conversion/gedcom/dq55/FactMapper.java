@@ -302,6 +302,9 @@ public class FactMapper {
     if (dqOrdinance.getTemple() != null) {
       ordinance.setTempleCode(dqOrdinance.getTemple());
     }
+    if (dqOrdinance.getPlace() != null) {
+      logger.warn(ConversionContext.getContext(), "#ignoredField# PLAC in ordinance was ignored.", dqOrdinance.getPlace());
+    }
     return ordinance;
   }
 
