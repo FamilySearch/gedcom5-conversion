@@ -162,7 +162,7 @@ public class FamilyMapperTest {
 
     List<Object> extensionElements = relationship.getExtensionElements();
     Ordinance ordinance = (Ordinance) extensionElements.get(0);
-    assertEquals(ordinance.getPerformedDate().getOriginal(), "1 Jan 2012");
+    assertEquals(ordinance.getDate().getOriginal(), "1 Jan 2012");
     assertEquals(ordinance.getTempleCode(), "SLAKE");
     assertEquals(ordinance.getKnownType(), OrdinanceType.SealingToSpouse);
   }

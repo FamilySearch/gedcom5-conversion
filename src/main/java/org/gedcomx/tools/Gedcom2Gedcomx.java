@@ -15,7 +15,7 @@
  */
 package org.gedcomx.tools;
 
-import org.codehaus.jackson.smile.SmileFactory;
+import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conversion.GedcomxConversionResult;

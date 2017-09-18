@@ -3,6 +3,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
+import org.gedcomx.conclusion.Name;
 import org.gedcomx.conclusion.NameForm;
 import org.gedcomx.conclusion.NamePart;
 import org.gedcomx.types.NamePartType;
@@ -11,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -402,6 +404,38 @@ public class PersonsNameTest {
     checkNamePartEquals(nameForm, "John", NamePartType.Given);
     checkNamePartEquals(nameForm, "Johnson", NamePartType.Surname);
     checkNamePartEquals(nameForm, "nsfx", NamePartType.Suffix);
+  }
+
+  @Test
+  public void testToPerson18_RomnFoneNames() throws Exception {
+    Person dqPerson = gedcom.getPeople().get(17);
+    TestConversionResult result = new TestConversionResult();
+    PersonMapper mapper = new PersonMapper();
+
+    mapper.toPerson(dqPerson, result);
+    assertNotNull(result.getPersons());
+    assertEquals(result.getPersons().size(), 1);
+
+    org.gedcomx.conclusion.Person person = result.getPersons().get(0);
+    assertNotNull(person.getNames());
+    assertEquals(person.getNames().size(), 1);
+    Name name = person.getName();
+
+    List<NameForm> nameForms = name.getNameForms();
+    assertEquals(nameForms.size(), 3);
+
+    validateNameFormExists(nameForms, "Primary Name");
+    validateNameFormExists(nameForms, "Roman Name");
+    validateNameFormExists(nameForms, "Fone Name");
+  }
+
+  private void validateNameFormExists(List<NameForm> nameforms, String expectedFullName) {
+    for (NameForm each : nameforms) {
+      if (each != null && expectedFullName.equals(each.getFullText())) {
+        return;
+      }
+    }
+    fail("Did not find expected nameForm=" + expectedFullName);
   }
 
   private void checkNamePartEquals(NameForm nameForm, String expected, NamePartType type) {

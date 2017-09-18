@@ -264,6 +264,19 @@ public class PersonMapper {
       primaryForm.setParts(parts);
     }
     gedxName.getNameForms().add(primaryForm);
+
+    if (dqName.getRomn() != null) {
+      NameForm romanNameForm = new NameForm();
+      romanNameForm.setFullText(dqName.getRomn());
+      gedxName.getNameForms().add(romanNameForm);
+    }
+
+    if (dqName.getFone() != null) {
+      NameForm foneNameForm = new NameForm();
+      foneNameForm.setFullText(dqName.getFone());
+      gedxName.getNameForms().add(foneNameForm);
+    }
+
     nameList.add(gedxName);
 
     if (dqName.getNickname() != null) {

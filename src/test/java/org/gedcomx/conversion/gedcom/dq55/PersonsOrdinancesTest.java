@@ -53,7 +53,7 @@ public class PersonsOrdinancesTest {
   private void validateOrdinanceExists(List<Object> extensionElements, OrdinanceType ordinanceType, String originalDate, String templeCode) {
     for (Object each : extensionElements) {
       Ordinance ordinance = (Ordinance) each;
-      if (ordinanceType == ordinance.getKnownType() && equalOrBothNull(originalDate, ordinance.getPerformedDate().getOriginal())
+      if (ordinanceType == ordinance.getKnownType() && equalOrBothNull(originalDate, ordinance.getDate().getOriginal())
           && equalOrBothNull(templeCode, ordinance.getTempleCode())) {
         return;
       }

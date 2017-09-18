@@ -11,9 +11,8 @@
   <url>https://github.com/FamilySearch/gedcom5-conversion</url>
 
   <properties>
-    <gedcomx.fileformat.version>1.0.170.M1</gedcomx.fileformat.version>
-    <gedcom.version>1.7.0</gedcom.version>
-    <gedcomx.version>1.0.170.M1</gedcomx.version>
+    <gedcom.version>1.8.0</gedcom.version>
+    <gedcomx.version>2.9.0</gedcomx.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
@@ -45,7 +44,7 @@
     <dependency>
       <groupId>org.gedcomx</groupId>
       <artifactId>gedcomx-fileformat</artifactId>
-      <version>${gedcomx.fileformat.version}</version>
+      <version>${gedcomx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.familysearch.gedcom</groupId>
@@ -63,9 +62,9 @@
       <version>${slf-api.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-smile</artifactId>
-      <version>1.8.0</version>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-smile</artifactId>
+      <version>2.6.2</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>

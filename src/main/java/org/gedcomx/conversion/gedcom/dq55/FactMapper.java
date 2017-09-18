@@ -297,7 +297,7 @@ public class FactMapper {
     if (dqOrdinance.getDate() != null) {
       Date ordinanceDate = new Date();
       ordinanceDate.setOriginal(dqOrdinance.getDate());
-      ordinance.setPerformedDate(ordinanceDate);
+      ordinance.setDate(ordinanceDate);
     }
     if (dqOrdinance.getTemple() != null) {
       ordinance.setTempleCode(dqOrdinance.getTemple());
