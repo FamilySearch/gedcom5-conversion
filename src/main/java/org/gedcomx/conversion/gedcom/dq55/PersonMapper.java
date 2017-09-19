@@ -15,6 +15,12 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.LdsOrdinance;
@@ -33,17 +39,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.familysearch.platform.ordinances.Ordinance;
 
 
 public class PersonMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
+
+  private final MappingConfig mappingConfig;
+
+  public PersonMapper(MappingConfig mappingConfig) {
+    this.mappingConfig = mappingConfig;
+  }
 
   public void toPerson(org.folg.gedcom.model.Person dqPerson, GedcomxConversionResult result) throws IOException {
     if (dqPerson == null) {
@@ -54,7 +60,7 @@ public class PersonMapper {
     ConversionContext.addReference(personContext);
     try {
       Person gedxPerson = new Person();
-      gedxPerson.setId(dqPerson.getId());
+      gedxPerson.setId(mappingConfig.createId(dqPerson.getId()));
 
       //////////////////////////////////////////////////////////////////////
       // Process NAMES
@@ -439,7 +445,7 @@ public class PersonMapper {
     return nameParts;
   }
 
-  protected String deleteCharAt(String value, int index) {
+  private String deleteCharAt(String value, int index) {
     if(value == null || index < 0 || index >= value.length()) {
       return value;
     }
@@ -455,7 +461,7 @@ public class PersonMapper {
     }
   }
 
-  protected String replaceCharAt(String value, int index, char c) {
+  private String replaceCharAt(String value, int index, char c) {
     if(value == null || index < 0 || index >= value.length()) {
       return value;
     }

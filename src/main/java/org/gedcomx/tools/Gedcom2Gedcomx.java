@@ -15,21 +15,36 @@
  */
 package org.gedcomx.tools;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.jar.JarFile;
+
 import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
-import org.gedcomx.fileformat.*;
+import org.gedcomx.conversion.gedcom.dq55.MappingConfig;
+import org.gedcomx.fileformat.DefaultXMLSerialization;
+import org.gedcomx.fileformat.GedcomxEntrySerializer;
+import org.gedcomx.fileformat.GedcomxFile;
+import org.gedcomx.fileformat.GedcomxFileEntry;
+import org.gedcomx.fileformat.GedcomxOutputStream;
+import org.gedcomx.fileformat.GedcomxTimeStampUtil;
+import org.gedcomx.fileformat.JacksonJsonSerialization;
 import org.gedcomx.rt.GedcomxConstants;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXParseException;
-
-import java.io.*;
-import java.util.*;
-import java.util.jar.JarFile;
 
 import org.familysearch.platform.ordinances.Ordinance;
 
@@ -53,6 +68,9 @@ public class Gedcom2Gedcomx {
 
   @Option ( name = "-bs", aliases = {"--bson"}, required = false, usage = "Use binary JSON instead of XML for serialization (experimental, used for proof-of-concept)" )
   private boolean bson;
+
+  @Option ( name = "-fi", aliases = {"--filename-in-ids"}, required = false, usage = "Include the input filename in the person and relationship ids in the generated gedcomx" )
+  private boolean includeFilenameInIds;
 
   @Option ( name = "-P", aliases = {"--pause"}, required = false, usage = "Pause before starting the conversion process (experimental, used for profiling)" )
   private boolean pause;
@@ -97,7 +115,7 @@ public class Gedcom2Gedcomx {
     }
 
     boolean gedcomInIsDirectory;
-    if ((gedcomIn != null) && (gedcomIn.isDirectory()) && (gedcomIn.canRead()) && (gedcomIn.canWrite()) && (gedcomIn.canExecute())) {
+    if (gedcomIn.isDirectory() && gedcomIn.canRead() && gedcomIn.canWrite() && gedcomIn.canExecute()) {
       fileList.addAll(Arrays.asList(gedcomIn.listFiles(new FileFilter() {
         @Override
         public boolean accept(File pathname) {
@@ -155,7 +173,8 @@ public class Gedcom2Gedcomx {
         convertXFile(inFile, outputStream);
       }
       else {
-        convert55File(inFile, outputStream);
+        MappingConfig mappingConfig = new MappingConfig(inFile.getName(), includeFilenameInIds);
+        convert55File(inFile, outputStream, mappingConfig);
       }
     }
   }
@@ -182,13 +201,13 @@ public class Gedcom2Gedcomx {
     out.close();
   }
 
-  private void convert55File(File inFile, OutputStream outputStream) throws SAXParseException, IOException {
+  private void convert55File(File inFile, OutputStream outputStream, MappingConfig mappingConfig) throws SAXParseException, IOException {
     ModelParser modelParser = new ModelParser();
     Gedcom gedcom = modelParser.parseGedcom(inFile);
     gedcom.createIndexes();
 
     if (outputStream != null) {
-      GedcomMapper mapper = new GedcomMapper();
+      GedcomMapper mapper = new GedcomMapper(mappingConfig);
       GedcomxEntrySerializer serializer;
 
       String outputFileName;

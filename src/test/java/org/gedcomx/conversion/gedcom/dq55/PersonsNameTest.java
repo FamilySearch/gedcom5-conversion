@@ -1,5 +1,9 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
@@ -10,15 +14,17 @@ import org.gedcomx.types.NamePartType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 
 public class PersonsNameTest {
-  Gedcom gedcom;
+  private MappingConfig mappingConfig = new MappingConfig("intputFile.ged", true);
+  private Gedcom gedcom;
 
   @BeforeClass
   public void setUp() throws Exception {
@@ -36,7 +42,7 @@ public class PersonsNameTest {
     // Simple name
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -58,7 +64,7 @@ public class PersonsNameTest {
     // No trailing slash on surname
     Person dqPerson = gedcom.getPeople().get(1);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -80,7 +86,7 @@ public class PersonsNameTest {
     // No space before or after surname slash
     Person dqPerson = gedcom.getPeople().get(2);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -102,7 +108,7 @@ public class PersonsNameTest {
     // No space before or after surname slashes
     Person dqPerson = gedcom.getPeople().get(3);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -124,7 +130,7 @@ public class PersonsNameTest {
     // No slashes
     Person dqPerson = gedcom.getPeople().get(4);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -146,7 +152,7 @@ public class PersonsNameTest {
     // Surname only
     Person dqPerson = gedcom.getPeople().get(5);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -168,7 +174,7 @@ public class PersonsNameTest {
     // Surname contains trailing space
     Person dqPerson = gedcom.getPeople().get(6);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -190,7 +196,7 @@ public class PersonsNameTest {
     // Surname with suffix
     Person dqPerson = gedcom.getPeople().get(7);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -212,7 +218,7 @@ public class PersonsNameTest {
     // Surname first
     Person dqPerson = gedcom.getPeople().get(8);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -234,7 +240,7 @@ public class PersonsNameTest {
     // Surname not specified, but extracted from name text
     Person dqPerson = gedcom.getPeople().get(9);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -256,7 +262,7 @@ public class PersonsNameTest {
     // Given name only
     Person dqPerson = gedcom.getPeople().get(10);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -278,7 +284,7 @@ public class PersonsNameTest {
     // Empty full text
     Person dqPerson = gedcom.getPeople().get(11);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -300,7 +306,7 @@ public class PersonsNameTest {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(12);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -322,7 +328,7 @@ public class PersonsNameTest {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(13);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -343,7 +349,7 @@ public class PersonsNameTest {
     // Empty surname at first
     Person dqPerson = gedcom.getPeople().get(14);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -365,7 +371,7 @@ public class PersonsNameTest {
     // Comma separated name part
     Person dqPerson = gedcom.getPeople().get(15);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -389,7 +395,7 @@ public class PersonsNameTest {
     // Case insensitive tags
     Person dqPerson = gedcom.getPeople().get(16);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -410,7 +416,7 @@ public class PersonsNameTest {
   public void testToPerson18_RomnFoneNames() throws Exception {
     Person dqPerson = gedcom.getPeople().get(17);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -441,9 +447,9 @@ public class PersonsNameTest {
   private void checkNamePartEquals(NameForm nameForm, String expected, NamePartType type) {
     assertNotNull(nameForm.getParts());
     boolean found = false;
-    for(NamePart part : nameForm.getParts()) {
-      if(part.getKnownType().equals(type)) {
-        if(part.getValue().equals(expected)) {
+    for (NamePart part : nameForm.getParts()) {
+      if (part.getKnownType().equals(type)) {
+        if (part.getValue().equals(expected)) {
           found = true;
           break;
         }
@@ -453,8 +459,8 @@ public class PersonsNameTest {
   }
 
   private void checkNamePartDoesNotExist(NameForm nameForm, NamePartType type) {
-    if(nameForm.getParts() != null) {
-      for(NamePart part : nameForm.getParts()) {
+    if (nameForm.getParts() != null) {
+      for (NamePart part : nameForm.getParts()) {
         assertFalse(part.getKnownType().equals(type));
       }
     }

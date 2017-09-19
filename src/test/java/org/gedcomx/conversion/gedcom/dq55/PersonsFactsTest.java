@@ -1,5 +1,9 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
 import org.folg.gedcom.parser.ModelParser;
@@ -8,15 +12,15 @@ import org.gedcomx.types.FactType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 
 public class PersonsFactsTest {
-  Gedcom gedcom;
+  private MappingConfig mappingConfig = new MappingConfig("intputFile.ged", true);
+  private Gedcom gedcom;
 
   @BeforeClass
   public void setUp() throws Exception {
@@ -34,7 +38,7 @@ public class PersonsFactsTest {
   public void testSimpleFacts() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -66,7 +70,7 @@ public class PersonsFactsTest {
   public void testMultipleFacts() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -102,7 +106,7 @@ public class PersonsFactsTest {
   public void testDateOnly() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -125,7 +129,7 @@ public class PersonsFactsTest {
   public void testPlaceOnly() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -148,7 +152,7 @@ public class PersonsFactsTest {
   public void testValueOnly() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -171,7 +175,7 @@ public class PersonsFactsTest {
   public void testEmptyValues() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -194,7 +198,7 @@ public class PersonsFactsTest {
   public void testBooleanFact() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -217,7 +221,7 @@ public class PersonsFactsTest {
   public void testNonStandardTags() throws Exception {
     Person dqPerson = gedcom.getPeople().get(2);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -277,7 +281,7 @@ public class PersonsFactsTest {
   public void testStandardTags() throws Exception {
     Person dqPerson = gedcom.getPeople().get(3);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());

@@ -1,5 +1,9 @@
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
 import org.folg.gedcom.model.Family;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
@@ -12,19 +16,19 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import org.familysearch.platform.ordinances.Ordinance;
 import org.familysearch.platform.ordinances.OrdinanceType;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 
 public class FamilyMapperTest {
-  Gedcom gedcom;
-  protected TestConversionResult result;
+  private MappingConfig mappingConfig = new MappingConfig("Case009-Family.ged", true);
+  private Gedcom gedcom;
+  private TestConversionResult result;
 
   @BeforeClass
   public void setUp() throws Exception {
@@ -42,13 +46,39 @@ public class FamilyMapperTest {
     // executed once before each @Test case
     // reset the result to a known and empty state
     result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
+    GedcomMapper gedcomMapper = new GedcomMapper(mappingConfig);
     gedcomMapper.toPersons(gedcom.getPeople(), result);
   }
 
   @Test
+  public void testMapRelationshipId_noFilename() throws Exception {
+    FamilyMapper mapper = new FamilyMapper(new MappingConfig("Case009-Family.ged", false));
+
+    Family dqFamily = gedcom.getFamilies().get(0);
+
+    mapper.toRelationship(dqFamily, gedcom, result);
+    assertEquals(result.getRelationships().size(), 5);
+
+    assertEquals(result.getRelationships().get(0).getId(), "F1-I1-I11");
+    assertEquals(result.getRelationships().get(1).getId(), "F1-I1-I2");
+ }
+
+  @Test
+  public void testMapRelationshipId_withFilename() throws Exception {
+    FamilyMapper mapper = new FamilyMapper(new MappingConfig("Case009-Family.ged", true));
+
+    Family dqFamily = gedcom.getFamilies().get(0);
+
+    mapper.toRelationship(dqFamily, gedcom, result);
+    assertEquals(result.getRelationships().size(), 5);
+
+    assertEquals(result.getRelationships().get(0).getId(), "Case009-Family.ged:F1-I1-I11");
+    assertEquals(result.getRelationships().get(1).getId(), "Case009-Family.ged:F1-I1-I2");
+  }
+
+  @Test
   public void testFamilyF1() throws Exception {
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(0);
 
     mapper.toRelationship(dqFamily, gedcom, result);
@@ -66,7 +96,7 @@ public class FamilyMapperTest {
 
   @Test
   public void testFamilyF2() throws Exception {
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(1);
 
     mapper.toRelationship(dqFamily, gedcom, result);
@@ -82,7 +112,7 @@ public class FamilyMapperTest {
 
   @Test
   public void testFamilyF10() throws Exception {
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(2);
 
     mapper.toRelationship(dqFamily, gedcom, result);
@@ -97,7 +127,7 @@ public class FamilyMapperTest {
   public void testFamilyF20() throws Exception {
     // Test child to family facts
     Relationship rel;
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(3);
 
     mapper.toRelationship(dqFamily, gedcom, result);
@@ -126,7 +156,7 @@ public class FamilyMapperTest {
   public void testFamilyF25() throws Exception {
     // Test couple facts
     Relationship rel;
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(8);
 
     mapper.toRelationship(dqFamily, gedcom, result);
@@ -151,7 +181,7 @@ public class FamilyMapperTest {
 
   @Test
   public void testSealingToSpouse() throws Exception {
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
     Family dqFamily = gedcom.getFamilies().get(9);
 
     mapper.toRelationship(dqFamily, gedcom, result);

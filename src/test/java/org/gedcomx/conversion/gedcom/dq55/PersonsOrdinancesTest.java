@@ -19,7 +19,8 @@ import static org.testng.Assert.fail;
 
 
 public class PersonsOrdinancesTest {
-  Gedcom gedcom;
+  private MappingConfig mappingConfig = new MappingConfig("intputFile.ged", true);
+  private Gedcom gedcom;
 
   @BeforeClass
   public void setUp() throws Exception {
@@ -36,7 +37,7 @@ public class PersonsOrdinancesTest {
   public void testOrdinances() throws Exception {
     Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());

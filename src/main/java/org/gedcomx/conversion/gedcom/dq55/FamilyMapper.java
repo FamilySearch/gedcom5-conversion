@@ -15,7 +15,20 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.*;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import org.folg.gedcom.model.ChildRef;
+import org.folg.gedcom.model.EventFact;
+import org.folg.gedcom.model.Family;
+import org.folg.gedcom.model.Gedcom;
+import org.folg.gedcom.model.GedcomTag;
+import org.folg.gedcom.model.LdsOrdinance;
+import org.folg.gedcom.model.ParentFamilyRef;
+import org.folg.gedcom.model.Person;
+import org.folg.gedcom.model.SpouseRef;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.conversion.GedcomxConversionResult;
@@ -25,20 +38,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import org.familysearch.platform.ordinances.Ordinance;
 
 
 public class FamilyMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
+  private final MappingConfig mappingConfig;
+
+  public FamilyMapper(MappingConfig mappingConfig) {
+    this.mappingConfig = mappingConfig;
+  }
+
   public void toRelationship(Family dqFamily, Gedcom dqGedcom, GedcomxConversionResult result) throws IOException {
-    String familyId = dqFamily.getId();
-    Marker familyContext = ConversionContext.getDetachedMarker(String.format("@%s@ FAM", familyId));
+    String dqFamilyId = dqFamily.getId();
+    String gedxFamilyId = mappingConfig.createId(dqFamilyId);
+
+    Marker familyContext = ConversionContext.getDetachedMarker(String.format("@%s@ FAM", dqFamilyId));
     ConversionContext.addReference(familyContext);
 
     List<SpouseRef> husbands = dqFamily.getHusbandRefs();
@@ -50,7 +66,7 @@ public class FamilyMapper {
     Date lastModified = CommonMapper.toDate(dqFamily.getChange()); //todo: set the timestamp on the attribution?
 
     if ( husbandId != null && wifeId != null) {
-      coupleRelationship = CommonMapper.toRelationship(familyId, husbandId, wifeId, RelationshipType.Couple);
+      coupleRelationship = CommonMapper.toRelationship(gedxFamilyId, husbandId, wifeId, RelationshipType.Couple);
       result.addRelationship(coupleRelationship);
     }
 
@@ -63,17 +79,17 @@ public class FamilyMapper {
         childToFamilyLinks = dqChild.getParentFamilyRefs();
       } else {
         logger.warn(ConversionContext.getContext(), "Could not find referenced child (@{}@ INDI).", childId);
-        childToFamilyLinks = Collections.<ParentFamilyRef>emptyList();
+        childToFamilyLinks = Collections.emptyList();
       }
 
       if (husbandId != null) {
-        Relationship gedxRelationship = CommonMapper.toRelationship(familyId, husbandId, childId, RelationshipType.ParentChild);
-        addFacts(gedxRelationship, familyId, childToFamilyLinks);
+        Relationship gedxRelationship = CommonMapper.toRelationship(gedxFamilyId, husbandId, childId, RelationshipType.ParentChild);
+        addFacts(gedxRelationship, dqFamilyId, childToFamilyLinks);
         result.addRelationship(gedxRelationship);
       }
       if (wifeId != null) {
-        Relationship gedxRelationship = CommonMapper.toRelationship(familyId, wifeId, childId, RelationshipType.ParentChild);
-        addFacts(gedxRelationship, familyId, childToFamilyLinks);
+        Relationship gedxRelationship = CommonMapper.toRelationship(gedxFamilyId, wifeId, childId, RelationshipType.ParentChild);
+        addFacts(gedxRelationship, dqFamilyId, childToFamilyLinks);
         result.addRelationship(gedxRelationship);
       }
     }

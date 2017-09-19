@@ -15,19 +15,30 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.*;
-import org.gedcomx.conversion.DefaultGedcomxConversionResult;
-import org.gedcomx.conversion.GedcomxConversionResult;
-
 import java.io.IOException;
 import java.util.List;
 
+import org.folg.gedcom.model.Family;
+import org.folg.gedcom.model.Gedcom;
+import org.folg.gedcom.model.Person;
+import org.folg.gedcom.model.Repository;
+import org.folg.gedcom.model.Source;
+import org.gedcomx.conversion.DefaultGedcomxConversionResult;
+import org.gedcomx.conversion.GedcomxConversionResult;
+
 public class GedcomMapper {
 
-  private final PersonMapper personMapper = new PersonMapper();
-  private final FamilyMapper familyMapper = new FamilyMapper();
-  private final SubmitterMapper submitterMapper = new SubmitterMapper();
-  private final SourceDescriptionMapper sourceDescriptionMapper = new SourceDescriptionMapper();
+  private final PersonMapper personMapper;
+  private final FamilyMapper familyMapper;
+  private final SubmitterMapper submitterMapper;
+  private final SourceDescriptionMapper sourceDescriptionMapper;
+
+  public GedcomMapper(MappingConfig mappingConfig) {
+    personMapper = new PersonMapper(mappingConfig);
+    familyMapper = new FamilyMapper(mappingConfig);
+    submitterMapper = new SubmitterMapper();
+    sourceDescriptionMapper = new SourceDescriptionMapper();
+  }
 
   public GedcomxConversionResult toGedcomx(Gedcom dqGedcom) throws IOException {
     return toGedcomx(dqGedcom, new DefaultGedcomxConversionResult());

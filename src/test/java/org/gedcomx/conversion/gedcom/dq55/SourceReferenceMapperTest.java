@@ -15,6 +15,9 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.File;
+import java.net.URL;
+
 import org.folg.gedcom.model.Family;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
@@ -23,20 +26,18 @@ import org.gedcomx.conclusion.Person;
 import org.gedcomx.conclusion.Relationship;
 import org.gedcomx.source.SourceDescription;
 import org.gedcomx.source.SourceReference;
-import org.gedcomx.types.ConfidenceLevel;
 import org.gedcomx.types.RelationshipType;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.net.URL;
-import java.text.DateFormat;
-
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 
 public class SourceReferenceMapperTest {
-  private DateFormat dateFormatter = DateFormat.getDateTimeInstance();
+  private MappingConfig mappingConfig = new MappingConfig("intputFile.ged", true);
   private Gedcom gedcom;
 
   @BeforeClass
@@ -62,9 +63,8 @@ public class SourceReferenceMapperTest {
   public void testToSourcesAndSourceReferences1() throws Exception {
     Family dqFamily = gedcom.getFamilies().get(0);
     TestConversionResult result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
 
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
 
     String generatedId = null;
 
@@ -117,9 +117,8 @@ public class SourceReferenceMapperTest {
   public void testToSourcesAndSourceReferences2() throws Exception {
     Family dqFamily = gedcom.getFamilies().get(1);
     TestConversionResult result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
 
-    FamilyMapper mapper = new FamilyMapper();
+    FamilyMapper mapper = new FamilyMapper(mappingConfig);
 
     String generatedId = null;
 
@@ -167,11 +166,10 @@ public class SourceReferenceMapperTest {
   public void testToSourcesAndSourceReferences3() throws Exception {
     org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(0);
     TestConversionResult result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
 
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
-    String generatedId = null;
+    String generatedId;
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -217,11 +215,10 @@ public class SourceReferenceMapperTest {
   public void testToSourcesAndSourceReferences4() throws Exception {
     org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(1);
     TestConversionResult result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
 
-    PersonMapper mapper = new PersonMapper();
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
-    String generatedId = null;
+    String generatedId;
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
@@ -251,11 +248,8 @@ public class SourceReferenceMapperTest {
   public void testToSourcesAndSourceReferences5() throws Exception {
     org.folg.gedcom.model.Person dqPerson = gedcom.getPeople().get(2);
     TestConversionResult result = new TestConversionResult();
-    GedcomMapper gedcomMapper = new GedcomMapper();
 
-    PersonMapper mapper = new PersonMapper();
-
-    String generatedId = null;
+    PersonMapper mapper = new PersonMapper(mappingConfig);
 
     mapper.toPerson(dqPerson, result);
     assertNotNull(result.getPersons());
