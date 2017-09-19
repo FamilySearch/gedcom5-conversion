@@ -26,7 +26,7 @@ import static org.testng.Assert.assertTrue;
 
 
 public class FamilyMapperTest {
-  private MappingConfig mappingConfig = new MappingConfig("Case009-Family.ged", true);
+  private MappingConfig mappingConfig = new MappingConfig("Case009-Family.ged", false);
   private Gedcom gedcom;
   private TestConversionResult result;
 
@@ -60,8 +60,13 @@ public class FamilyMapperTest {
     assertEquals(result.getRelationships().size(), 5);
 
     assertEquals(result.getRelationships().get(0).getId(), "F1-I1-I11");
+    assertEquals(result.getRelationships().get(0).getPerson1().getResource().toString(), "#I1");
+    assertEquals(result.getRelationships().get(0).getPerson2().getResource().toString(), "#I11");
+
     assertEquals(result.getRelationships().get(1).getId(), "F1-I1-I2");
- }
+    assertEquals(result.getRelationships().get(1).getPerson1().getResource().toString(), "#I1");
+    assertEquals(result.getRelationships().get(1).getPerson2().getResource().toString(), "#I2");
+  }
 
   @Test
   public void testMapRelationshipId_withFilename() throws Exception {
@@ -72,8 +77,13 @@ public class FamilyMapperTest {
     mapper.toRelationship(dqFamily, gedcom, result);
     assertEquals(result.getRelationships().size(), 5);
 
-    assertEquals(result.getRelationships().get(0).getId(), "Case009-Family.ged:F1-I1-I11");
-    assertEquals(result.getRelationships().get(1).getId(), "Case009-Family.ged:F1-I1-I2");
+    assertEquals(result.getRelationships().get(0).getId(), "Case009-Family.ged:F1-Case009-Family.ged:I1-Case009-Family.ged:I11");
+    assertEquals(result.getRelationships().get(0).getPerson1().getResource().toString(), "#Case009-Family.ged:I1");
+    assertEquals(result.getRelationships().get(0).getPerson2().getResource().toString(), "#Case009-Family.ged:I11");
+
+    assertEquals(result.getRelationships().get(1).getId(), "Case009-Family.ged:F1-Case009-Family.ged:I1-Case009-Family.ged:I2");
+    assertEquals(result.getRelationships().get(1).getPerson1().getResource().toString(), "#Case009-Family.ged:I1");
+    assertEquals(result.getRelationships().get(1).getPerson2().getResource().toString(), "#Case009-Family.ged:I2");
   }
 
   @Test

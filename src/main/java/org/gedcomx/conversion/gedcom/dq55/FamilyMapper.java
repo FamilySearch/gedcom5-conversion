@@ -58,9 +58,9 @@ public class FamilyMapper {
     ConversionContext.addReference(familyContext);
 
     List<SpouseRef> husbands = dqFamily.getHusbandRefs();
-    String husbandId = husbands.size() > 0 ? husbands.get(0).getRef() : null;
+    String husbandId = (husbands.size() > 0) ? mappingConfig.createId(husbands.get(0).getRef()) : null;
     List<SpouseRef> wives = dqFamily.getWifeRefs();
-    String wifeId = wives.size() > 0 ? wives.get(0).getRef() : null;
+    String wifeId = (wives.size() > 0) ? mappingConfig.createId(wives.get(0).getRef()) : null;
     Relationship coupleRelationship = null;
 
     Date lastModified = CommonMapper.toDate(dqFamily.getChange()); //todo: set the timestamp on the attribution?
@@ -71,7 +71,7 @@ public class FamilyMapper {
     }
 
     for (ChildRef child : dqFamily.getChildRefs()) {
-      String childId = child.getRef();
+      String childId = mappingConfig.createId(child.getRef());
 
       Person dqChild = (dqGedcom == null) ? null : dqGedcom.getPerson(childId);
       List<ParentFamilyRef> childToFamilyLinks;
