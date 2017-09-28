@@ -222,10 +222,10 @@ public class PersonMapper {
       Marker ordinanceContext = ConversionContext.getDetachedMarker(ordinance.getTag() + '.' + (++index));
       ConversionContext.addReference(ordinanceContext);
       try {
-        Ordinance ordinanceExtention = FactMapper.toOrdinance(ordinance);
+        Ordinance ordinanceExtension = FactMapper.toOrdinance(ordinance);
 
-        if(ordinanceExtention != null) {
-          gedxPerson.addExtensionElement(ordinanceExtention);
+        if(ordinanceExtension != null) {
+          gedxPerson.addExtensionElement(ordinanceExtension);
         }
       } finally {
         ConversionContext.removeReference(ordinanceContext);

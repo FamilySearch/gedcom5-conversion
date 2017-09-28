@@ -15,26 +15,6 @@
  */
 package org.gedcomx.conversion.gedcom.dq55;
 
-import org.folg.gedcom.model.Change;
-import org.folg.gedcom.model.DateTime;
-import org.folg.gedcom.model.SourceCitation;
-import org.gedcomx.agent.Address;
-import org.gedcomx.agent.Agent;
-import org.gedcomx.common.ResourceReference;
-import org.gedcomx.common.TextValue;
-import org.gedcomx.common.URI;
-import org.gedcomx.conclusion.Relationship;
-import org.gedcomx.conversion.GedcomxConversionResult;
-import org.gedcomx.source.CitationField;
-import org.gedcomx.source.SourceDescription;
-import org.gedcomx.source.SourceReference;
-import org.gedcomx.types.ConfidenceLevel;
-import org.gedcomx.types.RelationshipType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-
-import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
@@ -44,6 +24,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.folg.gedcom.model.Change;
+import org.folg.gedcom.model.DateTime;
+import org.folg.gedcom.model.SourceCitation;
+import org.gedcomx.agent.Address;
+import org.gedcomx.agent.Agent;
+import org.gedcomx.common.ResourceReference;
+import org.gedcomx.common.TextValue;
+import org.gedcomx.common.URI;
+import org.gedcomx.conversion.GedcomxConversionResult;
+import org.gedcomx.source.CitationField;
+import org.gedcomx.source.SourceDescription;
+import org.gedcomx.source.SourceReference;
+import org.gedcomx.types.ConfidenceLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 
 public class CommonMapper {
@@ -261,25 +258,6 @@ public class CommonMapper {
 
   public static String getOrganizationReference(String id) {
     return "#" + id;
-  }
-
-  /**
-   * Creates a GEDCOM X relationship.
-   * @param familyId  the GEDCOM 5.5 identifier associated with the family to which this relationship belongs
-   * @param personId1  the GEDCOM 5.5 identifier associated with the person 1
-   * @param personId2  the GEDCOM 5.5 identifier associated with the person 1
-   * @param relationshipType  the relationship type
-   * @return relationship that was added
-   */
-  public static Relationship toRelationship(String familyId, String personId1, String personId2, RelationshipType relationshipType) {
-    Relationship relationship = new Relationship();
-
-    relationship.setKnownType(relationshipType);
-    relationship.setId(familyId + '-' + personId1 + '-' + personId2);
-    relationship.setPerson1(toReference(personId1));
-    relationship.setPerson2(toReference(personId2));
-
-    return relationship;
   }
 
   /**

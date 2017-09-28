@@ -16,6 +16,11 @@
 
 package org.gedcomx.conversion.gedcom.dq55;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.LdsOrdinance;
@@ -28,12 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.familysearch.platform.ordinances.Ordinance;
+import org.familysearch.platform.ordinances.OrdinanceStatus;
 import org.familysearch.platform.ordinances.OrdinanceType;
 
 public class FactMapper {
@@ -273,7 +274,7 @@ public class FactMapper {
 
         if (dqFact.getExtensions().size() > 0) {
           for (String extensionCategory : dqFact.getExtensions().keySet()) {
-            for (GedcomTag tag : ((List<GedcomTag>)dqFact.getExtension(extensionCategory))) {
+            for (GedcomTag tag : ((List<GedcomTag>) dqFact.getExtension(extensionCategory))) {
               logger.warn(ConversionContext.getContext(), "Unsupported ({}): {}", extensionCategory, tag);
               // DATA tag (and subordinates) in GEDCOM 5.5. SOURCE_RECORD not being looked for or parsed by DallanQ code
             }
@@ -305,7 +306,44 @@ public class FactMapper {
     if (dqOrdinance.getPlace() != null) {
       logger.warn(ConversionContext.getContext(), "#ignoredField# PLAC in ordinance was ignored.", dqOrdinance.getPlace());
     }
+    if (dqOrdinance.getStatus() != null) {
+      OrdinanceStatus ordinanceStatus = mapOrdinanceStatus(dqOrdinance.getStatus());
+      if (ordinanceStatus != null) {
+        ordinance.setStatus(ordinanceStatus.toQNameURI());
+      }
+    }
     return ordinance;
+  }
+
+  private static OrdinanceStatus mapOrdinanceStatus(String dqOrdinanceStatus) {
+    if (dqOrdinanceStatus == null || dqOrdinanceStatus.isEmpty()) {
+      return null;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("BIC")) {
+      return OrdinanceStatus.NotNeededBornInCovenant;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("CANCELED")) {
+      return OrdinanceStatus.Cancelled;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("CHILD") || dqOrdinanceStatus.equalsIgnoreCase("INFANT") || dqOrdinanceStatus.equalsIgnoreCase("STILLBORN")) {
+      return OrdinanceStatus.NotNeeded;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("COMPLETED") || dqOrdinanceStatus.equalsIgnoreCase("PRE-1970")) {
+      return OrdinanceStatus.Completed;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("CLEARED") || dqOrdinanceStatus.equalsIgnoreCase("QUALIFIED")) {
+      return OrdinanceStatus.Ready;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("DNS") || dqOrdinanceStatus.equalsIgnoreCase("DNS/CAN")) {
+      return OrdinanceStatus.NotReady;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("SUBMITTED")) {
+      return OrdinanceStatus.InProgress;
+    }
+    if (dqOrdinanceStatus.equalsIgnoreCase("UNCLEARED")) {
+      return OrdinanceStatus.NeedMoreInformation;
+    }
+    return OrdinanceStatus.OTHER;
   }
 
   private static OrdinanceType getType(String value) {

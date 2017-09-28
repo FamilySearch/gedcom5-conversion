@@ -3,6 +3,7 @@ package org.gedcomx.conversion.gedcom.dq55;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.model.Person;
@@ -11,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import org.familysearch.platform.ordinances.Ordinance;
+import org.familysearch.platform.ordinances.OrdinanceStatus;
 import org.familysearch.platform.ordinances.OrdinanceType;
 
 import static org.testng.Assert.assertEquals;
@@ -43,24 +45,24 @@ public class PersonsOrdinancesTest {
     assertNotNull(result.getPersons());
     assertEquals(result.getPersons().size(), 1);
     org.gedcomx.conclusion.Person person = result.getPersons().get(0);
-    List<Object> extensionElements = person.getExtensionElements();
-    validateOrdinanceExists(extensionElements, OrdinanceType.Baptism, "16 Feb 1985", "TOKYO");
-    validateOrdinanceExists(extensionElements, OrdinanceType.Confirmation, "16 Feb 1985", "SUVA");
-    validateOrdinanceExists(extensionElements, OrdinanceType.Initiatory, "12 Apr 1985", "ABA");
-    validateOrdinanceExists(extensionElements, OrdinanceType.Endowment, "3 May 1985", "TOKYO");
-    validateOrdinanceExists(extensionElements, OrdinanceType.SealingChildToParents, "12 Jul 1985", "TOKYO");
+    List<Ordinance> extensionElements = person.findExtensionsOfType(Ordinance.class);
+    validateOrdinanceExists(extensionElements, OrdinanceType.Baptism, OrdinanceStatus.Completed, "16 Feb 1985", "TOKYO");
+    validateOrdinanceExists(extensionElements, OrdinanceType.Confirmation, null, "16 Feb 1985", "SUVA");
+    validateOrdinanceExists(extensionElements, OrdinanceType.Initiatory, null, "12 Apr 1985", "ABA");
+    validateOrdinanceExists(extensionElements, OrdinanceType.Endowment, OrdinanceStatus.InProgress, "3 May 1985", "TOKYO");
+    validateOrdinanceExists(extensionElements, OrdinanceType.SealingChildToParents, OrdinanceStatus.NeedMoreInformation, null, null);
   }
 
-  private void validateOrdinanceExists(List<Object> extensionElements, OrdinanceType ordinanceType, String originalDate, String templeCode) {
-    for (Object each : extensionElements) {
-      Ordinance ordinance = (Ordinance) each;
-      if (ordinanceType == ordinance.getKnownType() && equalOrBothNull(originalDate, ordinance.getDate().getOriginal())
+  private void validateOrdinanceExists(List<Ordinance> extensionElements, OrdinanceType ordinanceType, OrdinanceStatus status, String originalDate, String templeCode) {
+    for (Ordinance ordinance : extensionElements) {
+      if (ordinanceType == ordinance.getKnownType() && status == ordinance.getKnownStatus()
+          && ((originalDate == null && ordinance.getDate() == null) || originalDate.equals(ordinance.getDate().getOriginal()))
           && equalOrBothNull(templeCode, ordinance.getTempleCode())) {
         return;
       }
     }
-    fail(String.format("Failed to find an ordinance on the extension list. ordinanceType=%s originalDate=%s templeCode=%s", ordinanceType,
-        originalDate, templeCode));
+    fail(String.format("Failed to find an ordinance on the extension list. ordinanceType=%s status=%s originalDate=%s templeCode=%s", ordinanceType,
+        status, originalDate, templeCode));
   }
 
   private boolean equalOrBothNull(String value, String value2) {
