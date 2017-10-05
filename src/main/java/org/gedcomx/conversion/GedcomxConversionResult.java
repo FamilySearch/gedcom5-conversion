@@ -40,4 +40,6 @@ public interface GedcomxConversionResult {
 
   void addOrganization(Agent organization) throws IOException;
 
+  void addLanguage(String langCode);
+
 }
