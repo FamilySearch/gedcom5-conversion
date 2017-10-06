@@ -25,6 +25,7 @@ public class TestConversionResult implements GedcomxConversionResult {
   private List<SourceDescription> descriptions = new ArrayList<SourceDescription>();
   private List<org.gedcomx.agent.Agent> contributors = new ArrayList<org.gedcomx.agent.Agent>();
   private List<Agent> organizations = new ArrayList<Agent>();
+  private String langCode = null;
 
   @Override
   public Gedcomx getDataset() {
@@ -79,6 +80,15 @@ public class TestConversionResult implements GedcomxConversionResult {
   @Override
   public void addOrganization(Agent organization) throws IOException {
     this.organizations.add(organization);
+  }
+
+  public String getLang() {
+    return this.langCode;
+  }
+
+  @Override
+  public void addLanguage(String langCode) {
+    this.langCode = langCode;
   }
 
   public Map<String, String> getEntryAttributes(String entryName) {

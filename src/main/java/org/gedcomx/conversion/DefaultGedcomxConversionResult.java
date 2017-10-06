@@ -81,4 +81,9 @@ public class DefaultGedcomxConversionResult implements GedcomxConversionResult {
     dataset.getAgents().add(organization);
   }
 
+  @Override
+  public void addLanguage(String langCode) {
+    dataset.setLang(langCode);
+  }
+
 }
