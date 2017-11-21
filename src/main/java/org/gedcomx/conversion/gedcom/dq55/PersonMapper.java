@@ -24,8 +24,10 @@ import java.util.List;
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.LdsOrdinance;
+import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.Gender;
+import org.gedcomx.conclusion.Identifier;
 import org.gedcomx.conclusion.Name;
 import org.gedcomx.conclusion.NameForm;
 import org.gedcomx.conclusion.NamePart;
@@ -119,7 +121,9 @@ public class PersonMapper {
         logger.warn(ConversionContext.getContext(), "Record file number ignored: {}", dqPerson.getRecordFileNumber());
       }
       if (dqPerson.getReferenceNumbers() != null && dqPerson.getReferenceNumbers().size() > 0) {
-        logger.warn(ConversionContext.getContext(), "Reference numbers ignored.");
+        for (String each : dqPerson.getReferenceNumbers()) {
+          gedxPerson.addIdentifier(new Identifier().value(new URI(each)).type(new URI("USER_REFERENCE_NUMBER")));
+        }
       }
 
       if (dqPerson.getAncestorInterestSubmitterRef() != null) {
