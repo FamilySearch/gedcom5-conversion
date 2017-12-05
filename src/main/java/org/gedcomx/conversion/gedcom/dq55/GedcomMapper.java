@@ -34,7 +34,11 @@ public class GedcomMapper {
   private final SourceDescriptionMapper sourceDescriptionMapper;
 
   public GedcomMapper(MappingConfig mappingConfig) {
-    personMapper = new PersonMapper(mappingConfig);
+    this(mappingConfig, null);
+  }
+
+  public GedcomMapper(MappingConfig mappingConfig, PostProcessor postProcessor) {
+    personMapper = new PersonMapper(mappingConfig, postProcessor);
     familyMapper = new FamilyMapper(mappingConfig);
     submitterMapper = new SubmitterMapper();
     sourceDescriptionMapper = new SourceDescriptionMapper();

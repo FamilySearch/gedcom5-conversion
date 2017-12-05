@@ -48,9 +48,15 @@ public class PersonMapper {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapper.class);
 
   private final MappingConfig mappingConfig;
+  private final PostProcessor postProcessor;
 
   public PersonMapper(MappingConfig mappingConfig) {
+    this(mappingConfig, null);
+  }
+
+  public PersonMapper(MappingConfig mappingConfig, PostProcessor postProcessor) {
     this.mappingConfig = mappingConfig;
+    this.postProcessor = postProcessor;
   }
 
   public void toPerson(org.folg.gedcom.model.Person dqPerson, GedcomxConversionResult result) throws IOException {
@@ -181,6 +187,9 @@ public class PersonMapper {
         }
       }
 
+      if (postProcessor != null) {
+        postProcessor.postProcessPerson(dqPerson, gedxPerson);
+      }
 
       result.addPerson(gedxPerson);
     } finally {
