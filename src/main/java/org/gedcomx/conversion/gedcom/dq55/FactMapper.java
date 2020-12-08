@@ -24,6 +24,8 @@ import java.util.Map;
 import org.folg.gedcom.model.EventFact;
 import org.folg.gedcom.model.GedcomTag;
 import org.folg.gedcom.model.LdsOrdinance;
+import org.gedcomx.common.Qualifier;
+import org.gedcomx.common.URI;
 import org.gedcomx.conclusion.Date;
 import org.gedcomx.conclusion.Fact;
 import org.gedcomx.conclusion.PlaceReference;
@@ -288,28 +290,28 @@ public class FactMapper {
     return null;
   }
 
-  static Ordinance toOrdinance(LdsOrdinance dqOrdinance) throws IOException {
+  static Fact toOrdinance(LdsOrdinance dqOrdinance) throws IOException {
     String type = dqOrdinance.getTag();
     if (type == null) {
       return null;
     }
-    Ordinance ordinance = new Ordinance();
-    ordinance.setKnownType(getType(type));
+    Fact ordinance = new Fact();
+    ordinance.setType(getType(type).toQNameURI());
     if (dqOrdinance.getDate() != null) {
       Date ordinanceDate = new Date();
       ordinanceDate.setOriginal(dqOrdinance.getDate());
       ordinance.setDate(ordinanceDate);
     }
     if (dqOrdinance.getTemple() != null) {
-      ordinance.setTempleCode(dqOrdinance.getTemple());
+      ordinance.addQualifier(new Qualifier(URI.create("gedcom:TEMP"), dqOrdinance.getTemple()));
     }
     if (dqOrdinance.getPlace() != null) {
-      logger.warn(ConversionContext.getContext(), "#ignoredField# PLAC in ordinance was ignored.", dqOrdinance.getPlace());
+      ordinance.place(new PlaceReference().original(dqOrdinance.getPlace()));
     }
     if (dqOrdinance.getStatus() != null) {
       OrdinanceStatus ordinanceStatus = mapOrdinanceStatus(dqOrdinance.getStatus());
       if (ordinanceStatus != null) {
-        ordinance.setStatus(ordinanceStatus.toQNameURI());
+        ordinance.addQualifier(new Qualifier(ordinanceStatus.toQNameURI()));
       }
     }
     return ordinance;
@@ -320,10 +322,10 @@ public class FactMapper {
       return null;
     }
     if (dqOrdinanceStatus.equalsIgnoreCase("BIC")) {
-      return OrdinanceStatus.NotNeededBornInCovenant;
+      return OrdinanceStatus.NotNeeded;
     }
     if (dqOrdinanceStatus.equalsIgnoreCase("CANCELED")) {
-      return OrdinanceStatus.Cancelled;
+      return OrdinanceStatus.NotAvailable;
     }
     if (dqOrdinanceStatus.equalsIgnoreCase("CHILD") || dqOrdinanceStatus.equalsIgnoreCase("INFANT") || dqOrdinanceStatus.equalsIgnoreCase("STILLBORN")) {
       return OrdinanceStatus.NotNeeded;
@@ -338,7 +340,7 @@ public class FactMapper {
       return OrdinanceStatus.NotReady;
     }
     if (dqOrdinanceStatus.equalsIgnoreCase("SUBMITTED")) {
-      return OrdinanceStatus.InProgress;
+      return OrdinanceStatus.Reserved;
     }
     if (dqOrdinanceStatus.equalsIgnoreCase("UNCLEARED")) {
       return OrdinanceStatus.NeedMoreInformation;

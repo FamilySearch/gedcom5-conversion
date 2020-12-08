@@ -11,8 +11,8 @@
   <url>https://github.com/FamilySearch/gedcom5-conversion</url>
 
   <properties>
-    <gedcom.version>1.8.0</gedcom.version>
-    <gedcomx.version>2.9.0</gedcomx.version>
+    <gedcom.version>1.11.0</gedcom.version>
+    <gedcomx.version>2.122.0-SNAPSHOT</gedcomx.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
@@ -87,15 +87,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
         <configuration>
           <encoding>UTF-8</encoding>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
         <configuration>
           <systemProperties>
             <property>
@@ -126,28 +128,6 @@
           <releaseProfiles>release</releaseProfiles>
           <goals>deploy</goals>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <header>LICENSE-header.txt</header>
-          <includes>
-            <include>src/main/java/**</include>
-          </includes>
-          <properties>
-            <copyright.year>${inceptionYear}</copyright.year>
-          </properties>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

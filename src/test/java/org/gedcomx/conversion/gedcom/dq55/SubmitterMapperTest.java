@@ -30,12 +30,12 @@ public class SubmitterMapperTest {
 
     gedcom = modelParser.parseGedcom(gedcomFile);
     assertNotNull(gedcom);
-    assertNotNull(gedcom.getSubmitter());
+    assertNotNull(gedcom.getSubmitters().get(0));
   }
 
   @Test
   public void testToContributor1() throws Exception {
-    Submitter dqSubmitter = gedcom.getSubmitter();
+    Submitter dqSubmitter = gedcom.getSubmitters().get(0);
     TestConversionResult result = new TestConversionResult();
     SubmitterMapper mapper = new SubmitterMapper();
 

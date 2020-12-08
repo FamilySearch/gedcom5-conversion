@@ -54,7 +54,9 @@ public class GedcomMapper {
     toSourceDescriptions(dqGedcom.getSources(), result);
     toOrganizations(dqGedcom.getRepositories(), result);
 
-    submitterMapper.toContributor(dqGedcom.getSubmitter(), result);
+    if (dqGedcom.getSubmitters() != null && !dqGedcom.getSubmitters().isEmpty()) {
+      submitterMapper.toContributor(dqGedcom.getSubmitters().get(0), result);
+    }
 
     String lang = (dqGedcom.getHeader() == null || dqGedcom.getHeader().getLanguage() == null) ? null : dqGedcom.getHeader().getLanguage();
     LanguageMapping langMapping = LanguageMapping.fromString(lang);

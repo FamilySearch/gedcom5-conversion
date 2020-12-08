@@ -124,9 +124,9 @@ public class FamilyMapper {
       ConversionContext.addReference(ordinanceContext);
 
       if (coupleRelationship != null) {
-        Ordinance ordinance = FactMapper.toOrdinance(ldsOrdinance);
+        Fact ordinance = FactMapper.toOrdinance(ldsOrdinance);
         if(ordinance != null) {
-          coupleRelationship.addExtensionElement(ordinance);
+          coupleRelationship.addFact(ordinance);
         }
       }
       else {

@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Intellectual Reserve, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,6 @@
 package org.gedcomx.tools;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,13 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 
-import com.fasterxml.jackson.dataformat.smile.SmileFactory;
+import org.familysearch.platform.ordinances.Ordinance;
 import org.folg.gedcom.model.Gedcom;
 import org.folg.gedcom.parser.ModelParser;
 import org.gedcomx.conversion.GedcomxConversionResult;
 import org.gedcomx.conversion.gedcom.dq55.GedcomMapper;
 import org.gedcomx.conversion.gedcom.dq55.MappingConfig;
-import org.gedcomx.fileformat.DefaultXMLSerialization;
 import org.gedcomx.fileformat.GedcomxEntrySerializer;
 import org.gedcomx.fileformat.GedcomxFile;
 import org.gedcomx.fileformat.GedcomxFileEntry;
@@ -46,40 +44,35 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.xml.sax.SAXParseException;
 
-import org.familysearch.platform.ordinances.Ordinance;
-
 
 /**
  * Converts a GEDCOM 5.5 file to a GEDCOM X file
  */
 public class Gedcom2Gedcomx {
 
-  @Option ( name = "-i", aliases = {"--input"}, required = false, usage = "GEDCOM 5.5 input file" )
+  @Option(name = "-i", aliases = {"--input"}, usage = "GEDCOM 5.5 input file")
   private File gedcomIn;
 
-  @Option ( name = "-ix", aliases = {"--inputx"}, required = false, usage = "GEDCOM X input file (experimental, used for benchmarking)" )
+  @Option(name = "-ix", aliases = {"--inputx"}, usage = "GEDCOM X input file (experimental, used for benchmarking)")
   private File gedcomxIn;
 
-  @Option ( name = "-o", aliases = {"--output"}, required = false, usage = "GEDCOM X output file" )
+  @Option(name = "-o", aliases = {"--output"}, usage = "GEDCOM X output file")
   private File gedxOut;
 
-  @Option ( name = "-js", aliases = {"--json"}, required = false, usage = "Use JSON instead of XML for serialization (experimental, used for proof-of-concept)" )
-  private boolean json;
-
-  @Option ( name = "-bs", aliases = {"--bson"}, required = false, usage = "Use binary JSON instead of XML for serialization (experimental, used for proof-of-concept)" )
-  private boolean bson;
-
-  @Option ( name = "-fi", aliases = {"--filename-in-ids"}, required = false, usage = "Include the input filename in the person and relationship ids in the generated gedcomx" )
+  @Option(name = "-fi", aliases = {"--filename-in-ids"}, usage = "Include the input filename in the person and relationship ids in the generated gedcomx")
   private boolean includeFilenameInIds;
 
-  @Option ( name = "-P", aliases = {"--pause"}, required = false, usage = "Pause before starting the conversion process (experimental, used for profiling)" )
+  @Option(name = "-P", aliases = {"--pause"}, usage = "Pause before starting the conversion process (experimental, used for profiling)")
   private boolean pause;
 
-  @Option ( name = "-v", aliases = {"--verbose"}, required = false, usage = "Output all the warnings that are generated during the conversion." )
+  @Option(name = "-v", aliases = {"--verbose"}, usage = "Output all the warnings that are generated during the conversion.")
   private boolean verbose;
 
-  @Option ( name = "-vv", aliases = {"--very-verbose"}, required = false, usage = "Output all the warnings and informational messages that are generated during the conversion." )
+  @Option(name = "-vv", aliases = {"--very-verbose"}, usage = "Output all the warnings and informational messages that are generated during the conversion.")
   private boolean vverbose;
+
+  public Gedcom2Gedcomx() {
+  }
 
   private void doMain(CmdLineParser parser) throws SAXParseException, IOException {
     if (verbose) {
@@ -95,7 +88,7 @@ public class Gedcom2Gedcomx {
       System.in.read();
     }
 
-    List<File> fileList = new ArrayList<File>();
+    List<File> fileList = new ArrayList<>();
 
     final boolean gedxIn;
     final String scanPattern;
@@ -103,12 +96,10 @@ public class Gedcom2Gedcomx {
       gedxIn = true;
       scanPattern = "(?i).*\\.gedx$";
       gedcomIn = gedcomxIn;
-    }
-    else if (gedcomIn != null) {
+    } else if (gedcomIn != null) {
       gedxIn = false;
       scanPattern = "(?i).*\\.ged$";
-    }
-    else {
+    } else {
       System.err.println("Input file(s) must be specified.");
       parser.printUsage(System.err);
       return;
@@ -116,15 +107,9 @@ public class Gedcom2Gedcomx {
 
     boolean gedcomInIsDirectory;
     if (gedcomIn.isDirectory() && gedcomIn.canRead() && gedcomIn.canWrite() && gedcomIn.canExecute()) {
-      fileList.addAll(Arrays.asList(gedcomIn.listFiles(new FileFilter() {
-        @Override
-        public boolean accept(File pathname) {
-          return pathname.getAbsolutePath().matches(scanPattern);
-        }
-      })));
+      fileList.addAll(Arrays.asList(gedcomIn.listFiles(pathname -> pathname.getAbsolutePath().matches(scanPattern))));
       gedcomInIsDirectory = true;
-    }
-    else {
+    } else {
       fileList.add(gedcomIn);
       gedcomInIsDirectory = false;
     }
@@ -143,46 +128,41 @@ public class Gedcom2Gedcomx {
         String directoryPart;
         if (gedxOutIsDirectory) {
           directoryPart = gedxOut.getAbsolutePath() + File.separatorChar;
-        }
-        else {
+        } else {
           directoryPart = inFile.getAbsolutePath().substring(0, inFile.getAbsolutePath().length() - nameLength);
           if (gedxOut != null) {
             System.out.println("Application output parameter (-o) ignored.");
           }
         }
         derivedGedxOut = new File(directoryPart + name.substring(0, nameLength - 4) + ".gedx");
-      }
-      else if (gedxOut == null) {
+      } else if (gedxOut == null) {
         String directoryPart = inFile.getAbsolutePath().substring(0, inFile.getAbsolutePath().length() - nameLength);
         derivedGedxOut = new File(directoryPart + name.substring(0, nameLength - 4) + ".gedx");
-      }
-      else {
+      } else {
         derivedGedxOut = gedxOut;
       }
 
       OutputStream outputStream;
       try {
         outputStream = new FileOutputStream(derivedGedxOut);
-      }
-      catch (IOException ex) {
+      } catch (IOException ex) {
         outputStream = null;
         System.err.println("Failed to create the output file: " + derivedGedxOut);
       }
 
       if (gedxIn) {
         convertXFile(inFile, outputStream);
-      }
-      else {
+      } else {
         MappingConfig mappingConfig = new MappingConfig(inFile.getName(), includeFilenameInIds);
         convert55File(inFile, outputStream, mappingConfig);
       }
     }
   }
 
-  private void convertXFile(File inFile, OutputStream outputStream) throws SAXParseException, IOException {
+  private void convertXFile(File inFile, OutputStream outputStream) throws IOException {
     GedcomxFile gxFile = new GedcomxFile(new JarFile(inFile));
     GedcomxOutputStream out = new GedcomxOutputStream(outputStream);
-    Map<String,String> attributes = gxFile.getAttributes();
+    Map<String, String> attributes = gxFile.getAttributes();
     for (Map.Entry<String, String> attribute : attributes.entrySet()) {
       out.addAttribute(attribute.getKey(), attribute.getValue());
     }
@@ -210,21 +190,8 @@ public class Gedcom2Gedcomx {
       GedcomMapper mapper = new GedcomMapper(mappingConfig);
       GedcomxEntrySerializer serializer;
 
-      String outputFileName;
-
-      if (json) {
-        serializer = new JacksonJsonSerialization(Ordinance.class);
-        outputFileName = "tree.json";
-      }
-      else if (bson) {
-        serializer = new JacksonJsonSerialization(new SmileFactory());
-        outputFileName = "tree.bson";
-      }
-      else {
-        serializer = new DefaultXMLSerialization(Ordinance.class);
-        outputFileName = "tree.xml";
-      }
-
+      String outputFileName = "tree.json";
+      serializer = new JacksonJsonSerialization(Ordinance.class);
       GedcomxConversionResult result = mapper.toGedcomx(gedcom);
       GedcomxOutputStream output = new GedcomxOutputStream(outputStream, serializer);
 
@@ -246,8 +213,7 @@ public class Gedcom2Gedcomx {
     try {
       parser.parseArgument(args);
       converter.doMain(parser);
-    }
-    catch (CmdLineException e) {
+    } catch (CmdLineException e) {
       System.err.println(e.getMessage());
       parser.printUsage(System.err);
     }

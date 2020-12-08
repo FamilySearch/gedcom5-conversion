@@ -189,24 +189,6 @@ public class FamilyMapperTest {
     PersonsFactsTest.checkFact(rel.getFacts(), FactType.Separation, null, "DEC 1898", null);
   }
 
-  @Test
-  public void testSealingToSpouse() throws Exception {
-    FamilyMapper mapper = new FamilyMapper(mappingConfig);
-    Family dqFamily = gedcom.getFamilies().get(9);
-
-    mapper.toRelationship(dqFamily, gedcom, result);
-
-    Relationship relationship = result.getRelationships().get(0);
-    assertEquals(relationship.getPerson1().getResource().toString(), "#I1");
-    assertEquals(relationship.getPerson2().getResource().toString(), "#I11");
-
-    List<Object> extensionElements = relationship.getExtensionElements();
-    Ordinance ordinance = (Ordinance) extensionElements.get(0);
-    assertEquals(ordinance.getDate().getOriginal(), "1 Jan 2012");
-    assertEquals(ordinance.getTempleCode(), "SLAKE");
-    assertEquals(ordinance.getKnownType(), OrdinanceType.SealingToSpouse);
-  }
-
   private void assertSize(List list, int count) {
     if (count == 0) {
       if (list != null)
