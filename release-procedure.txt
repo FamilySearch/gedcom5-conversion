@@ -1,4 +1,6 @@
-The build for the GEDCOM 5 to GEDCOM X conversion utility is at Cloudbees. Just run the release build[1], specifying the release version and the next development version.
-
-[1] https://gedcom.ci.cloudbees.com/job/gedcom-to-gedcomx-converter-release/
-
+```
+export THIS_RELEASE_VERSION=1.13.0
+export NEXT_SNAPSHOT_VERSION=1.14.0-SNAPSHOT
+export PGP_SECRET_KEYFILE=~/.ssh/gedcomx-pgp-key.asc
+mvn -B -Prelease clean release:clean release:prepare -Dtag=$THIS_RELEASE_VERSION -DreleaseVersion=$THIS_RELEASE_VERSION -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION release:perform
+```

@@ -12,7 +12,7 @@
 
   <properties>
     <gedcom.version>1.11.0</gedcom.version>
-    <gedcomx.version>2.122.0-SNAPSHOT</gedcomx.version>
+    <gedcomx.version>2.122.0</gedcomx.version>
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
