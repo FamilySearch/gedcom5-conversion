@@ -1,6 +1,6 @@
 ```
-export THIS_RELEASE_VERSION=1.13.0
-export NEXT_SNAPSHOT_VERSION=1.14.0-SNAPSHOT
+export THIS_RELEASE_VERSION=1.14.0
+export NEXT_SNAPSHOT_VERSION=1.15.0-SNAPSHOT
 export PGP_SECRET_KEYFILE=~/.ssh/gedcomx-pgp-key.asc
 mvn -B -Prelease clean release:clean release:prepare -Dtag=$THIS_RELEASE_VERSION -DreleaseVersion=$THIS_RELEASE_VERSION -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION release:perform
 ```
