@@ -16,7 +16,7 @@
     <testng.version>6.5.2</testng.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf-api.version>1.6.4</slf-api.version>
-    <logback.version>1.0.3</logback.version>
+    <logback.version>1.2.0</logback.version>
   </properties>
 
   <scm>
